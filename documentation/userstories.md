@@ -23,6 +23,7 @@
     - env_mod (default 63, min 0 max 127)
     - decay (default 63, min 0 max 127)
     - accent (default 63, min 0, max 127)
+    - waveform (saw or square)
   - **Sections**
     - A pattern holds one section, A by default
     - A second section can be added.
