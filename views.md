@@ -13,7 +13,8 @@ Home (/)
 │  │  ├─ Remix [auth] (patterns/:id/remix)
 │  │  ├─ Get Midi [auth] (patterns/:id/midi)
 ├─ Users (/users) [auth]
-│  ├─ Profile (/users/:id)
+│  ├─ Profile (/users/:username)
+│  ├─ 
 ```
 
 ## Page Structure
