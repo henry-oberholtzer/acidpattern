@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "acidpattern-api"
+version = "0.1.0"
+description = "API backend for acidpattern.com, allowing access to posts, downloading midi files, and eventually generating audio."
+authors = ["Henry Oberholtzer <henryoberholtzer@gmail.com>"]
+license = "GNU-GPLv3-or-later"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.12"
+django = "^5.0.3"
+django-rest-framework = "^0.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
