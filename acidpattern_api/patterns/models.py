@@ -1,61 +1,95 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator
 
+# class PatternManager(models.Manager):
+  
+#   def create(self, 
+#             name,
+#             tempo=130,
+#             waveform="saw",
+#             tuning=0,
+#             cut_off_freq=63,
+#             resonance=63,
+#             env_mod=63,
+#             decay=63,
+#             accent=63,):
+#     pattern = Pattern.objects.create(name=name)
+#     pattern.save()
+#     settings = Settings.objects.create(
+#       pattern=pattern,
+#       tempo=tempo,
+#       waveform=waveform,
+#       tuning=tuning,
+#       cut_off_freq=cut_off_freq,
+#       resonance=resonance,
+#       env_mod=env_mod,
+#       decay=decay,
+#       accent=accent,
+#     )
+#     settings.save()
+#     return pattern
+
 class Pattern(models.Model):
   name = models.CharField(validators=[MaxLengthValidator(30)], max_length=30)
   date = models.DateTimeField(auto_now_add=True)
 
-# class Settings(models.Model):
+class Settings(models.Model):
+  class Waveform(models.TextChoices):
+    SAW = "saw",
+    SQUARE = "square",
   
-#   class Waveform(models.IntegerChoices):
-#     SAW = 0,
-#     SQUARE = 1,
+  pattern = models.OneToOneField(
+    Pattern,
+    on_delete=models.CASCADE,
+    primary_key=True,
+  )
   
-#   pattern = models.OneToOneField(
-#     Pattern,
-#     on_delete=models.CASCADE,
-#     primary_key=True,
-#   )
+  tempo = models.PositiveSmallIntegerField(
+    validators=[
+      MinValueValidator(40),
+      MaxValueValidator(300),
+    ],
+    default=130,
+  )
+  waveform = models.CharField(
+    choices=Waveform,
+    default=Waveform.SAW,
+    max_length=6
+  )
+  tuning = models.SmallIntegerField(
+    validators=[
+      MinValueValidator(-500),
+      MaxValueValidator(500),
+    ],
+    default=0
+  )
+  cut_off_freq = models.PositiveSmallIntegerField(
+    validators=[MaxValueValidator(127)],
+    default=63
+  )
+  resonance = models.PositiveSmallIntegerField(
+    validators=[MaxValueValidator(127)],
+    default=63
+  )
+  env_mod = models.PositiveSmallIntegerField(
+    validators=[MaxValueValidator(127)],
+    default=63
+  )
+  decay = models.PositiveSmallIntegerField(
+    validators=[MaxValueValidator(127)],
+    default=63
+  )
+  accent = models.PositiveSmallIntegerField(
+    validators=[MaxValueValidator(127)],
+    default=63
+  )
   
-#   tempo = models.PositiveSmallIntegerField(
-#     validators=[
-#       MinValueValidator(40),
-#       MaxValueValidator(300),
-#     ],
-#     default=130,
-#   )
-#   waveform = models.SmallIntegerField(
-#     choices=Waveform,
-#     default=Waveform.SAW,
-#   )
-#   tuning = models.SmallIntegerField(
-#     validators=[
-#       MinValueValidator(-500),
-#       MaxValueValidator(500),
-#     ],
-#     default=0
-#   )
-#   cut_off_freq = models.PositiveSmallIntegerField(
-#     validators=[MaxValueValidator(127)],
-#     default=63
-#   )
-#   resonance = models.PositiveSmallIntegerField(
-#     validators=[MaxValueValidator(127)],
-#     default=63
-#   )
-#   env_mod = models.PositiveSmallIntegerField(
-#     validators=[MaxValueValidator(127)],
-#     default=63
-#   )
-#   decay = models.PositiveSmallIntegerField(
-#     validators=[MaxValueValidator(127)],
-#     default=63
-#   )
-#   accent = models.PositiveSmallIntegerField(
-#     validators=[MaxValueValidator(127)],
-#     default=63
-#   )
+  def __str__(self):
+    return "'%s' settings" % (self.pattern.name)
 
+
+
+  
 # class Section(models.Model):
   
 #   class Name(models.TextChoices):
