@@ -54,7 +54,7 @@ class PatternListView(APITestCase):
     data2 = {
         'name': 'Acid Over Manhattan',
         'settings': {
-        'tempo': 130,
+        'tempo': 145,
         'waveform': 'saw',
         'tuning': 0,
         'cut_off_freq': 63,

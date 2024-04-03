@@ -88,16 +88,14 @@ class Settings(models.Model):
     return "'%s' settings" % (self.pattern.name)
 
 
-
+class Section(models.Model):
   
-# class Section(models.Model):
+  class Name(models.TextChoices):
+    A = "A"
+    B = "B"
   
-#   class Name(models.TextChoices):
-#     A = "A"
-#     B = "B"
-  
-#   name = models.CharField(choices=Name, max_length=1)
-#   pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
+  name = models.CharField(choices=Name, max_length=1)
+  pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
 
 # class PitchMode(models.Model):
   

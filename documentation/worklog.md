@@ -4,13 +4,12 @@
   - Wrote and tested Pattern model
   - Create API view for pattern.
   - Test Pattern Serializer
+  - Tested Settings
+  - Created nested relation between pattern & settings.
 
 To Do:
-
-  - Test Settings & Settings Serializer
-  - Create nested relation between Pattern & Settings
-  - Test nesting settings in patterns
-  - Create writable nested serializer for settings.
-  - Test writable nested settings in patterns
-  - Create a PatternManager
-  - 
+  - Create & test writable nested serializer for settings.
+  - Add sections
+    - How to limit it to two with two names?
+  - Add TimeMode and PitchMode to Section
+    - How to limit pitch mode to sixteen?
