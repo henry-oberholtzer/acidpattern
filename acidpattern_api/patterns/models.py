@@ -39,7 +39,7 @@ class Section(models.Model):
   
   pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
 
-class Step(models.Model):
+class PitchMode(models.Model):
   
   class Octave(models.IntegerChoices):
     DOWN = -12,
@@ -47,19 +47,30 @@ class Step(models.Model):
     UP = 12,
     
   section = models.ForeignKey(Pattern, on_delete=models.CASCADE)
-  
   index = models.PositiveSmallIntegerField(max_value=16, default=0)
   
+  accent = models.BooleanField(default=False)
+  slide = models.BooleanField(default=False)
   pitch = models.PositiveSmallIntegerField(min_value=36, max_value=48, default=36)
   octave = models.SmallIntegerField(
     choices=Octave.choices,
     default=Octave.NONE
   )
-  rest = models.BooleanField(default=True)
-  tied_note = models.BooleanField(default=False)
-  accent = models.BooleanField(default=False)
-  slide = models.BooleanField(default=False)
-  
   class Meta():
     ordering=['index']
+
+class TimeMode(models.Model):
+  section = models.ForeignKey(Pattern, on_delete=models.CASCADE)
+  index = models.PositiveSmallIntegerField(max_value=16, default=0)
   
+  class Time(models.IntegerChoices):
+    NOTE = 0,
+    TIED = 1,
+    REST = 2
+  
+  time = models.SmallIntegerField(
+    choices=Time.choices
+  )
+
+  class Meta():
+    ordering=['index']
