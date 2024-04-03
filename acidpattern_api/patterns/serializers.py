@@ -5,3 +5,8 @@ class PatternSerializer(serializers.ModelSerializer):
   class Meta:
     model = Pattern
     fields = ['id', 'name', 'date']
+
+# class SettingsSerializer(serializers.ModelSerializer):
+#   class Meta:
+#     model = Settings
+#     fields = 
