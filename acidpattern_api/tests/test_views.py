@@ -18,7 +18,15 @@ class PatternListView(APITestCase):
         'env_mod': 63,
         'decay': 63,
         'accent': 63
-      }}
+      },
+          'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
+        }
+      ],}
     response = self.client.post(url, data, format='json')
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     self.assertEqual(Pattern.objects.get().name, 'Sunday Experimenter')
@@ -35,7 +43,15 @@ class PatternListView(APITestCase):
         'env_mod': 63,
         'decay': 63,
         'accent': 63
-      }}
+      }, 
+      'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
+        }
+      ],}
     response = self.client.post(url, data, format='json')
     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
   def test_pattern_list_post_invalid_too_long(self):
@@ -50,7 +66,15 @@ class PatternListView(APITestCase):
         'env_mod': 63,
         'decay': 63,
         'accent': 63
-      }}
+      },  
+      'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
+        }
+      ],}
     response = self.client.post(url, data, format='json')
     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
@@ -67,8 +91,15 @@ class PatternListView(APITestCase):
         'env_mod': 63,
         'decay': 63,
         'accent': 63
-      }
+      },
+      'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
         }
+      ],}
     self.client.post(url, data, format='json')
     data2 = {
         'name': 'Acid Over Manhattan',
@@ -81,7 +112,15 @@ class PatternListView(APITestCase):
         'env_mod': 63,
         'decay': 63,
         'accent': 63
-      }
+      },
+      'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
+        }
+      ],
         }
     self.client.post(url, data2, format='json')
     response = self.client.get(url)
@@ -91,8 +130,8 @@ class PatternDetailView(APITestCase):
   def setUp(self):
     list_url = reverse('pattern-list')
     data = {
-      'name': 'Two Kids In The Bank',
-      'settings': {
+    'name': 'Two Kids In The Bank',
+    'settings': {
       'tempo': 145,
       'waveform': 'square',
       'tuning': 0,
@@ -101,7 +140,16 @@ class PatternDetailView(APITestCase):
       'env_mod': 63,
       'decay': 63,
       'accent': 63
-    }}
+      },
+    'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
+        }
+      ],
+    }
     response = self.client.post(list_url, data, format='json')
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -134,7 +182,15 @@ class PatternDetailView(APITestCase):
       'env_mod': 63,
       'decay': 63,
       'accent': 127
-    }}
+    },
+      'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
+        }
+      ],}
     response = self.client.put(url, put_data, format='json')
     self.assertEqual(response.data['settings']['tempo'], put_data['settings']['tempo'])
     self.assertEqual(response.data['name'], put_data['name'])
@@ -151,7 +207,15 @@ class PatternDetailView(APITestCase):
       'env_mod': 63,
       'decay': 63,
       'accent': 127
-    }}
+    },
+      'sections': [
+        {
+        'name': 'A'
+        },
+        {
+        'name': 'B'
+        }
+      ],}
     
   def test_pattern_detail_delete(self):
     url = reverse('pattern-detail', args=(1,))

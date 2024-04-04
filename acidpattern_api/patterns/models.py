@@ -95,47 +95,48 @@ class Section(models.Model):
     B = "B"
   
   name = models.CharField(choices=Name, max_length=1)
-  pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE)
+  pattern = models.ForeignKey(Pattern, related_name='sections', on_delete=models.CASCADE)
 
-# class PitchMode(models.Model):
+class Pitch(models.Model):
   
-#   class Octave(models.IntegerChoices):
-#     DOWN = -12,
-#     NONE = 0,
-#     UP = 12,
+  class Octave(models.IntegerChoices):
+    DOWN = -12,
+    NONE = 0,
+    UP = 12,
     
-#   section = models.ForeignKey(Pattern, on_delete=models.CASCADE)
-#   index = models.PositiveSmallIntegerField(
-#     validators=[MaxValueValidator(15)],
-#     default=0)
+  section = models.ForeignKey(Pattern, on_delete=models.CASCADE)
   
-#   accent = models.BooleanField(default=False)
-#   slide = models.BooleanField(default=False)
-#   pitch = models.PositiveSmallIntegerField(
-#     validators=[
-#       MaxValueValidator(48),
-#       MinValueValidator(36)
-#     ],
-#     default=36)
-#   octave = models.SmallIntegerField(
-#     choices=Octave.choices,
-#     default=Octave.NONE
-#   )
-#   class Meta():
-#     ordering=['index']
+  index = models.PositiveSmallIntegerField(
+    validators=[MaxValueValidator(15)],
+    default=0)
+  
+  accent = models.BooleanField(default=False)
+  slide = models.BooleanField(default=False)
+  pitch = models.PositiveSmallIntegerField(
+    validators=[
+      MaxValueValidator(48),
+      MinValueValidator(36)
+    ],
+    default=36)
+  octave = models.SmallIntegerField(
+    choices=Octave.choices,
+    default=Octave.NONE
+  )
+  class Meta():
+    ordering=['index']
 
-# class TimeMode(models.Model):
-#   section = models.ForeignKey(Pattern, on_delete=models.CASCADE)
-#   index = models.PositiveSmallIntegerField(validators=[MaxValueValidator(15)], default=0)
+class Time(models.Model):
+  section = models.ForeignKey(Pattern, on_delete=models.CASCADE)
+  index = models.PositiveSmallIntegerField(validators=[MaxValueValidator(15)], default=0)
   
-#   class Time(models.IntegerChoices):
-#     NOTE = 0,
-#     TIED = 1,
-#     REST = 2
+  class Timing(models.IntegerChoices):
+    NOTE = 0,
+    TIED = 1,
+    REST = 2
   
-#   time = models.SmallIntegerField(
-#     choices=Time.choices
-#   )
+  time = models.SmallIntegerField(
+    choices=Timing.choices
+  )
 
-#   class Meta():
-#     ordering=['index']
+  class Meta():
+    ordering=['index']

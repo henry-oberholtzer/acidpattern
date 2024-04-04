@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from patterns.models import Pattern, Settings
+from patterns.models import Pattern, Settings, Section
 
 class PatternTestCase(TestCase):
   def setUp(self):
@@ -39,3 +39,16 @@ class SettingsTestCase(TestCase):
     settings = Pattern.objects.get(name="You, Me, Us Them, Underground Sound").settings
     self.assertEqual(str(settings), "'You, Me, Us Them, Underground Sound' settings")
     
+class TestSection(TestCase):
+  def setUp(self):
+    pattern = Pattern.objects.create(name="One Night In Hackney")
+    Settings.objects.create(pattern=pattern)
+    Section.objects.create(name="A", pattern=pattern)
+    Section.objects.create(name="B", pattern=pattern)
+  def test_section_get_by_name(self):
+    section = Section.objects.get(name="A")
+    self.assertEqual(section.name, "A")
+  def test_section_get_by_pattern(self):
+    pattern = Pattern.objects.get(pk=1)
+    sections = Section.objects.filter(pattern=pattern)
+    self.assertEqual(len(sections), 2)
