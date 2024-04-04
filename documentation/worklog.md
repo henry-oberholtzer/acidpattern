@@ -7,8 +7,11 @@
   - Tested Settings
   - Created nested relation between pattern & settings.
 
+4-5-24
+  - 
 To Do:
   - Create & test writable nested serializer for settings.
+  - Write & test pattern detail view.
   - Add sections
     - How to limit it to two with two names?
   - Add TimeMode and PitchMode to Section

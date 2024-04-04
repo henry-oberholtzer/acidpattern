@@ -25,12 +25,32 @@ class PatternListView(APITestCase):
     self.assertEqual(Pattern.objects.count(), 1)
   def test_pattern_list_post_invalid_none(self):
     url = reverse('pattern-list')
-    data = {'name': ''}
-    response = self.client.post(url, data , format='json')
+    data = {'name': '',
+            'settings': {
+        'tempo': 130,
+        'waveform': 'saw',
+        'tuning': 0,
+        'cut_off_freq': 63,
+        'resonance': 63,
+        'env_mod': 63,
+        'decay': 63,
+        'accent': 63
+      }}
+    response = self.client.post(url, data, format='json')
     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
   def test_pattern_list_post_invalid_too_long(self):
     url = reverse('pattern-list')
-    data = {'name': 'this name is going to be way too long to reliably have a name on the website'}
+    data = {'name': 'this name is going to be way too long to reliably have a name on the website',
+            'settings': {
+        'tempo': 130,
+        'waveform': 'saw',
+        'tuning': 0,
+        'cut_off_freq': 63,
+        'resonance': 63,
+        'env_mod': 63,
+        'decay': 63,
+        'accent': 63
+      }}
     response = self.client.post(url, data, format='json')
     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
@@ -50,7 +70,6 @@ class PatternListView(APITestCase):
       }
         }
     self.client.post(url, data, format='json')
-    url = reverse('pattern-list')
     data2 = {
         'name': 'Acid Over Manhattan',
         'settings': {
@@ -68,12 +87,74 @@ class PatternListView(APITestCase):
     response = self.client.get(url)
     self.assertEqual(len(response.data), 2)
 
-class PatternDetailView(TestCase):
+class PatternDetailView(APITestCase):
+  def setUp(self):
+    list_url = reverse('pattern-list')
+    data = {
+      'name': 'Two Kids In The Bank',
+      'settings': {
+      'tempo': 145,
+      'waveform': 'square',
+      'tuning': 0,
+      'cut_off_freq': 63,
+      'resonance': 63,
+      'env_mod': 63,
+      'decay': 63,
+      'accent': 63
+    }}
+    response = self.client.post(list_url, data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+  def test_pattern_detail_get(self):  
+    url = reverse('pattern-detail', args=(1,))
+    response = self.client.get(url)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
+    self.assertEqual(response.data['name'], 'Two Kids In The Bank')
+    self.assertEqual(response.data['settings']['waveform'], 'square')
+  
   def test_pattern_does_not_exist(self):
-    pass
-  def test_pattern_detail_get(self):
-    pass
+    url_404 = reverse('pattern-detail', args=(2,))
+    response_404 = self.client.get(url_404)
+    self.assertEqual(response_404.status_code, status.HTTP_404_NOT_FOUND)
+    url_200 = reverse('pattern-detail', args=(1,))
+    response_200 = self.client.get(url_200)
+    self.assertEqual(response_200.status_code, status.HTTP_200_OK)
+    
+    
   def test_pattern_detail_put(self):
-    pass
+    url = reverse('pattern-detail', args=(1,))
+    put_data = {
+      'name': 'Lochi - Two Kids In The Bank',
+      'settings': {
+      'tempo': 150,
+      'waveform': 'square',
+      'tuning': 0,
+      'cut_off_freq': 63,
+      'resonance': 111,
+      'env_mod': 63,
+      'decay': 63,
+      'accent': 127
+    }}
+    response = self.client.put(url, put_data, format='json')
+    self.assertEqual(response.data['settings']['tempo'], put_data['settings']['tempo'])
+    self.assertEqual(response.data['name'], put_data['name'])
+    
+  def test_pattern_detail_put_invalid(self):
+    put_data = {
+      'name': 'Two Kids In The Bank',
+      'settings': {
+      'tempo': 301,
+      'waveform': 'square',
+      'tuning': 0,
+      'cut_off_freq': 63,
+      'resonance': 111,
+      'env_mod': 63,
+      'decay': 63,
+      'accent': 127
+    }}
+    
   def test_pattern_detail_delete(self):
-    pass
+    url = reverse('pattern-detail', args=(1,))
+    response = self.client.delete(url)
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    
