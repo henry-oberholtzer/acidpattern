@@ -1,16 +1,30 @@
 from rest_framework import serializers
-from patterns.models import Pattern, Settings, Section
+from patterns.models import Pattern, Settings, Section, Pitch, Time
 from drf_writable_nested import WritableNestedModelSerializer
+
+class PitchSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Pitch
+    exclude = ['section']
+
+class TimeSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Time
+    exclude = ['section']
+    
+class SectionSerializer(WritableNestedModelSerializer):
+  pitch_mode = PitchSerializer(many=True)
+  time_mode = TimeSerializer(many=True)
+  
+  class Meta:
+    model = Section
+    exclude = ['pattern']
 
 class SettingsSerializer(serializers.ModelSerializer):
   class Meta:
     model = Settings
     exclude = ['pattern']
 
-class SectionSerializer(WritableNestedModelSerializer):
-  class Meta:
-    model = Section
-    exclude = ['pattern']
 
 class PatternSerializer(WritableNestedModelSerializer):
   settings = SettingsSerializer()
@@ -19,3 +33,5 @@ class PatternSerializer(WritableNestedModelSerializer):
   class Meta:
     model = Pattern
     fields = ['id', 'name', 'date', 'settings', 'sections']
+
+

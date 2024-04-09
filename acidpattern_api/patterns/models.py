@@ -104,7 +104,7 @@ class Pitch(models.Model):
     NONE = 0,
     UP = 12,
     
-  section = models.ForeignKey(Section, on_delete=models.CASCADE)
+  section = models.ForeignKey(Section, related_name='pitch_mode', on_delete=models.CASCADE)
   
   index = models.PositiveSmallIntegerField(
     validators=[MaxValueValidator(15)],
@@ -126,7 +126,7 @@ class Pitch(models.Model):
     ordering=['index']
 
 class Time(models.Model):
-  section = models.ForeignKey(Section, on_delete=models.CASCADE)
+  section = models.ForeignKey(Section, related_name='time_mode', on_delete=models.CASCADE)
   index = models.PositiveSmallIntegerField(validators=[MaxValueValidator(15)], default=0)
   
   class Timing(models.IntegerChoices):

@@ -4,6 +4,54 @@ from patterns.models import Pattern, Settings
 from rest_framework.test import APITestCase
 from rest_framework import status
 
+general_data = {
+      'name': 'Sunday Experimenter',
+      'settings': {
+        'tempo': 130,
+        'waveform': 'saw',
+        'tuning': 0,
+        'cut_off_freq': 63,
+        'resonance': 63,
+        'env_mod': 63,
+        'decay': 63,
+        'accent': 63
+      },
+      'sections': [
+        {
+        'name': 'A',
+        'pitch_mode': [
+          {
+            'index': 0,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 1,
+            'pitch': 39,
+            'accent': False,
+            'slide': False,
+            'octave': 12,
+          },
+        ],
+        'time_mode': [
+          {
+            'index': 0,
+            'time': 1
+          },
+          {
+            'index': 1,
+            'time': 1
+          },
+        ],
+        },
+        {
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
+        }
+      ],}
+
 class PatternListView(APITestCase):
   def test_pattern_list_post(self):
     url = reverse('pattern-list')
@@ -19,12 +67,39 @@ class PatternListView(APITestCase):
         'decay': 63,
         'accent': 63
       },
-          'sections': [
+      'sections': [
         {
-        'name': 'A'
+        'name': 'A',
+        'pitch_mode': [
+          {
+            'index': 0,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 1,
+            'pitch': 39,
+            'accent': False,
+            'slide': False,
+            'octave': 12,
+          },
+        ],
+        'time_mode': [
+          {
+            'index': 0,
+            'time': 1
+          },
+          {
+            'index': 1,
+            'time': 1
+          },
+        ],
         },
         {
-        'name': 'B'
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
         }
       ],}
     response = self.client.post(url, data, format='json')
@@ -46,10 +121,14 @@ class PatternListView(APITestCase):
       }, 
       'sections': [
         {
-        'name': 'A'
+        'name': 'A',
+        'pitch_mode': [],
+        'time_mode': [],
         },
         {
-        'name': 'B'
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
         }
       ],}
     response = self.client.post(url, data, format='json')
@@ -69,10 +148,37 @@ class PatternListView(APITestCase):
       },  
       'sections': [
         {
-        'name': 'A'
+        'name': 'A',
+        'pitch_mode': [
+          {
+            'index': 0,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 1,
+            'pitch': 39,
+            'accent': False,
+            'slide': False,
+            'octave': 12,
+          },
+        ],
+        'time_mode': [
+          {
+            'index': 0,
+            'time': 1
+          },
+          {
+            'index': 1,
+            'time': 1
+          },
+        ],
         },
         {
-        'name': 'B'
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
         }
       ],}
     response = self.client.post(url, data, format='json')
@@ -80,26 +186,7 @@ class PatternListView(APITestCase):
         
   def test_pattern_list_get(self):
     url = reverse('pattern-list')
-    data = {
-        'name': 'Sunday Experimenter',
-        'settings': {
-        'tempo': 130,
-        'waveform': 'saw',
-        'tuning': 0,
-        'cut_off_freq': 63,
-        'resonance': 63,
-        'env_mod': 63,
-        'decay': 63,
-        'accent': 63
-      },
-      'sections': [
-        {
-        'name': 'A'
-        },
-        {
-        'name': 'B'
-        }
-      ],}
+    data = general_data
     self.client.post(url, data, format='json')
     data2 = {
         'name': 'Acid Over Manhattan',
@@ -115,10 +202,37 @@ class PatternListView(APITestCase):
       },
       'sections': [
         {
-        'name': 'A'
+        'name': 'A',
+        'pitch_mode': [
+          {
+            'index': 0,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 1,
+            'pitch': 39,
+            'accent': False,
+            'slide': False,
+            'octave': 12,
+          },
+        ],
+        'time_mode': [
+          {
+            'index': 0,
+            'time': 1
+          },
+          {
+            'index': 1,
+            'time': 1
+          },
+        ],
         },
         {
-        'name': 'B'
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
         }
       ],
         }
@@ -143,10 +257,37 @@ class PatternDetailView(APITestCase):
       },
     'sections': [
         {
-        'name': 'A'
+        'name': 'A',
+        'pitch_mode': [
+          {
+            'index': 0,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 1,
+            'pitch': 39,
+            'accent': False,
+            'slide': False,
+            'octave': 12,
+          },
+        ],
+        'time_mode': [
+          {
+            'index': 0,
+            'time': 1
+          },
+          {
+            'index': 1,
+            'time': 1
+          },
+        ],
         },
         {
-        'name': 'B'
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
         }
       ],
     }
@@ -185,10 +326,37 @@ class PatternDetailView(APITestCase):
     },
       'sections': [
         {
-        'name': 'A'
+        'name': 'A',
+        'pitch_mode': [
+          {
+            'index': 0,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 1,
+            'pitch': 39,
+            'accent': False,
+            'slide': False,
+            'octave': 12,
+          },
+        ],
+        'time_mode': [
+          {
+            'index': 0,
+            'time': 1
+          },
+          {
+            'index': 1,
+            'time': 1
+          },
+        ],
         },
         {
-        'name': 'B'
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
         }
       ],}
     response = self.client.put(url, put_data, format='json')
@@ -196,6 +364,7 @@ class PatternDetailView(APITestCase):
     self.assertEqual(response.data['name'], put_data['name'])
     
   def test_pattern_detail_put_invalid(self):
+    url = reverse('pattern-detail', args=(1,))
     put_data = {
       'name': 'Two Kids In The Bank',
       'settings': {
@@ -210,13 +379,18 @@ class PatternDetailView(APITestCase):
     },
       'sections': [
         {
-        'name': 'A'
+        'name': 'A',
+        'pitch_mode': [],
+        'time_mode': [],
         },
         {
-        'name': 'B'
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
         }
       ],}
-    
+    response = self.client.put(url, data=put_data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
   def test_pattern_detail_delete(self):
     url = reverse('pattern-detail', args=(1,))
     response = self.client.delete(url)
