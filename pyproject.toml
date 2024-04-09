@@ -12,6 +12,7 @@ django = "^5.0.3"
 django-rest-framework = "^0.1.0"
 coverage = "^7.4.4"
 pytest-django = "^4.8.0"
+drf-writable-nested = "^0.7.0"
 
 
 [build-system]

@@ -38,15 +38,17 @@ class TestSetttingsModel(TestCase):
   def test_settings_string(self):
     settings = Pattern.objects.get(name="You, Me, Us Them, Underground Sound").settings
     self.assertEqual(str(settings), "'You, Me, Us Them, Underground Sound' settings")
-  
-  class TestSectionModel(TestCase):
-    def setUp(self):
-      pattern = Pattern.objects.create(name="Spin Up")
-      Settings.objects.create(pattern=pattern)
-      Section.objects.create(name="A", pattern=pattern)
-    def test_set_name(self):
-      section = Section.objects.get()
-      print(section)
-      self.assertEqual(section.name, "C")
-      # section.name = "B"
-      self.assertEqual(section.name, "B")
+    
+class TestSection(TestCase):
+  def setUp(self):
+    pattern = Pattern.objects.create(name="One Night In Hackney")
+    Settings.objects.create(pattern=pattern)
+    Section.objects.create(name="A", pattern=pattern)
+    Section.objects.create(name="B", pattern=pattern)
+  def test_section_get_by_name(self):
+    section = Section.objects.get(name="A")
+    self.assertEqual(section.name, "A")
+  def test_section_get_by_pattern(self):
+    pattern = Pattern.objects.get(pk=1)
+    sections = Section.objects.filter(pattern=pattern)
+    self.assertEqual(len(sections), 2)
