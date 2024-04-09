@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
-from patterns.models import Pattern, Settings
+from patterns.models import Pattern, Settings, Section
 
-class PatternTestCase(TestCase):
+class TestPatternModel(TestCase):
   def setUp(self):
     Pattern.objects.create(name="First Pattern")
   def test_pattern_get_name(self):
@@ -14,7 +14,7 @@ class PatternTestCase(TestCase):
     pattern = Pattern.objects.create(name=long_name)
     self.assertRaises(ValidationError, pattern.full_clean)
 
-class SettingsTestCase(TestCase):
+class TestSetttingsModel(TestCase):
   def setUp(self):
     pattern = Pattern.objects.create(name="You, Me, Us Them, Underground Sound")
     Settings.objects.create(pattern=pattern)
@@ -38,4 +38,15 @@ class SettingsTestCase(TestCase):
   def test_settings_string(self):
     settings = Pattern.objects.get(name="You, Me, Us Them, Underground Sound").settings
     self.assertEqual(str(settings), "'You, Me, Us Them, Underground Sound' settings")
-    
+  
+  class TestSectionModel(TestCase):
+    def setUp(self):
+      pattern = Pattern.objects.create(name="Spin Up")
+      Settings.objects.create(pattern=pattern)
+      Section.objects.create(name="A", pattern=pattern)
+    def test_set_name(self):
+      section = Section.objects.get()
+      print(section)
+      self.assertEqual(section.name, "C")
+      # section.name = "B"
+      self.assertEqual(section.name, "B")
