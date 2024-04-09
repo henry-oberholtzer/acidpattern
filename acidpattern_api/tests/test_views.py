@@ -239,7 +239,265 @@ class PatternListView(APITestCase):
     self.client.post(url, data2, format='json')
     response = self.client.get(url)
     self.assertEqual(len(response.data), 2)
-
+  def test_excessive_sections(self):
+    url = reverse('pattern-list')
+    data = {
+      'name': 'Two Kids In The Bank',
+      'settings': {
+      'tempo': 130,
+      'waveform': 'square',
+      'tuning': 0,
+      'cut_off_freq': 63,
+      'resonance': 111,
+      'env_mod': 63,
+      'decay': 63,
+      'accent': 127
+    },
+      'sections': [
+        {
+        'name': 'A',
+        'pitch_mode': [],
+        'time_mode': [],
+        },
+        {
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
+        },
+        {
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
+        },
+      ],}
+    response = self.client.post(url, data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+  def test_excessive_pitch(self):
+    url = reverse('pattern-list')
+    data = {
+      'name': 'Two Kids In The Bank',
+      'settings': {
+      'tempo': 130,
+      'waveform': 'square',
+      'tuning': 0,
+      'cut_off_freq': 63,
+      'resonance': 111,
+      'env_mod': 63,
+      'decay': 63,
+      'accent': 127
+    },
+      'sections': [
+        {
+        'name': 'A',
+        'pitch_mode': [
+          {
+            'index': 0,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 1,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 2,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 3,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 4,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 5,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 6,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 7,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 8,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 9,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 10,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 11,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 12,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 13,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 14,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 15,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          {
+            'index': 16,
+            'pitch': 36,
+            'accent': True,
+            'slide': False,
+          },
+          ],
+        'time_mode': [],
+        },
+        {
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
+        },
+      ],}
+    response = self.client.post(url, data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+  def test_excessive_time(self):
+    data = {
+      'name': 'Two Kids In The Bank',
+      'settings': {
+      'tempo': 130,
+      'waveform': 'square',
+      'tuning': 0,
+      'cut_off_freq': 63,
+      'resonance': 111,
+      'env_mod': 63,
+      'decay': 63,
+      'accent': 127
+    },
+      'sections': [
+        {
+        'name': 'A',
+        'pitch_mode': [],
+        'time_mode': 
+        [
+          {
+            'index': 1,
+            'time': 1
+          },
+          {
+            'index': 2,
+            'time': 1
+          },
+          {
+            'index': 3,
+            'time': 1
+          },
+          {
+            'index': 4,
+            'time': 1
+          },
+          {
+            'index': 5,
+            'time': 1
+          },
+          {
+            'index': 6,
+            'time': 1
+          },
+          {
+            'index': 7,
+            'time': 1
+          },
+          {
+            'index': 8,
+            'time': 1
+          },
+          {
+            'index': 9,
+            'time': 1
+          },
+          {
+            'index': 10,
+            'time': 1
+          },
+          {
+            'index': 11,
+            'time': 1
+          },
+          {
+            'index': 12,
+            'time': 1
+          },
+          {
+            'index': 13,
+            'time': 1
+          },
+          {
+            'index': 14,
+            'time': 1
+          },
+          {
+            'index': 15,
+            'time': 1
+          },
+          {
+            'index': 16,
+            'time': 1
+          },
+        ],
+        },
+        {
+        'name': 'B',
+        'pitch_mode': [],
+        'time_mode': [],
+        },
+      ],}
+    url = reverse('pattern-list')
+    response = self.client.post(url, data, format='json')
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
 class PatternDetailView(APITestCase):
   def setUp(self):
     list_url = reverse('pattern-list')
@@ -395,4 +653,4 @@ class PatternDetailView(APITestCase):
     url = reverse('pattern-detail', args=(1,))
     response = self.client.delete(url)
     self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-    
+  

@@ -17,9 +17,24 @@
   - Add Time and Pitch to section
   - Write tests for pitch and time models.
   - Expand pattern model tests.
+  - Test pattern views with pitch and time.
+  - Limit Pitch and Time length to 16 in serializer.
+  - Limit Section length to 2 in serializer.
 
 To Do:
-    - How to limit it to two with two names?
-  - Add TimeMode and PitchMode to Section
-    - How to limit pitch mode to sixteen?
+  - Implement OAuth2.0 with ownership for users https://github.com/jazzband/django-oauth-toolkit
+  - Add user.
+  - Add user profile.
+  - Add user ownership to patterns.
+  - Write method to generate MIDI from a pattern.
+  - Assign that method to an API endpoint (/midi)
+    - 
+  - Add max length to serializer sections and pitch and time.
+  - Add color or image option to patterns.
+  - Add profile picture to user.
+    - https://docs.djangoproject.com/en/5.0/topics/http/file-uploads/
+    - Create folder to store uploaded files, sorted by user
+
+
+  - How to limit it to two with two names?
   - Model validation
