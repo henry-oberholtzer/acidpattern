@@ -21,6 +21,8 @@
   - Limit Pitch and Time length to 16 in serializer.
   - Limit Section length to 2 in serializer.
 
+4-15-24
+
 To Do:
   - Implement OAuth2.0 with ownership for users https://github.com/jazzband/django-oauth-toolkit
   - Add user.
