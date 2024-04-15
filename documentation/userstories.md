@@ -48,3 +48,32 @@
       - Takes the pattern and turns it into an SVG image for printing
     - Create .WAV
       - Takes the pattern and renders it as a .wav file.
+
+# Keyboard input & controls
+
+- Optional, takes over when user is in pattern write mode.
+
+a - C
+  w - C#
+s - D
+  e - D#
+d - E
+f - F
+  t - F#
+g - G
+  y - G#
+h - A
+  u - A#
+j - B
+k - C
+
+space - start/stop
+
+back - backspace
+enter - write/next
+
+"<" - sixteenth
+">" - "tie"
+"?" - rest
+
+shift - alternate time & pitch mode
