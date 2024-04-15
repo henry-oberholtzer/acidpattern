@@ -22,11 +22,19 @@
   - Limit Section length to 2 in serializer.
 
 4-15-24
+  - Oauth2.0 set up
 
 To Do:
+  - Get authentication working in pattern tests
   - Implement OAuth2.0 with ownership for users https://github.com/jazzband/django-oauth-toolkit
-  - Add user.
+  - Add user
+    - Add admin permissions
   - Add user profile.
+    - Date joined
+    - Patterns created
+    - Profile pic
+  - User views
+    - Add pagination
   - Add user ownership to patterns.
   - Write method to generate MIDI from a pattern.
   - Assign that method to an API endpoint (/midi)

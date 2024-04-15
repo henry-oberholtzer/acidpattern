@@ -1,8 +1,12 @@
 from django.test import TestCase
 from django.urls import reverse
 from patterns.models import Pattern, Settings
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
+from rest_framework.authtoken.models import Token
+from users.models import User
+
+
 
 general_data = {
       'name': 'Sunday Experimenter',
@@ -53,6 +57,11 @@ general_data = {
       ],}
 
 class PatternListView(APITestCase):
+  def setUp(self):
+    client = APIClient()
+    client.login(username='henry', password='Hangarnumber568!')
+    # token = user.oauth2_provider_accesstoken.create(expires='expire_date', token='token')
+  
   def test_pattern_list_post(self):
     url = reverse('pattern-list')
     data = {
