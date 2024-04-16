@@ -23,6 +23,7 @@
 
 4-15-24
   - Oauth2.0 set up
+  - Cover letters for internships
 
 4-16-24
   - Whiteboarding practice

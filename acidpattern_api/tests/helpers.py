@@ -3,7 +3,7 @@ import rest_framework.test
 from oauth2_provider.models import Application, AccessToken
 from users.models import User
 
-class APIClient(rest_framework.test.APIClient):
+class CustomAPIClient(rest_framework.test.APIClient):
   def credentials(self, user: User, application_name: str):
     # Create or update Oauth2 application
     app, created = Application.objects.update_or_create(
@@ -24,4 +24,4 @@ class APIClient(rest_framework.test.APIClient):
       token='secret-access-token-key',
       application=app
     )
-    super().credentials(HTTP_AUTHORIZATION='Bearer {}'.format(access_token))
+    super().credentials(HTTP_AUTHORIZATION='Bearer {0}'.format(access_token))
