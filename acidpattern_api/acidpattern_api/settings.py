@@ -25,6 +25,9 @@ SECRET_KEY = 'django-insecure-0b2i=s2qcqr2w-8ynvx3yv#3du8m4^lcgna7vm(!z48h7s5sg3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# SECURITY: This is only for development
+CORS_ORIGIN_ALLOW_ALL = True
+
 ALLOWED_HOSTS = []
 
 
@@ -46,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

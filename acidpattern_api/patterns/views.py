@@ -1,14 +1,16 @@
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from patterns.models import Pattern
 from patterns.serializers import PatternSerializer
 
 # Create your views here.
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def pattern_list(request):
   """
-  Lists all patterns, or create a new pattern.
+  Lists all acidpatterns, or create a new acidpattern.
   """
   if request.method == 'GET':
     patterns = Pattern.objects.all()
@@ -23,9 +25,10 @@ def pattern_list(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def pattern_detail(request, pk):
   """
-  Retrieve, update or delete a pattern.
+  Retrieve, update or delete an acidpattern.
   """
   try:
     pattern = Pattern.objects.get(pk=pk)

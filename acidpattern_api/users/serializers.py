@@ -1,13 +1,10 @@
 from rest_framework import generics, permissions, serializers
 from users.models import User
-from django.contrib.auth.models import Group
+from patterns.models import Pattern
 
 class UserSerializer(serializers.ModelSerializer):
+  patterns = serializers.PrimaryKeyRelatedField(many=True, queryset=Pattern.objects.all())
+  
   class Meta:
     model = User
-    fields = ('username', 'email')
-
-class GroupSerializer(serializers.ModelSerializer):
-  class meta:
-    model = Group
-    fields = ("name",)
+    fields = ('username', 'id', 'patterns')

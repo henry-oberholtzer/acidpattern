@@ -8,6 +8,6 @@ class TestUser(APITestCase):
   def test_authenticate(self):
     user = User(username='test', email='test@test.com')
     user.save()
-    self.client.credentials(user, 'patterns')
-    response = self.client.get('/patterns/', format='json')
+    self.client_class.credentials(user, 'patterns')
+    response = self.client.post('/patterns/', format='json')
     self.assertEqual(response.status_code, 200)
