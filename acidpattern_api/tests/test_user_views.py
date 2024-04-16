@@ -2,7 +2,7 @@ from datetime import timedelta, timezone
 from rest_framework.test import APITestCase, APIClient
 from knox.models import AuthToken
 from users.models import User
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, get_user
 
 class TestUser(APITestCase):
   def setUp(self):
@@ -15,7 +15,7 @@ class TestUser(APITestCase):
       password=self.password)
     self.token = AuthToken.objects.create(user=self.user)
   
-  def test_authenticate(self):
+  def test_token(self):
     client = APIClient()
     client.credentials(HTTP_AUTHORIZATION='Token ' + str(AuthToken.objects.get(user__username="test")))
     response = self.client.get('/users/', format='json')

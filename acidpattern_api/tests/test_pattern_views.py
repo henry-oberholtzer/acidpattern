@@ -2,10 +2,11 @@ from django.test import TestCase
 from django.urls import reverse
 from patterns.models import Pattern, Settings
 from rest_framework.test import APITestCase, APIClient
+from knox.models import AuthToken
 from rest_framework import status
+from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 from users.models import User
-
 
 
 general_data = {
@@ -57,7 +58,18 @@ general_data = {
       ],}
 
 class PatternListView(APITestCase):
-
+  def setUp(self):
+    self.username = "test"
+    self.email = "test@email.net"
+    self.password = "my_test_password"
+    self.user = get_user_model().objects.create(
+      username=self.username,
+      email=self.email,
+      password=self.password)
+    self.token = AuthToken.objects.create(user=self.user)
+    self.client = APIClient()
+    self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(AuthToken.objects.get(user__username="test")))
+    
   def test_pattern_list_post(self):
     url = reverse('pattern-list')
     data = {
