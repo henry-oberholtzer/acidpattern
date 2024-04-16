@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope
 
 class UserList(generics.ListCreateAPIView):
-  permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+  permission_classes = [permissions.IsAuthenticatedOrReadOnly, TokenHasReadWriteScope]
   queryset = User.objects.all()
   serializer_class = UserSerializer
 

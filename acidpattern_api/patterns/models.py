@@ -1,37 +1,17 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator
-
-# class PatternManager(models.Manager):
-  
-#   def create(self, 
-#             name,
-#             tempo=130,
-#             waveform="saw",
-#             tuning=0,
-#             cut_off_freq=63,
-#             resonance=63,
-#             env_mod=63,
-#             decay=63,
-#             accent=63,):
-#     pattern = Pattern.objects.create(name=name)
-#     pattern.save()
-#     settings = Settings.objects.create(
-#       pattern=pattern,
-#       tempo=tempo,
-#       waveform=waveform,
-#       tuning=tuning,
-#       cut_off_freq=cut_off_freq,
-#       resonance=resonance,
-#       env_mod=env_mod,
-#       decay=decay,
-#       accent=accent,
-#     )
-#     settings.save()
-#     return pattern
+from users.models import User
 
 class Pattern(models.Model):
   name = models.CharField(validators=[MaxLengthValidator(30)], max_length=30)
   date = models.DateTimeField(auto_now_add=True)
+  author = models.ForeignKey('users.User', related_name='patterns', on_delete=models.CASCADE)
+
+  def save(self, *args, **kwargs):
+    """
+    Will generate the midi file and image for the pattern on save.
+    """
+    super().save(*args, **kwargs)
 
 class Settings(models.Model):
   class Waveform(models.TextChoices):

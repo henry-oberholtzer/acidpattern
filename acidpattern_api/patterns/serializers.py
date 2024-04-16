@@ -29,9 +29,10 @@ class SettingsSerializer(serializers.ModelSerializer):
 class PatternSerializer(WritableNestedModelSerializer):
   settings = SettingsSerializer()
   sections = SectionSerializer(many=True, max_length=2)
+  author = serializers.ReadOnlyField(source='author.username')
   
   class Meta:
     model = Pattern
-    fields = ['id', 'name', 'date', 'settings', 'sections']
+    fields = ['id', 'name', 'date', 'settings', 'sections', 'author']
 
 
