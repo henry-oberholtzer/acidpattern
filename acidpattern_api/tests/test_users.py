@@ -1,9 +1,13 @@
 from rest_framework.test import APITestCase
 from users.models import User
+from tests.helpers import APIClient
 
 class TestUser(APITestCase):
-  def test_register_user(self):
-    self.user = User.objects.create_user(username="test", password="test")
-    login = self.client.login(username='test', password='test')
-    self.assertEqual()
-    
+  client_class = APIClient
+  
+  def test_authenticate(self):
+    user = User(username='test', email='test@test.com')
+    user.save()
+    self.client.credentials(user, 'patterns')
+    response = self.client.get('/patterns/', format='json')
+    self.assertEqual(response.status_code, 200)

@@ -24,6 +24,10 @@
 4-15-24
   - Oauth2.0 set up
 
+4-16-24
+  - Whiteboarding practice
+  - Continuing Oauth2.0 set up
+
 To Do:
 - Object level permissions
   https://www.django-rest-framework.org/api-guide/permissions/#object-level-permissions
@@ -48,6 +52,9 @@ To Do:
     - https://docs.djangoproject.com/en/5.0/topics/http/file-uploads/
     - Create folder to store uploaded files, sorted by user
 
+  - Tokens in API calls on React?
 
   - How to limit it to two with two names?
+
+
   - Model validation

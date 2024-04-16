@@ -57,6 +57,7 @@ general_data = {
       ],}
 
 class PatternListView(APITestCase):
+
   def test_pattern_list_post(self):
     url = reverse('pattern-list')
     data = {
