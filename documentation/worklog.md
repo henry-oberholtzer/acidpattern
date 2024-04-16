@@ -25,6 +25,8 @@
   - Oauth2.0 set up
 
 To Do:
+- Object level permissions
+  https://www.django-rest-framework.org/api-guide/permissions/#object-level-permissions
   - Get authentication working in pattern tests
   - Implement OAuth2.0 with ownership for users https://github.com/jazzband/django-oauth-toolkit
   - Add user
@@ -36,6 +38,7 @@ To Do:
   - User views
     - Add pagination
   - Add user ownership to patterns.
+    https://docs.djangoproject.com/en/5.0/topics/auth/customizing/#django.contrib.auth.get_user_model
   - Write method to generate MIDI from a pattern.
   - Assign that method to an API endpoint (/midi)
     - 
