@@ -9,7 +9,8 @@ urlpatterns = [
       name='pattern-list'),
   path('patterns/<int:pk>',
       views.PatternDetail.as_view(),
-      name='pattern-detail')
+      name='pattern-detail'),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
