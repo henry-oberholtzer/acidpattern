@@ -57,11 +57,6 @@ general_data = {
       ],}
 
 class PatternListView(APITestCase):
-  def setUp(self):
-    client = APIClient()
-    client.login(username='henry', password='Hangarnumber568!')
-    # token = user.oauth2_provider_accesstoken.create(expires='expire_date', token='token')
-  
   def test_pattern_list_post(self):
     url = reverse('pattern-list')
     data = {
