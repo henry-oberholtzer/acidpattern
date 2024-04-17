@@ -150,13 +150,22 @@ class TestUserLogin(APITestCase):
       HTTP_AUTHORIZATION=get_basic_auth_header(username, password)
     )
     response = self.client.post(url, {}, format='json')
-    print(response.data)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
   def test_002_invalid_login(self):
-    pass
-
-class TestManageUser(APITestCase):
-  def test_001_access_if_current_user(self):
-    pass
-  def test_002_no_access_if_not_user(self):
-    pass
+    username = "henry"
+    password = "secure_test!!!"
+    email="henry@email.com"
+    userdata = {
+      'username': username,
+      'password': password,
+      'email': email
+    }
+    register_url = reverse('user-register')
+    register_response = self.client.post(register_url, userdata)
+    self.assertEqual(register_response.status_code, status.HTTP_201_CREATED)
+    url = reverse('knox_login')
+    self.client.credentials(
+      HTTP_AUTHORIZATION=get_basic_auth_header(username, "wrong_password")
+    )
+    response = self.client.post(url, {}, format='json')
+    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

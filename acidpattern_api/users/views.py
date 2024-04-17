@@ -24,10 +24,3 @@ class CreateUserView(generics.CreateAPIView):
 class LoginView(KnoxLoginView):
   pass
 
-class ManageUserView(generics.RetrieveUpdateAPIView):
-  """Manage the authenticated user"""
-  permission_classes = [permissions.IsAuthenticated]
-  serializer_class = UserSerializer
-  
-  def get_objects(self):
-    return self.request.user
