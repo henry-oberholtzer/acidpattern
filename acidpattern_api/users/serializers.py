@@ -12,17 +12,17 @@ class UserSerializer(serializers.ModelSerializer):
   class Meta:
     model = User
     fields = ['username', 'email', 'password', 'id']
+    extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
   
   def create(self, validated_data):
-    user = User(**validated_data)
     errors = dict()
     try:
-      password_validation.validate_password(user=User, password=validated_data['password'])
+      password_validation.validate_password(password=validated_data['password'])
     except exceptions.ValidationError as e:
       errors['password'] = list(e.messages)
     if errors:
       raise serializers.ValidationError(errors)
-    user.save()
+    user = User.objects.create_user(**validated_data)
     return user
   
 

@@ -127,8 +127,29 @@ class TestUserCreate(APITestCase):
     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class TestUserLogin(APITestCase):
+
   def test_001_valid_login(self):
-    pass
+    username = "henry"
+    password = "secure_test!!!"
+    email="henry@email.com"
+    userdata = {
+      'username': username,
+      'password': password,
+      'email': email
+    }
+    register_url = reverse('user-register')
+    register_response = self.client.post(register_url, userdata)
+    self.assertEqual(register_response.status_code, status.HTTP_201_CREATED)
+    url = reverse('knox_login')
+    data = {
+      'user': {        
+        'username': username,
+        'uassword': password,
+      },
+      },
+    response = self.client.post(url, data, format='json')
+    print(response.data)
+    self.assertEqual(response.status_code, status.HTTP_200_OK)
   def test_002_invalid_login(self):
     pass
 

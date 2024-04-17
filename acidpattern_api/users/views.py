@@ -21,12 +21,13 @@ class CreateUserView(generics.CreateAPIView):
   
 
 class LoginView(KnoxLoginView):
-  serializer_class = AuthSerializer
+  serializer_class = AuthTokenSerializer
   permission_classes = (permissions.AllowAny,)
   
   def post(self, request, format=None):
-    serializer = AuthTokenSerializer(data=request.data)
+    serializer = AuthSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
+    print(serializer.is_valid())
     user= serializer.validated_data['user']
     login(request, user)
     return super(LoginView, self).post(request, format=None)
