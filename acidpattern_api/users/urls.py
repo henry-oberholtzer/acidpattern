@@ -1,19 +1,23 @@
 from django.urls import path
-from users.views import UserDetails, UserList, LoginView, ManageUserView
+import users.views as views
 from knox import views as knox_views
 
 urlpatterns = [
   path('users/',
-    UserList.as_view(),
+    views.UserList.as_view(),
     name='user-list'),
   path('users/<int:pk>',
-    UserDetails.as_view(),
+    views.UserDetails.as_view(),
     name='user-detail'),
+  path('register/',
+    views.CreateUserView.as_view(),
+    name='user-register'
+    ),
   path('profile/',
-    ManageUserView.as_view(),
+    views.ManageUserView.as_view(),
     name='profile'),
   path('login/',
-    LoginView.as_view(),
+    views.LoginView.as_view(),
     name='knox_login'),
   path('logout/',
     knox_views.LogoutView.as_view(),

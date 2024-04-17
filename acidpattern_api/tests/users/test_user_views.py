@@ -3,6 +3,7 @@ from rest_framework.test import APITestCase, APIClient
 from knox.models import AuthToken
 from users.models import User
 from rest_framework import status
+from django.urls import reverse
 from django.contrib.auth import get_user_model, get_user
 
 def authUser(self: APITestCase, username="test", email="test@email.net", password="my_test_password"):
@@ -65,13 +66,65 @@ class TestUserDetails(APITestCase):
 
 class TestUserCreate(APITestCase):
   def test_001_allow_user_creation(self):
-    pass
+    url = reverse('user-register')
+    data = {
+      'username': 'henry',
+      'email': 'fakeemail@email.com',
+      'password': '456_!FAKEPASSWORD'
+    }
+    response = self.client.post(url, data)
+    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
   def test_002_deny_user_creation_if_username_take(self):
-    pass
+    url = reverse('user-register')
+    username = 'henry'
+    data = {
+      'username': username,
+      'email': 'fakeemail@email.com',
+      'password': '456_!FAKEPASSWORD'
+    }
+    data2 = {
+      'username': username,
+      'email': 'fakeemail2@email.com',
+      'password': '456_!FAKEPASSWORD'
+    }
+    self.client.post(url, data)
+    response = self.client.post(url, data2)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
   def test_003_deny_user_creation_if_email_used(self):
-    pass
+    url = reverse('user-register')
+    email = 'fakeemail@email.com'
+    data = {
+      'username': 'henry',
+      'email': email,
+      'password': '456_!FAKEPASSWORD'
+    }
+    data2 = {
+      'username': 'henry23',
+      'email': email,
+      'password': '456_!FAKEPASSWORD'
+    }
+    self.client.post(url, data)
+    response = self.client.post(url, data2)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+  def test_005_deny_if_email_invalid(self):
+    url = reverse('user-register')
+    email = 'fakeemailemail.com'
+    data = {
+      'username': 'henry',
+      'email': email,
+      'password': '456_!FAKEPASSWORD'
+    }
+    response = self.client.post(url, data)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
   def test_004_deny_user_creation_if_password_insecure(self):
-    pass
+    url = reverse('user-register')
+    data = {
+      'username': 'henry',
+      'email': 'fakeemail@email.com',
+      'password': 'password'
+    }
+    response = self.client.post(url, data)
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 class TestUserLogin(APITestCase):
   def test_001_valid_login(self):

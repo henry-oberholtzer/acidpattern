@@ -18,6 +18,7 @@ class UserDetails(generics.RetrieveAPIView):
 
 class CreateUserView(generics.CreateAPIView):
   serializer_class = UserSerializer
+  
 
 class LoginView(KnoxLoginView):
   serializer_class = AuthSerializer

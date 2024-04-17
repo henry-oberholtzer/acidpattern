@@ -1,17 +1,30 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from users.models import User
 from patterns.models import Pattern
-from django.contrib.auth import authenticate
+from rest_framework.fields import EmailField
+from django.contrib.auth import authenticate, password_validation
+from django.core import exceptions
 
 class UserSerializer(serializers.ModelSerializer):
-  patterns = serializers.PrimaryKeyRelatedField(many=True, queryset=Pattern.objects.all())
+  email = EmailField(validators=[UniqueValidator(queryset=User.objects.all(), message="This email is already in use.")])
+
   class Meta:
     model = User
-    fields = ['username', 'id', 'patterns']
-    extra_kwargs = {'password': {'write_only': True, 'min_length': 8}}
+    fields = ['username', 'email', 'password', 'id']
   
   def create(self, validated_data):
-    return User.objects.create_user(**validated_data)
+    user = User(**validated_data)
+    errors = dict()
+    try:
+      password_validation.validate_password(user=User, password=validated_data['password'])
+    except exceptions.ValidationError as e:
+      errors['password'] = list(e.messages)
+    if errors:
+      raise serializers.ValidationError(errors)
+    user.save()
+    return user
+  
 
 class AuthSerializer(serializers.Serializer):
   username = serializers.CharField()

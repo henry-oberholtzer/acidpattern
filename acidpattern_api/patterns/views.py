@@ -35,26 +35,3 @@ class PatternDetail(RetrieveUpdateDestroyAPIView):
   permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
   serializer_class = PatternSerializer
   queryset=Pattern.objects.all()
-  # def get_object(self, pk):
-  #   try:
-  #     pattern = Pattern.objects.get(pk=pk)
-  #   except Pattern.DoesNotExist:
-  #     raise Http404
-    
-  # def get(self, request, pk, format=None):
-  #   pattern = self.get_object(pk)
-  #   serializer = PatternSerializer(pattern)
-  #   return Response(serializer.data)
-  
-  # def put(self, request, pk, format=None):
-  #   pattern = self.get_object(pk)
-  #   serializer = PatternSerializer(pattern, request.data)
-  #   if serializer.is_valid():
-  #     serializer.save()
-  #     return Response(serializer.data)
-  #   return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-  
-  # def delete(self, request, pk, format=None):
-  #   pattern = self.get_object(pk)
-  #   pattern.delete()
-  #   return Response(status=status.HTTP_204_NO_CONTENT)
