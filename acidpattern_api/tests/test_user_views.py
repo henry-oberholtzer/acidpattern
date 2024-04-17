@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model, get_user
 
 class TestUser(APITestCase):
   def setUp(self):
+    self.client = APIClient()
     self.username = "test"
     self.email = "test@email.net"
     self.password = "my_test_password"
@@ -14,9 +15,8 @@ class TestUser(APITestCase):
       email=self.email,
       password=self.password)
     self.token = AuthToken.objects.create(user=self.user)
+    self.client.force_authenticate(user=self.user)
   
   def test_token(self):
-    client = APIClient()
-    client.credentials(HTTP_AUTHORIZATION='Token ' + str(AuthToken.objects.get(user__username="test")))
     response = self.client.get('/users/', format='json')
     self.assertEqual(response.status_code, 200)

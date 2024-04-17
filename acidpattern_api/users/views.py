@@ -8,7 +8,7 @@ from knox.views import LoginView as KnoxLoginView
 
 class UserList(generics.ListCreateAPIView):
   permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-  queryset = User.objects.all()
+  queryset = User.objects.all().order_by("username")
   serializer_class = UserSerializer
 
 class UserDetails(generics.RetrieveAPIView):

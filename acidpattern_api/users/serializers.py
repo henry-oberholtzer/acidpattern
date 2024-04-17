@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate
 
 class UserSerializer(serializers.ModelSerializer):
   patterns = serializers.PrimaryKeyRelatedField(many=True, queryset=Pattern.objects.all())
-  
   class Meta:
     model = User
     fields = ['username', 'id', 'patterns']

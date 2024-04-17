@@ -59,6 +59,7 @@ general_data = {
 
 class PatternListView(APITestCase):
   def setUp(self):
+    self.client = APIClient()
     self.username = "test"
     self.email = "test@email.net"
     self.password = "my_test_password"
@@ -66,14 +67,14 @@ class PatternListView(APITestCase):
       username=self.username,
       email=self.email,
       password=self.password)
-    self.token = AuthToken.objects.create(user=self.user)
-    self.client = APIClient()
-    self.client.credentials(HTTP_AUTHORIZATION='Token ' + str(AuthToken.objects.get(user__username="test")))
+    self.user.save()
+    self.client.force_authenticate(user=self.user)
     
   def test_pattern_list_post(self):
     url = reverse('pattern-list')
     data = {
       'name': 'Sunday Experimenter',
+      'author': self.user.pk,
       'settings': {
         'tempo': 130,
         'waveform': 'saw',
@@ -199,8 +200,7 @@ class PatternListView(APITestCase):
         }
       ],}
     response = self.client.post(url, data, format='json')
-    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        
+    self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)        
   def test_pattern_list_get(self):
     url = reverse('pattern-list')
     data = general_data
@@ -255,7 +255,7 @@ class PatternListView(APITestCase):
         }
     self.client.post(url, data2, format='json')
     response = self.client.get(url)
-    self.assertEqual(len(response.data), 2)
+    self.assertEqual(response.data['count'], 2)
   def test_excessive_sections(self):
     url = reverse('pattern-list')
     data = {
@@ -566,7 +566,18 @@ class PatternDetailView(APITestCase):
         }
       ],
     }
+    self.username = "test"
+    self.email = "test@email.net"
+    self.password = "my_test_password"
+    self.user = get_user_model().objects.create(
+      username=self.username,
+      email=self.email,
+      password=self.password)
+    self.token = AuthToken.objects.create(user=self.user)
+    self.client = APIClient()
+    self.client.force_authenticate(user=self.user)
     response = self.client.post(list_url, data, format='json')
+
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
   def test_pattern_detail_get(self):  
