@@ -1,9 +1,11 @@
+from rest_framework.response import Response
 from rest_framework import permissions, generics
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.contrib.auth import login
 from users.models import User
-from users.serializers import AuthSerializer, UserSerializer
+from users.serializers import LoginSerializer, UserSerializer
 from knox.views import LoginView as KnoxLoginView
+from knox.auth import AuthToken
 
 
 class UserList(generics.ListCreateAPIView):
@@ -18,19 +20,9 @@ class UserDetails(generics.RetrieveAPIView):
 
 class CreateUserView(generics.CreateAPIView):
   serializer_class = UserSerializer
-  
 
 class LoginView(KnoxLoginView):
-  serializer_class = AuthTokenSerializer
-  permission_classes = (permissions.AllowAny,)
-  
-  def post(self, request, format=None):
-    serializer = AuthSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    print(serializer.is_valid())
-    user= serializer.validated_data['user']
-    login(request, user)
-    return super(LoginView, self).post(request, format=None)
+  pass
 
 class ManageUserView(generics.RetrieveUpdateAPIView):
   """Manage the authenticated user"""

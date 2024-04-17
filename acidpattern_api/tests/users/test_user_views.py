@@ -1,10 +1,15 @@
+import base64
 from datetime import timedelta, timezone
 from rest_framework.test import APITestCase, APIClient
 from knox.models import AuthToken
 from users.models import User
 from rest_framework import status
 from django.urls import reverse
-from django.contrib.auth import get_user_model, get_user
+from django.contrib.auth import get_user_model
+
+def get_basic_auth_header(username, password):
+    return 'Basic %s' % base64.b64encode(
+        (f'{username}:{password}').encode('ascii')).decode()
 
 def authUser(self: APITestCase, username="test", email="test@email.net", password="my_test_password"):
     self.client = APIClient()
@@ -141,13 +146,10 @@ class TestUserLogin(APITestCase):
     register_response = self.client.post(register_url, userdata)
     self.assertEqual(register_response.status_code, status.HTTP_201_CREATED)
     url = reverse('knox_login')
-    data = {
-      'user': {        
-        'username': username,
-        'uassword': password,
-      },
-      },
-    response = self.client.post(url, data, format='json')
+    self.client.credentials(
+      HTTP_AUTHORIZATION=get_basic_auth_header(username, password)
+    )
+    response = self.client.post(url, {}, format='json')
     print(response.data)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
   def test_002_invalid_login(self):
