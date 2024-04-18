@@ -7,16 +7,19 @@ import {
 import Root from './routes/root';
 import { ErrorPage } from './routes/error-page';
 import { PatternListView } from './routes/patterns/PatternListView';
+import { api } from './scripts/api';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage/>,
+    loader: api.patterns,
     children: [
       {
         path: 'patterns/',
-        element: <PatternListView/>
+        element: <PatternListView/>,
+        loader: api.patterns,
       },
     ]
   },
