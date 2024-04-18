@@ -30,6 +30,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = []
 
+MEDIA_ROOT = "media/"
 
 # Application definition
 
