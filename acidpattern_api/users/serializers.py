@@ -50,5 +50,5 @@ class LoginSerializer(serializers.Serializer):
     user = authenticate(**data)
     if user and user.is_active:
       return user
-    raise serializers.ValidationError(msg, code='authentication')
+    raise serializers.ValidationError(msg="Please confirm your authentication details.", code='authentication')
 

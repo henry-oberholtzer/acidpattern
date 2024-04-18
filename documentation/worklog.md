@@ -27,7 +27,16 @@
 
 4-16-24
   - Whiteboarding practice
-  - Continuing Oauth2.0 set up
+  - Continuing Oauth2.0 set up, sort of went in circles a bit.
+
+4-17-24
+  - Auth is good to go!
+  - Tests are back to passing!
+  - To Do:
+    - users/views.py coverage
+    - users/serializers.py coverage
+    - patterns/views.py coverage
+
 
 To Do:
 - Object level permissions
