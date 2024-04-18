@@ -4,7 +4,7 @@ A site dedicated to sharing and composing patterns for the Roland TB-303 and its
 
 
 
-# Set Up
+## Set Up
 
 If you're working a fork of this project or looking to contribute, the following guide will help you get acidpattern running locally.
 
@@ -45,15 +45,17 @@ In the `acidpattern_api/` directory, run `python manage.py migrate` to create th
 
 Run `python manage.py createsuperuser` to establish a superuser for the database.
 
-### Running the development server.
+## Running the development server.
 
-#### Both servers can be run at once using Concurrently.
-- In the front end directory, run `npm run dev`
-#### To run only the django server:
-- From within the `acidpattern_api/` directory: `python manage.py runserver`
-- From within the `frontend/` directory: `npm run django-dev`
-#### To run only the vite server
-- From within the `frontend/` directory: `npm run vite-dev`
+#### Both servers simultaenously:
+`npm run dev` in the `frontend/` directory.
+#### Only the django server:
+
+`python manage.py runserver` in the `acidpattern_api/` directory/
+
+`npm run django-dev` in the `frontend/` directory.
+#### To run only the vite server:
+`npm run vite-dev` in the `frontend/` directory.
 
 # Testing
 

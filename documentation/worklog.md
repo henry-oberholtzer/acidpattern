@@ -30,41 +30,31 @@
   - Continuing Oauth2.0 set up, sort of went in circles a bit.
 
 4-17-24
+  - Whiteboarding practice.
   - Auth is good to go!
   - Tests are back to passing!
-  - To Do:
-    - users/views.py coverage
-    - users/serializers.py coverage
-    - patterns/views.py coverage
+  - Coverage is up to 96%, which is the best I can reasonably get at the moment.
+
+4-18-24
+  - Whiteboarding practice
+  - Set up user profile & migrate db
+  - Changes to user profile view.
+  - Create react front end files
+  - Updates to README.md
 
 
 To Do:
-- Object level permissions
-  https://www.django-rest-framework.org/api-guide/permissions/#object-level-permissions
+  - Link Django settings to .env
+  - Build skeleton user profile component
+  - Build skeleton login
+  - Build skeleton pattern form component
+  - Build skeleton pattern view
+  - Test user profile
+  - Test user login & user creating a pattern
+  - 
   - Get authentication working in pattern tests
-  - Implement OAuth2.0 with ownership for users https://github.com/jazzband/django-oauth-toolkit
-  - Add user
     - Add admin permissions
-  - Add user profile.
-    - Date joined
-    - Patterns created
-    - Profile pic
-  - User views
-    - Add pagination
-  - Add user ownership to patterns.
-    https://docs.djangoproject.com/en/5.0/topics/auth/customizing/#django.contrib.auth.get_user_model
+  - Add user date joined if needed.
   - Write method to generate MIDI from a pattern.
   - Assign that method to an API endpoint (/midi)
-    - 
-  - Add max length to serializer sections and pitch and time.
-  - Add color or image option to patterns.
-  - Add profile picture to user.
-    - https://docs.djangoproject.com/en/5.0/topics/http/file-uploads/
-    - Create folder to store uploaded files, sorted by user
-
-  - Tokens in API calls on React?
-
-  - How to limit it to two with two names?
-
-
-  - Model validation
+  - Add color option to patterns.
