@@ -41,10 +41,10 @@
   - Changes to user profile view.
   - Create react front end files
   - Updates to README.md
+  - Link Django settings to .env
 
 
 To Do:
-  - Link Django settings to .env
   - Build skeleton user profile component
   - Build skeleton login
   - Build skeleton pattern form component
