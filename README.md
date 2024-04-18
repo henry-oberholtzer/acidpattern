@@ -60,3 +60,5 @@ Run `python manage.py createsuperuser` to establish a superuser for the database
 # Testing
 
 Tests can be run for the backend by navigating to `acidpattern_api` and running `coverage run manage.py test` within the venv shell.
+
+# License

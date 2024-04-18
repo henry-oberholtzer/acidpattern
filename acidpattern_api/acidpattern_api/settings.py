@@ -12,6 +12,15 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+import os
+
+load_dotenv('../.env')
+env = {
+    'DJANGO_SERVER': os.getenv("DJANGO_SERVER"),
+    'DJANGO_SECRET_KEY': os.getenv('DJANGO_SECRET_KEY'),
+    'FRONTEND_SERVER': os.getenv('FRONTEND_SERVER'),
+}
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,14 +30,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0b2i=s2qcqr2w-8ynvx3yv#3du8m4^lcgna7vm(!z48h7s5sg3'
+SECRET_KEY = env['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# SECURITY: This is only for development
 CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
+    env.get('FRONTEND_SERVER'),
 )
 
 ALLOWED_HOSTS = []
