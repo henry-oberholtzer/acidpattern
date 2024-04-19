@@ -7,7 +7,9 @@ import {
 import Root from './routes/root';
 import { ErrorPage } from './routes/error-page';
 import { PatternListView } from './routes/patterns/PatternListView';
+import { UserListView } from './routes/users/UserListView';
 import { api } from './scripts/api';
+import { RegisterView } from './routes/auth/RegisterView';
 
 const router = createBrowserRouter([
   {
@@ -21,8 +23,21 @@ const router = createBrowserRouter([
         element: <PatternListView/>,
         loader: api.patterns,
       },
-    ]
-  },
+      {
+        path: 'users/',
+        element: <UserListView />,
+        loader: api.users,
+      },
+      {
+        path: 'login/',
+      },
+      {
+        path: 'register/',
+        element: <RegisterView />,
+        action: api.register,
+      }
+        ]
+      }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
