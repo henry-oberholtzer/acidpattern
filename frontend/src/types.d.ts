@@ -9,7 +9,7 @@ interface RegisterUser extends FormData {
   username: string;
   password: string;
   email: string;
-  confirmPassword: string;
+  confirmPassword?: string;
 }
 
 interface RegisterErrors {
@@ -24,13 +24,23 @@ interface Profile {
   bio: string;
 }
 
+interface AuthorizedUser {
+  user: User
+  token: string;
+}
+
+interface LogIn extends FormData {
+  username: string;
+  password: string;
+}
+
 interface User {
   username: string;
   id: int;
   profile: Profile;
 }
 
-interface UserContext {
-  user?: null;
-  setUser?: React.Dispatch
+type UserContext = {
+  user: AuthorizedUser | null;
+  setUser: React.Dispatch
 }

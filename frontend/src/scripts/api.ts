@@ -15,6 +15,7 @@ function apiFactory(host: string) {
 				if (routeParams != null) {
 					url = url + routeParams;
 				}
+				console.log(request)
 				try {
 					const response = await fetch(url, request);
 					if (response.ok) {
@@ -40,7 +41,8 @@ const api = {
 	root: () => getAPI('/'),
 	patterns: () => getAPI('patterns/'),
   users: () => getAPI('users/'),
-	register: (data: RegisterUser) => postAPI('register/')(null, simpleHeader, data)
+	register: (data) => postAPI('register/')(null, simpleHeader, data),
+	login: (header: HeadersInit) => postAPI('login/')(null, header)
 };
 
 export { api };

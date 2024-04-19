@@ -1,19 +1,17 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
-import React from "react";
-
-export const UserContext = React.createContext<UserContext>({})
 
 export default function Root() {
-  const [user, setUser] = useState(null)
-
+  const [user, setUser] = useState<AuthorizedUser | null >(null)
 
   return (
-    <UserContext.Provider value={{ user: user, setUser: setUser}}>
+    <>    
       <Header/>
       <p>This is a skeleton root component.</p>
-      <Outlet/>
-    </UserContext.Provider>
+      {user?.user ? <span>Current user: {user.user.username}</span> : <></>}
+      <Outlet context={{user: user, setUser: setUser} satisfies UserContext} />
+    </>
+
   )
 }
