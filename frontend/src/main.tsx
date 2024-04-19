@@ -10,6 +10,7 @@ import { PatternListView } from './routes/patterns/PatternListView';
 import { UserListView } from './routes/users/UserListView';
 import { api } from './scripts/api';
 import { RegisterView } from './routes/auth/RegisterView';
+import { registerAction } from './scripts/actions';
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       {
         path: 'register/',
         element: <RegisterView />,
-        action: api.register,
+        action: registerAction,
       }
         ]
       }

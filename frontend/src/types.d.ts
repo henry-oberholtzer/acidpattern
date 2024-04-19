@@ -18,3 +18,19 @@ interface RegisterErrors {
   email?: string;
   confirmPassword?: string;
 }
+
+interface Profile {
+  profile_pic: string;
+  bio: string;
+}
+
+interface User {
+  username: string;
+  id: int;
+  profile: Profile;
+}
+
+interface UserContext {
+  user?: null;
+  setUser?: React.Dispatch
+}

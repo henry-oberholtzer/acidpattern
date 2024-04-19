@@ -42,19 +42,18 @@
   - Create react front end files
   - Updates to README.md
   - Link Django settings to .env
-
-
-To Do:
   - Build skeleton user profile component
   - Build skeleton login
   - Build skeleton pattern form component
   - Build skeleton pattern view
+
+
+To Do:
   - Test user profile
   - Test user login & user creating a pattern
+  - Assign that method to an API endpoint (/midi)
   - 
-  - Get authentication working in pattern tests
     - Add admin permissions
   - Add user date joined if needed.
   - Write method to generate MIDI from a pattern.
-  - Assign that method to an API endpoint (/midi)
   - Add color option to patterns.
