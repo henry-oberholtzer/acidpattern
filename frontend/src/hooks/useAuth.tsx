@@ -1,9 +1,15 @@
-import { createContext, useContext, useMemo } from "react";
+import { PropsWithChildren,  createContext, useContext, useMemo } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 import { useNavigate } from 'react-router-dom'
 
-const AuthContext = createContext()
+type UserContext = {
+  user: AuthorizedUser | null;
+  setUser: React.Dispatch<AuthorizedUser>
+}
 
-export const AuthProvider = ({ children }) => {
+const AuthContext = createContext<UserContext>()
+
+const AuthProvider = (props: PropsWithChildren) => {
   const [user, setUser] = useLocalStorage("user", null);
   const navigate = useNavigate();
 
@@ -25,9 +31,11 @@ export const AuthProvider = ({ children }) => {
     }),
     [user]
   );
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
 }
 
-export const useAuth = () => {
+const useAuth = () => {
   return useContext(AuthContext)
 }
+
+export { useAuth, AuthProvider, UserContext }

@@ -33,6 +33,7 @@ interface Profile {
 interface AuthorizedUser {
   user: User
   token: string;
+  expires: Date;
 }
 
 interface LogIn extends FormData {
@@ -46,10 +47,7 @@ interface User {
   profile: Profile;
 }
 
-type UserContext = {
-  user: AuthorizedUser | null;
-  setUser: React.Dispatch
-}
+
 
 interface ErrorResponse {
   detail: string;
