@@ -1,11 +1,13 @@
 import { useAuth } from "../../hooks/useAuth";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { api } from "../../scripts/api";
+import { useNavigate} from "react-router-dom";
 
 const LogInView = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const { login } = useAuth();
+  const { login, user } = useAuth();
+  const navigate = useNavigate()
   
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault()
@@ -14,10 +16,16 @@ const LogInView = () => {
       'Authorization': `Basic ${btoa(`${username}:${password}`)}`
     }
     const response = await api.login(header)
-    if (response.token) {
-      await login(response)
+    if (response.token && response.expiry) {
+      login(response)
     }
   }
+
+  useEffect(() => {
+    if (user != null) {
+      navigate(-1)
+    }
+  }, [user])
 
   return (
     <>

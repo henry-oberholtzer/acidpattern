@@ -18,6 +18,9 @@ function apiFactory(host: string) {
 				try {
 					const response = await fetch(url, request);
 					if (response.ok) {
+						if (response.status === 204) {
+							return
+						}
 						const data = await response.json();
 						return data;
 					} else {
@@ -41,7 +44,8 @@ const api = {
 	patterns: () => getAPI('patterns/'),
   users: () => getAPI('users/'),
 	register: (data: RegisterData) => postAPI('register/')(null, simpleHeader, data),
-	login: (header: HeadersInit) => postAPI('login/')(null, header)
+	login: (header: HeadersInit) => postAPI('login/')(null, header),
+	logout: (header: HeadersInit) => postAPI('logout/')(null, header)
 };
 
 export { api };
