@@ -12,6 +12,12 @@ interface RegisterUser extends FormData {
   confirmPassword?: string;
 }
 
+interface RegisterData {
+  username: string;
+  password: string;
+  email: string;
+}
+
 interface RegisterErrors {
   username?: string;
   password?: string;
@@ -43,4 +49,13 @@ interface User {
 type UserContext = {
   user: AuthorizedUser | null;
   setUser: React.Dispatch
+}
+
+interface ErrorResponse {
+  detail: string;
+}
+
+type TokenResponse = {
+  token: string;
+  expiry: string;
 }

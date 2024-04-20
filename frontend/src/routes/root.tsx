@@ -2,7 +2,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
 
-export default function Root() {
+const Root = () => {
   const [user, setUser] = useState<AuthorizedUser | null >(null)
 
   return (
@@ -15,3 +15,5 @@ export default function Root() {
 
   )
 }
+
+export { Root }

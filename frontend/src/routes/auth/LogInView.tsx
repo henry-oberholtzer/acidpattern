@@ -1,7 +1,10 @@
-import { Form, useActionData } from "react-router-dom";
+import { ErrorResponse, Form, useActionData } from "react-router-dom";
+import { useUser } from "../../scripts/actions";
 
 const LogInView = () => {
-  const errors = useActionData() as LogIn
+  const { setUser } = useUser()
+
+
   return (
     <>
     <h2>Log In</h2>
@@ -9,11 +12,9 @@ const LogInView = () => {
       <label htmlFor="username">Username:</label>
       <br/>
       <input type="text" name="username"></input>
-      {errors?.username && <span>{errors.username}</span>}
       <br/>
       <label htmlFor="password">Password:</label>
       <br />
-      {errors?.password && <span>{errors.password}</span>}
       <input type="password" name="password"></input>
       <br />
       <button type="submit">Log In</button>

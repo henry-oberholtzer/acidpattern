@@ -1,5 +1,9 @@
-import { ActionFunction, redirect } from "react-router-dom"
+import { ActionFunction, redirect, useOutletContext } from "react-router-dom"
 import { api } from "./api"
+
+function useUser() {
+  return useOutletContext<UserContext>();
+}
 
 const registerAction: ActionFunction = async ({ request }) => {
 	const formData = await request.formData() as RegisterUser
@@ -43,8 +47,12 @@ const loginAction: ActionFunction = async ({ request }) => {
     'Content-Type': 'application/json',
     'Authorization': `Basic ${btoa(`${username}:${password}`)}`
   }
-  const response = await api.login(header)
-  console.log(response)
+  try {
+    const response = await api.login(header)
+    return response
+  } catch(error) {
+    return error
+  }
 }
 
-export { registerAction, loginAction }
+export { registerAction, loginAction, useUser }

@@ -4,7 +4,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Root from './routes/root';
+import { Root } from './routes/root';
 import { ErrorPage } from './routes/error-page';
 import { PatternListView } from './routes/patterns/PatternListView';
 import { UserListView } from './routes/users/UserListView';

@@ -1,3 +1,5 @@
+import { redirect } from "react-router-dom";
+
 const simpleHeader = { 'Content-Type': 'application/json', }
 
 function apiFactory(host: string) {
@@ -15,13 +17,15 @@ function apiFactory(host: string) {
 				if (routeParams != null) {
 					url = url + routeParams;
 				}
-				console.log(request)
 				try {
 					const response = await fetch(url, request);
 					if (response.ok) {
 						const data = await response.json();
 						return data;
-					} else {
+					} else if (response.status === 401) {
+						throw redirect("/login")
+					}
+					else {
 						throw new Error(`ERROR: ${response.status}: ${response.statusText}`);
 					}
 				} catch (error) {
@@ -41,7 +45,7 @@ const api = {
 	root: () => getAPI('/'),
 	patterns: () => getAPI('patterns/'),
   users: () => getAPI('users/'),
-	register: (data) => postAPI('register/')(null, simpleHeader, data),
+	register: (data: RegisterData) => postAPI('register/')(null, simpleHeader, data),
 	login: (header: HeadersInit) => postAPI('login/')(null, header)
 };
 
