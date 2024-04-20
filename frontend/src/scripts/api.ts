@@ -1,5 +1,3 @@
-import { redirect } from "react-router-dom";
-
 const simpleHeader = { 'Content-Type': 'application/json', }
 
 function apiFactory(host: string) {
@@ -22,10 +20,7 @@ function apiFactory(host: string) {
 					if (response.ok) {
 						const data = await response.json();
 						return data;
-					} else if (response.status === 401) {
-						throw redirect("/login")
-					}
-					else {
+					} else {
 						throw new Error(`ERROR: ${response.status}: ${response.statusText}`);
 					}
 				} catch (error) {

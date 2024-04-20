@@ -1,9 +1,6 @@
-import { ActionFunction, redirect, useOutletContext } from "react-router-dom"
+import { ActionFunction, redirect } from "react-router-dom"
 import { api } from "./api"
 
-function useUser() {
-  return useOutletContext<UserContext>();
-}
 
 const registerAction: ActionFunction = async ({ request }) => {
 	const formData = await request.formData() as RegisterUser
@@ -55,4 +52,4 @@ const loginAction: ActionFunction = async ({ request }) => {
   }
 }
 
-export { registerAction, loginAction, useUser }
+export { registerAction, loginAction }

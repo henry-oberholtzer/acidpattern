@@ -2,18 +2,23 @@ import { PropsWithChildren,  createContext, useContext, useMemo } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import { useNavigate } from 'react-router-dom'
 
-type UserContext = {
+export type UserContext = {
   user: AuthorizedUser | null;
-  setUser: React.Dispatch<AuthorizedUser>
+  login: (data: AuthorizedUser) => void;
+  logout: () => void;
 }
 
-const AuthContext = createContext<UserContext>()
+const AuthContext = createContext<UserContext>({
+  user: null,
+  login: () => {},
+  logout: () => {}
+})
 
 const AuthProvider = (props: PropsWithChildren) => {
   const [user, setUser] = useLocalStorage("user", null);
   const navigate = useNavigate();
 
-  const login = async (data) => {
+  const login = async (data: AuthorizedUser) => {
     setUser(data);
     navigate("/patterns")
   };
@@ -38,4 +43,4 @@ const useAuth = () => {
   return useContext(AuthContext)
 }
 
-export { useAuth, AuthProvider, UserContext }
+export { useAuth, AuthProvider }

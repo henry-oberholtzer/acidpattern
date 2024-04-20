@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
+  BrowserRouter,
   createBrowserRouter,
-  RouterProvider,
+  Route,
+  Routes,
 } from "react-router-dom";
 import { Root } from './routes/root';
 import { ErrorPage } from './routes/error-page';
@@ -12,6 +14,7 @@ import { api } from './scripts/api';
 import { RegisterView } from './routes/auth/RegisterView';
 import { registerAction, loginAction } from './scripts/actions';
 import { LogInView } from './routes/auth/LogInView';
+import { AuthProvider } from './hooks/useAuth';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +49,25 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path='/'
+            element={<Root/>}
+            errorElement={<ErrorPage />}
+          >
+            <Route path='login/'
+            element={<LogInView />}
+            >
+            
+            </Route>
+            <Route path='register/'
+            element={<RegisterView />}>
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>,
 )
