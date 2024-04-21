@@ -1,6 +1,7 @@
 import { useAuth } from "../../hooks/useAuth";
 import { FormEvent, useEffect, useState } from "react";
 import { api } from "../../scripts/api";
+import { TextInput } from "../../components/TextInput";
 import { useNavigate} from "react-router-dom";
 
 const LogInView = () => {
@@ -23,9 +24,9 @@ const LogInView = () => {
 
   useEffect(() => {
     if (user != null) {
-      navigate(-1)
+      navigate("/")
     }
-  }, [user])
+  })
 
   return (
     <>
@@ -33,21 +34,18 @@ const LogInView = () => {
     <form onSubmit={handleLogin}>
       <label htmlFor="username">Username:</label>
       <br/>
-      <input 
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        name="username">
-      </input>
+      <TextInput
+        state={[username, setUsername]}
+        name={"username"}
+      />
       <br/>
       <label htmlFor="password">Password:</label>
       <br />
-      <input 
-        type="password"
-        value={password}
-        name="password"
-        onChange={(e) => setPassword(e.target.value)}
-      ></input>
+      <TextInput
+        state={[password, setPassword]}
+        name={"password"}
+        type={"password"}
+      />
       <br />
       <button type="submit">Log In</button>
     </form>

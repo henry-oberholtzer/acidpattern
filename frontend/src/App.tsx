@@ -11,10 +11,11 @@ import { RegisterView } from './routes/auth/RegisterView';
 import { registerAction } from './scripts/actions';
 import { LogInView } from './routes/auth/LogInView';
 import { LogOutView } from "./components/LogOutView";
+import { PatternCreateView } from "./routes/patterns/PatternCreateView";
+import { newPattern } from "./routes/patterns/pattern-utils";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 const App = () => {
-
-
 
   const router = createBrowserRouter([
     {
@@ -29,9 +30,19 @@ const App = () => {
           loader: api.patterns,
         },
         {
-          path: 'users/',
-          element: <UserListView />,
-          loader: api.users,
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: 'users/',
+              element: <UserListView />,
+              loader: api.users,
+            },
+            {
+              path: 'patterns/write',
+              element: <PatternCreateView 
+              pattern={newPattern()} />
+            },
+          ]
         },
         {
           path: 'login/',
