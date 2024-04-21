@@ -37,7 +37,7 @@ class UserViewSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = User
-    fields = ['username', 'profile', 'patterns']
+    fields = ['username', 'id', 'profile', 'patterns']
 
 
 class LoginSerializer(serializers.Serializer):
