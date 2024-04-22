@@ -7,7 +7,7 @@ import { App } from './App';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
-      <App/>
+        <App/>
     </AuthProvider>
   </React.StrictMode>,
 )

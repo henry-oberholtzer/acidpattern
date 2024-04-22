@@ -7,10 +7,10 @@ const Div = styled.div<{ $active?: boolean }>`
   border-radius: 50%;
   width: 12px;
   height: 12px;
-  margin: 12px;
+  margin: 6px;
   background-image: ${props => props.$active ? Pallete303.LEDGradientActive : Pallete303.LEDGradientOff};
   background-color: ${Pallete303.LEDRedActive};
-  box-shadow: ${props => props.$active ? `0 0 8px ${Pallete303.LEDRedActiveHighlight}` : ""}
+  box-shadow: ${props => props.$active ? `0 0 8px ${Pallete303.LEDRedActive}, 0 0 4px ${Pallete303.LEDRedActiveHighlight}` : ""}
 `
 
 const LED = (props: LEDProps) => {
