@@ -12,6 +12,7 @@ import {
 	VerticalContainer,
 	ControlPanelFrame,
 } from '../../components/303Components/303ControlPanel';
+import { Keyboard } from '../../components/303Components/Keyboard';
 
 const PatternCreateView = (props: PatternCreateProps) => {
 	const { user } = useAuth();
@@ -79,7 +80,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 					</VerticalContainer>
 					{/* Keyboard */}
 					<VerticalContainer>
-						<BorderContainer $width={480}></BorderContainer>
+						<Keyboard />
 					</VerticalContainer>
 					{/* Time Mode */}
 					<VerticalContainer>
@@ -98,8 +99,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 						<BorderContainer $small>
 							<TextContainer>
 								<Text
-									$padding={'0px'}
-									$fontSize={'12px'}>
+									$padding={0}
+									$fontSize={12}>
 									{'\u{1D10B}'}
 								</Text>
 							</TextContainer>
@@ -126,7 +127,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 								$border>
 								Write / Next
 							</Label>
-							<Text $noBorder>Tap</Text>
+							<Text $noBorder $fontSize={10}>Tap</Text>
 						</BorderContainer>
 					</VerticalContainer>
 				</ControlPanel>

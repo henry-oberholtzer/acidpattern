@@ -35,7 +35,7 @@ function apiFactory(host: string) {
 	}
 }
 
-const baseAPI = apiFactory(import.meta.env.VITE_BACKEND)
+const baseAPI = apiFactory(import.meta.env.VITE_DJANGO_SERVER + "/")
 const getAPI = baseAPI("GET")
 const postAPI = baseAPI("POST")
 

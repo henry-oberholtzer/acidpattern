@@ -18,9 +18,9 @@ const ControlPanel = styled.div`
   border: 1px solid ${Pallete303.Black};
   width: 1060px;`
 
-const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $width?: number, $height?: number,}>`
+const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $width?: number, $height?: number, $flexRow?: boolean}>`
   display: flex;
-  flex-direction: column;
+  flex-direction: ${props => props.$flexRow ? "row" : "column"};
   align-items: center;
   width: ${props => props.$width ? props.$width + "px" : "106px"};
   border-radius: 2px;
@@ -52,11 +52,11 @@ const Label = styled.label<{$silver?: boolean, $small?: boolean, $extraMargin?: 
   user-select: none;
 `
 
-const Text = styled.span<{$padding?: string, $fontSize?: string, $noBorder?: boolean}>`
+const Text = styled.span<{$padding?: number, $fontSize?: number, $noBorder?: boolean}>`
   font-family: 'Inter';
   text-transform: uppercase;
-  font-size: ${props => props.$fontSize ? props.$fontSize : props.$noBorder ? "12px" : "10px" };
-  padding: ${props => props.$padding ? props.$padding : "1px" };
+  font-size: ${props => props.$fontSize ? props.$fontSize + "px" : props.$noBorder ? "12px" : "10px" };
+  padding: ${props => props.$padding + "px" ? props.$padding : "1px" };
   height: 17px;
   border: ${props => props.$noBorder? "None" : "1px solid " + Pallete303.Black};
   margin-right: 1px;

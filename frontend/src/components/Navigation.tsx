@@ -1,12 +1,23 @@
-import { Link } from "react-router-dom"
+import { NavigationButton } from "./UI"
+import styled from "styled-components"
+
+const Nav = styled.nav`
+display: flex;
+flex-direction: row;
+`
 
 const Navigation = () => {
   return (
-    <ul>
-      <li>This is a navigation skeleton</li>
-      <li><Link to="patterns/">Patterns</Link></li>
-
-    </ul>
+    <Nav>
+      <NavigationButton
+        to={"/patterns"}
+        text={"patterns"}
+      />
+      <NavigationButton
+        to={"/patterns/write"}
+        text={"write"}
+      />
+    </Nav>
   )
 }
 
