@@ -17,7 +17,7 @@ import os
 
 load_dotenv('../.env')
 env = {
-    'DJANGO_SERVER': os.getenv("DJANGO_SERVER"),
+    'DJANGO_SERVER': os.getenv("VITE_DJANGO_SERVER"),
     'DJANGO_SECRET_KEY': os.getenv('DJANGO_SECRET_KEY'),
     'FRONTEND_SERVER': os.getenv('FRONTEND_SERVER'),
 }

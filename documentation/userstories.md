@@ -76,4 +76,4 @@ enter - write/next
 ">" - "tie"
 "?" - rest
 
-shift - alternate time & pitch mode
+shift - alternate time & pitch & normal mode

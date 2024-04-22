@@ -25,8 +25,8 @@ Navigate into the `/frontend` folder and run `npm install` to install the fronte
 Create a .env file in the root project directory and add the following code.
 
 ```
-HOST_URL = 'http://localhost:8000/'
-CLIENT_URL = 'http://localhost:5173/'
+DJANGO_SERVER = 'http://localhost:8000'
+FRONTEND_SERVER = 'http://localhost:5173'
 DJANGO_SECRET_KEY = ''
 ```
 If you're planning to run on different ports or a server, adjust accordingly.
@@ -38,6 +38,8 @@ from django.core.management.utils import get_random_secret_key
 print(get_random_secret_key())
 ```
 Take the secret key and use it as the `DJANGO_SECRET_KEY`
+
+`exit()` to close the Python shell.
 
 ### Creating the database
 
