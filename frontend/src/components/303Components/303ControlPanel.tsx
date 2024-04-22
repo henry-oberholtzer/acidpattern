@@ -2,20 +2,30 @@ import styled from "styled-components";
 import { Pallete303 } from "./Palette";
 
 
-const ControlPanel = styled.div`
+const ControlPanelFrame = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   height: 240px;
   width: 1080px;
   background-color: ${Pallete303.ControlPanelColor}`
 
-const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean}>`
+const ControlPanel = styled.div`
+  display: flex;
+  height: 220px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${Pallete303.Black};
+  width: 1060px;`
+
+const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $width?: number, $height?: number,}>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 106px;
+  width: ${props => props.$width ? props.$width + "px" : "106px"};
   border-radius: 2px;
   background-color: ${props => props.$filled? Pallete303.Black : "transparent"};
-  height: ${props => props.$small? "80px" : "124px" };
+  height: ${props => props.$height ? props.$height + "px" : props.$small? "82px" : "124px" };
   border: 1px solid ${Pallete303.Black};
   margin: 1px;
 `
@@ -37,16 +47,18 @@ const Label = styled.label<{$silver?: boolean, $small?: boolean, $extraMargin?: 
   border: ${props => props.$border ? "1px solid" + Pallete303.Black : ""};
   height: ${props => props.$border ? "17px" : "24px"};
   margin-bottom: ${props => props.$border ? "7px" : ""};
+  padding: ${props => props.$border ? "0px 2px" : "0"};
   text-transform: uppercase;
   user-select: none;
 `
 
-const Text = styled.span<{$padding?: string, $fontSize?: string}>`
+const Text = styled.span<{$padding?: string, $fontSize?: string, $noBorder?: boolean}>`
   font-family: 'Inter';
-  font-size: ${props => props.$fontSize ? props.$fontSize : "10px" };
+  text-transform: uppercase;
+  font-size: ${props => props.$fontSize ? props.$fontSize : props.$noBorder ? "12px" : "10px" };
   padding: ${props => props.$padding ? props.$padding : "1px" };
   height: 17px;
-  border: 1px solid ${Pallete303.Black};
+  border: ${props => props.$noBorder? "None" : "1px solid " + Pallete303.Black};
   margin-right: 1px;
   user-select: none;
   &:last-of-type {
@@ -62,4 +74,4 @@ const TextContainer = styled.div`\
   user-select: none;
   `
 
-export { ParentContainer, Text, TextContainer, ControlPanel, BorderContainer, VerticalContainer, Label }
+export { ParentContainer, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }
