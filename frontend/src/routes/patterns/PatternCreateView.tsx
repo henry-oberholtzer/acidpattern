@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TextInput } from '../../components/TextInput';
 import { useAuth } from '../../hooks/useAuth';
-import { LED, ButtonTB } from '../../components/303Components';
+import { LED, ButtonTB, TimeModeControls, PitchNormalControls, Keyboard } from '../../components/303Components';
 import {
 	BorderContainer,
 	ControlPanel,
@@ -11,20 +11,93 @@ import {
 	TextContainer,
 	VerticalContainer,
 	ControlPanelFrame,
+
 } from '../../components/303Components/303ControlPanel';
-import { Keyboard } from '../../components/303Components/Keyboard';
 
 const PatternCreateView = (props: PatternCreateProps) => {
 	const { user } = useAuth();
 	const [name, setName] = useState(props.pattern.name);
-	const [pitchMode, setPitchMode] = useState<boolean>(true);
+	const [mode, setMode] = useState<"pitch" | "time" | "normal">("normal")
+	const [pitchMode, setPitchMode] = useState<Pitch[]>([])
+	// const [timeMode, setTimeMode] = useState<Time[]>([])
+	const [activeIndex, setActiveIndex] = useState<number>(0)
+
+	const advanceIndex = () => {
+		setActiveIndex(activeIndex + 1);
+		if (activeIndex >= 15) {
+			setMode("normal");
+		}
+	}
+
+	const randomPitch = (index: number) => {
+		const getRandom = (range: number) => {
+			return Math.floor(Math.random() * range)
+		}
+		const bool = [true, false];
+		const octaves = [-12,0,12];
+
+		const newPitch = {
+			index: index,
+			accent: bool[getRandom(2)],
+			slide: bool[getRandom(2)],
+			pitch: getRandom(12) + 36,
+			octave: octaves[getRandom(3)],
+		}
+		return newPitch as Pitch
+	}
+
+	useEffect(() => {
+		setActiveIndex(0)
+		if (pitchMode.length < 16 && pitchMode.length > 1) {
+			const newArray = [];
+			let index = pitchMode.length;
+			while (newArray.length < (16 - pitchMode.length)) {
+				newArray.push(randomPitch(index));
+				index++;
+			}
+			setPitchMode([...pitchMode, ...newArray])
+		}
+	}, [mode])
+
+	const handlePitchInput = (value: number) => {
+		if (mode === "pitch") {
+				let newPitch: Pitch;
+				if (pitchMode[activeIndex]) {
+					const newPitch = {...pitchMode[activeIndex], pitch: value}
+					const newPitchArray = [...pitchMode]
+					newPitchArray[activeIndex] = newPitch;
+					setPitchMode(newPitchArray);
+				} else {
+					newPitch = {
+						index: activeIndex,
+						accent: false,
+						slide: false,
+						pitch: value,
+						octave: 0,
+					};
+					setPitchMode([...pitchMode, newPitch]);
+				}
+				console.log(pitchMode)
+				advanceIndex()
+		}
+	}
+
+	const handleTimeInput = (value: string) => {
+		if (mode === "pitch") {
+			console.log(value)
+		} else if (mode === "time") {
+			// Inputs the rhythm values
+		} else {
+			// Inputs for changing pattern sections
+		}
+	}
 
 	return (
 		<ParentContainer>
 			<p>Posting as {user?.user.username}</p>
+			<p>Current Index: {activeIndex}</p>
 			<TextInput state={[name, setName]} />
 			<label htmlFor="pitch-mode">Pitch Mode</label>
-
 			<ControlPanelFrame>
 				<ControlPanel>
 					{/* Left Most Controls */}
@@ -58,42 +131,20 @@ const PatternCreateView = (props: PatternCreateProps) => {
 						</BorderContainer>
 					</VerticalContainer>
 					{/* Second from left controls */}
-					<VerticalContainer>
-						<BorderContainer
-							$small
-							$filled>
-							<TextContainer>
-								<Label
-									htmlFor="enable-pitch-mode"
-									$silver>
-									PITCH MODE
-								</Label>
-							</TextContainer>
-							<LED active={pitchMode} />
-							<ButtonTB
-								horizontal={true}
-								name="enable-pitch-mode"
-								onClick={() => setPitchMode(true)}
-							/>
-						</BorderContainer>
-						<BorderContainer></BorderContainer>
-					</VerticalContainer>
+					<PitchNormalControls 
+						setMode={setMode}
+						mode={mode}/>
 					{/* Keyboard */}
 					<VerticalContainer>
-						<Keyboard />
+						<Keyboard 
+							callbackFunction={handlePitchInput}/>
 					</VerticalContainer>
 					{/* Time Mode */}
-					<VerticalContainer>
-						<BorderContainer $width={240}>
-							<Label htmlFor="time-mode">Time Mode</Label>
-							<LED active={!pitchMode} />
-							<ButtonTB
-								name="enable-time-mode"
-								horizontal={true}
-								onClick={() => setPitchMode(false)}
-							/>
-						</BorderContainer>
-					</VerticalContainer>
+					<TimeModeControls
+						activePitch={pitchMode[activeIndex]}
+						callbackFunction={handleTimeInput}
+						setMode={setMode}
+						mode={mode}/>
 					{/* Furthest right controls */}
 					<VerticalContainer>
 						<BorderContainer $small>
@@ -121,6 +172,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 							<ButtonTB
 								name="run-stop"
 								large={true}
+								onClick={advanceIndex}
 							/>
 							<Label
 								$extraMargin

@@ -14,8 +14,8 @@ const newPattern = () => {
     sections: [
       {
         name: "A",
-        time_mode: new Array(16),
-        pitch_mode: new Array(16)
+        time_mode: [],
+        pitch_mode: []
       },
       {
         name: "B",

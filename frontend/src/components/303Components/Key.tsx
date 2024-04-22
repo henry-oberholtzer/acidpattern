@@ -8,7 +8,6 @@ const KeyDiv = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${Pallete303.ControlPanelColor};
-  border-bottom: 1px solid ${Pallete303.Black}
   `
 
 const NameLabel = styled.label`
@@ -35,6 +34,7 @@ const NameLabel = styled.label`
 const Decor = styled.div`
   background-color: ${Pallete303.Black};
   color: ${Pallete303.LEDRedActive};
+  width: 60px;
   font-size: 10px;
   height: 22px;
   display: flex;
@@ -68,7 +68,8 @@ const Key = (props: KeysProp) => {
       <NameLabel htmlFor={props.name}>{props.name}</NameLabel>
       <SwitchDiv>
         <LED />
-        <ButtonTB name={props.name} />
+        <ButtonTB name={props.name} 
+        onClick={() => props.callbackFunction(props.value)}/>
       </SwitchDiv>
       <Decor>{props.number}</Decor>
       <SmallerDiv>
@@ -81,6 +82,7 @@ const Key = (props: KeysProp) => {
 }
 
 interface KeysProp {
+  callbackFunction: (arg0: number) => void;
   value: number;
   name: string;
   number: number;

@@ -13,6 +13,8 @@ const KeyDiv = styled.div<{$index?: number}>`
   border-radius: 0 0 4px 4px;
   `
 
+
+
 const NameLabel = styled.label`
   user-select: none;
   width: 32px;
@@ -22,7 +24,7 @@ const NameLabel = styled.label`
   color: ${Pallete303.ControlPanelColor};
   text-align: center;`
 
-  const SwitchDiv = styled.div`
+const SwitchDiv = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -38,13 +40,15 @@ const KeySharp = (props: KeySharpProps) => {
   return (
     <>
       <KeyDiv $index={props.index}>
+      
       <NameLabel htmlFor={props.name}>
         {props.name}
       </NameLabel>
         <SwitchDiv>
           <LED />
           <ButtonTB 
-            name={props.name} />
+            name={props.name}
+            onClick={() => props.callbackFunction(props.value)} />
         </SwitchDiv>
       </KeyDiv>
     </>
@@ -52,6 +56,7 @@ const KeySharp = (props: KeySharpProps) => {
 }
 
 interface KeySharpProps {
+  callbackFunction: (arg0: number) => void;
   name: string;
   value: number;
   index: number;

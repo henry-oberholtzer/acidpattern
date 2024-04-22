@@ -25,7 +25,7 @@ const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $width?
   width: ${props => props.$width ? props.$width + "px" : "106px"};
   border-radius: 2px;
   background-color: ${props => props.$filled? Pallete303.Black : "transparent"};
-  height: ${props => props.$height ? props.$height + "px" : props.$small? "82px" : "124px" };
+  height: ${props => props.$height ? props.$height + "px" : props.$small? "82px" : "126px" };
   border: 1px solid ${Pallete303.Black};
   margin: 1px;
 `
@@ -39,13 +39,13 @@ const ParentContainer = styled.div`
   font-family: 'Inter';
 `
 
-const Label = styled.label<{$silver?: boolean, $small?: boolean, $extraMargin?: boolean, $border?: boolean}>`
+const Label = styled.label<{$silver?: boolean, $small?: boolean, $height?: number, $extraMargin?: boolean, $border?: boolean}>`
   font-family: 'Inter';
   color: ${props => props.$silver ? Pallete303.ControlPanelColor : Pallete303.Black};
   font-size: ${props => props.$small ? "10px" : "12px"};
   margin-top: ${props => props.$extraMargin ? "12px" : "0px"};
   border: ${props => props.$border ? "1px solid" + Pallete303.Black : ""};
-  height: ${props => props.$border ? "17px" : "24px"};
+  height: ${props => props.$height ? props.$height + "px" : props.$border ? "17px" : "24px"};
   margin-bottom: ${props => props.$border ? "7px" : ""};
   padding: ${props => props.$border ? "0px 2px" : "0"};
   text-transform: uppercase;
