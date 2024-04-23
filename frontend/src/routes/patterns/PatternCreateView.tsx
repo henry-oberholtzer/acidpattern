@@ -1,29 +1,72 @@
-import { useEffect, useState } from 'react';
-import { TextInput } from '../../components/TextInput';
+import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { LED, ButtonTB, TimeModeControls, PitchNormalControls, Keyboard } from '../../components/303Components';
+import { LED, ButtonTB, TimeModeControls, PitchNormalControls, Keyboard, SecondPanel, FirstPanel } from '../../components/303Components';
 import {
 	BorderContainer,
 	ControlPanel,
 	Label,
-	ParentContainer,
 	Text,
 	TextContainer,
 	VerticalContainer,
 	ControlPanelFrame,
-
+	MainCase,
+	CenterFrame,
 } from '../../components/303Components/303ControlPanel';
+
+const PatternContext = createContext<PatternContext>({
+	activeIndex: 0,
+	pitchMode: [],
+	timeMode: [],
+	activeSection: "A",
+	switchSections: () => {},
+	mode: "normal",
+	setMode: (string) => {string},
+	handlePitchInput: (int) => {int},
+	advanceIndex: () => {}
+})
+
+interface PatternContext {
+	activeIndex: number;
+	pitchMode: Pitch[];
+	timeMode: Time[];
+	activeSection: "A" | "B";
+	mode: "pitch" | "time" | "normal",
+	setMode: Dispatch<SetStateAction<"pitch" | "time" | "normal">>,
+	switchSections: (section: "A" | "B") =>  void;
+	handlePitchInput: (int: number) => void;
+	advanceIndex: () => void;
+}
 
 const PatternCreateView = (props: PatternCreateProps) => {
 	const { user } = useAuth();
-	const [name, setName] = useState(props.pattern? props.pattern.name : "");
+	const [name, setName] = useState(props.pattern? props.pattern.name : `${user}'s New Pattern`);
 	const [mode, setMode] = useState<"pitch" | "time" | "normal">("normal")
+	const [sections, setSections] = useState<[Section, Section]>(props.pattern? props.pattern.sections : [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []}])
+	const [activeSection, setActiveSection] = useState<"A" | "B">("A")
 	const [pitchMode, setPitchMode] = useState<Pitch[]>([])
-	// const [timeMode, setTimeMode] = useState<Time[]>([])
+	const [timeMode, setTimeMode] = useState<Time[]>([])
 	const [activeIndex, setActiveIndex] = useState<number>(0)
 
-	const patternClear = () => {
-
+	const switchSections = (sectionToSwitchTo: "A" | "B") => {
+		setActiveSection(sectionToSwitchTo)
+		let currentName: "A" | "B" = "A";
+		let currentIndex: number = 0;
+		let newIndex = 1
+		if (sectionToSwitchTo === "A") {
+			currentName = "B"
+			currentIndex = 1
+			newIndex = 0
+		}
+		const currentSection: Section = {
+			name: currentName,
+			time_mode: timeMode,
+			pitch_mode: pitchMode,
+		}
+		const newSections: [Section, Section] = [sections[0], sections[1]]
+		newSections[currentIndex] = currentSection;
+		setSections(newSections)
+		setTimeMode(sections[newIndex].time_mode)
+		setPitchMode(sections[newIndex].pitch_mode)
 	}
 
 	const advanceIndex = () => {
@@ -43,15 +86,13 @@ const PatternCreateView = (props: PatternCreateProps) => {
 		const getRandom = (range: number) => {
 			return Math.floor(Math.random() * range)
 		}
-		const bool = [true, false];
-		const octaves = [-12,0,12];
 
 		const newPitch = {
 			index: index,
-			accent: bool[getRandom(2)],
-			slide: bool[getRandom(2)],
+			accent: false,
+			slide: false,
 			pitch: getRandom(12) + 36,
-			octave: octaves[getRandom(3)],
+			octave: 0,
 		}
 		return newPitch as Pitch
 	}
@@ -92,118 +133,105 @@ const PatternCreateView = (props: PatternCreateProps) => {
 		}
 	}
 
-	const handleTimeInput = (value: string) => {
-		if (mode === "pitch") {
-			console.log(value)
-		} else if (mode === "time") {
-			// Inputs the rhythm values
-		} else {
-			// Inputs for changing pattern sections
-			if (value === "slide-or-b") {
-				// Save time mode and pitch mode to section A
-				// Set active section to "B"
-				// Set time mode and pitch mode to B
-			} else if (value === "accent-or-a") {
-				// Save time mode and pitch mode to section B
-				// Set active section to "A"
-				// Set time mode and pitch mode to A
-			}
-		}
-	}
-
 	return (
-		<ParentContainer>
-			<p>Posting as {user?.user.username}</p>
-			<p>Current Index: {activeIndex}</p>
-			<TextInput state={[name, setName]} />
-			<label htmlFor="pitch-mode">Pitch Mode</label>
-			<ControlPanelFrame>
-				<ControlPanel>
-					{/* Left Most Controls */}
-					<VerticalContainer>
-						<BorderContainer $small>
-							<TextContainer>
-								<Text>D.C.</Text>
-								<Text>BAR RESET</Text>
-							</TextContainer>
-							<Label
-								htmlFor="pattern-clear"
-								$small>
-								PATTERN CLEAR
-							</Label>
-							<ButtonTB
-								name="pattern-clear"
-								horizontal={true}
-								onClick={patternClear}
-							/>
-						</BorderContainer>
-						<BorderContainer>
-							<LED active={true} />
-							<ButtonTB
-								name="run-stop"
-								large={true}
-							/>
-							<Label
-								htmlFor="run-stop"
-								$extraMargin>
-								Run / Stop
-							</Label>
-						</BorderContainer>
-					</VerticalContainer>
-					{/* Second from left controls */}
-					<PitchNormalControls 
-						setMode={setMode}
-						mode={mode}/>
-					{/* Keyboard */}
-						<Keyboard 
-							callbackFunction={handlePitchInput}/>
-					{/* Time Mode */}
-					<TimeModeControls
-						activePitch={pitchMode[activeIndex]}
-						callbackFunction={handleTimeInput}
-						setMode={setMode}
-						mode={mode}/>
-					{/* Furthest right controls */}
-					<VerticalContainer>
-						<BorderContainer $small>
-							<TextContainer>
-								<Text
-									$padding={0}
-									$fontSize={12}>
-									{'\u{1D10B}'}
-								</Text>
-							</TextContainer>
-							<Label
-								htmlFor="back"
-								$small>
-								BACK
-							</Label>
-							<ButtonTB
-								name="back"
-								horizontal={true}
-								onClick={reverseIndex}
-							/>
-						</BorderContainer>
-						<BorderContainer>
-							<TextContainer>
-								<Text>D.S.</Text>
-							</TextContainer>
-							<ButtonTB
-								name="run-stop"
-								large={true}
-								onClick={advanceIndex}
-							/>
-							<Label
-								$extraMargin
-								$border>
-								Write / Next
-							</Label>
-							<Text $noBorder $fontSize={10}>Tap</Text>
-						</BorderContainer>
-					</VerticalContainer>
-				</ControlPanel>
-			</ControlPanelFrame>
-		</ParentContainer>
+		<CenterFrame>
+			<PatternContext.Provider value={{ 
+				activeIndex: activeIndex,
+				pitchMode: pitchMode,
+				timeMode: timeMode,
+				mode: mode,
+				setMode: setMode,
+				switchSections: switchSections,
+				handlePitchInput: handlePitchInput,
+				advanceIndex: advanceIndex,
+				activeSection: activeSection}}>
+					<MainCase>
+						<FirstPanel />
+						<SecondPanel />
+							<ControlPanelFrame>
+								<ControlPanel>
+									{/* Left Most Controls */}
+									<VerticalContainer>
+										<BorderContainer $small>
+											<TextContainer>
+												<Text>D.C.</Text>
+												<Text>BAR RESET</Text>
+											</TextContainer>
+											<Label
+												htmlFor="pattern-clear"
+												$small>
+												PATTERN CLEAR
+											</Label>
+											<ButtonTB
+												name="pattern-clear"
+												horizontal={true}
+											/>
+										</BorderContainer>
+										<BorderContainer>
+											<LED active={true} />
+											<ButtonTB
+												name="run-stop"
+												large={true}
+											/>
+											<Label
+												htmlFor="run-stop"
+												$extraMargin>
+												Run / Stop
+											</Label>
+										</BorderContainer>
+									</VerticalContainer>
+									{/* Second from left controls */}
+									<PitchNormalControls 
+										setMode={setMode}
+										mode={mode}/>
+									{/* Keyboard */}
+										<Keyboard 
+											callbackFunction={handlePitchInput}/>
+									{/* Time Mode */}
+									<TimeModeControls />
+									{/* Furthest right controls */}
+									<VerticalContainer>
+										<BorderContainer $small>
+											<TextContainer>
+												<Text
+													$padding={0}
+													$fontSize={12}>
+													{'\u{1D10B}'}
+												</Text>
+											</TextContainer>
+											<Label
+												htmlFor="back"
+												$small>
+												BACK
+											</Label>
+											<ButtonTB
+												name="back"
+												horizontal={true}
+												onClick={reverseIndex}
+											/>
+										</BorderContainer>
+										<BorderContainer>
+											<TextContainer>
+												<Text>D.S.</Text>
+											</TextContainer>
+											<ButtonTB
+												name="run-stop"
+												large={true}
+												onClick={advanceIndex}
+											/>
+											<Label
+												$extraMargin
+												$border>
+												Write / Next
+											</Label>
+											<Text $noBorder $fontSize={10}>Tap</Text>
+										</BorderContainer>
+									</VerticalContainer>
+								</ControlPanel>
+							</ControlPanelFrame>
+					</MainCase>
+			</PatternContext.Provider>
+		</CenterFrame>
 	);
 };
 
@@ -211,4 +239,4 @@ interface PatternCreateProps {
 	pattern?: Pattern;
 }
 
-export { PatternCreateView };
+export { PatternCreateView, PatternContext };

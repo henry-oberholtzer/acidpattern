@@ -1,6 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import InterMedium from '../fonts/InterMedium.ttf';
 import OptiAggie from '../fonts/OPTIAggie.otf';
+import Androcles from '../fonts/AndroclesOpti-Regular.otf';
 
 const GlobalStyleProvider = createGlobalStyle`
   body {
@@ -12,6 +13,11 @@ const GlobalStyleProvider = createGlobalStyle`
   }
   a {
     text-decoration: none;
+  }
+  @font-face {
+    font-family: 'Androcles';
+    font-style: Normal;
+    src: url(${Androcles}) format("opentype");
   }
   @font-face {
     font-family: 'Inter';

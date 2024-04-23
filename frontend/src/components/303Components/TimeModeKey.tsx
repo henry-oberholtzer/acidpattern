@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { ButtonTB, LED } from '.';
 import { Pallete303 } from './Palette';
+import { PatternContext } from '../../routes/patterns/PatternCreateView';
+import { useContext } from 'react';
 
 const Group = styled.div`
 	width: 240px;
@@ -9,10 +11,9 @@ const Group = styled.div`
 `;
 
 const KeyDiv = styled.div`
-	width: 61px;
+	width: 60px;
 	height: 152px;
 	display: flex;
-	margin-right: -1px;
 	flex-direction: column;
 	background-color: ${Pallete303.ControlPanelColor};
 `;
@@ -36,7 +37,6 @@ const SwitchDiv = styled.div`
 	height: 84px;
 	border-radius: 0 0 4px 4px;
 	border: 1px solid ${Pallete303.Black};
-	margin: -1px;
 	padding: 4px 6px 6px 6px;
 `;
 
@@ -71,90 +71,111 @@ const HighlightP = styled.div`
 	user-select: none;
 `;
 
-const TimeModeKeys = (props: TimeModeKeysProp) => {
+const TimeModeKeys = () => {
+	const { activeIndex, timeMode, pitchMode, mode, activeSection, switchSections } = useContext(PatternContext)
 
-  const determineActive = (mode: "pitch" | "time" | "normal", type: string, activePitch: Pitch) => {
-		if (!activePitch) {
-			return false
-		}
-    if (mode === "pitch") {
+  const determineActive = (type: string) => {
+    if (mode === "pitch" && pitchMode[activeIndex]) {
       if (type === "slide") {
-        return activePitch.slide
+        return pitchMode[activeIndex].slide
       }
       if (type === "accent") {
-        return activePitch.accent
+        return pitchMode[activeIndex].accent
       }
-      if (type === "down" && activePitch.octave === -12) {
+      if (type === "down" && pitchMode[activeIndex].octave === -12) {
         return true
-      } else if (type === "up" && activePitch.octave === 12) {
+      } else if (type === "up" && pitchMode[activeIndex].octave === 12) {
         return true
       } else {
         return false
       }
-    }
-    }
+    } else if (mode === "time" && timeMode[activeIndex]) {
+			if (type === "down" && timeMode[activeIndex].timing === 1) {
+				return true
+			} else if (type === "up" && timeMode[activeIndex].timing === 2) {
+				return true
+			} else if (type === "accent" && timeMode[activeIndex].timing === 0) {
+				return true
+			} else {
+				return false
+			}
+		} else if (mode === "normal") {
+			if (type === "accent" && activeSection === "A") {
+				return true
+			} else if (type === "slide" && activeSection === "B") {
+				return true
+			} else {
+				return false
+			}
+		}
+  }
+
+	const switchAction = (type: string) => {
+		if (mode === "pitch") {
+			// Change the properties accordingly for the current note
+		} else if (mode === "time") {
+			// Create or alter the time accordingly
+		} else if (mode === "normal") {
+			if (type === "accent") {
+				switchSections("A")
+			} else if (type === "slide") {
+				switchSections("B")
+			}
+		}
+	}
 
 	return (
 		<Group>
 			<KeyDiv>
         <NameLabel>DOWN</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive(props.mode, "down", props.activePitch)} />
-					<ButtonTB name={props.name}
-          onClick={() => props.callbackFunction("down-or-note")} />
+					<LED active={determineActive("down")} />
+					<ButtonTB name="down"
+          onClick={() => switchAction("down")} />
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
-					<HighlightP>{props.numbers[0]}</HighlightP>
+					<HighlightP>9</HighlightP>
 				</SmallerDiv>
 			</KeyDiv>
 			<KeyDiv>
         <NameLabel>UP</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive(props.mode, "up", props.activePitch)} />
-					<ButtonTB name={props.name}
-          onClick={() => props.callbackFunction("up-or-tie")} />
+					<LED active={determineActive("up")} />
+					<ButtonTB name="up"
+          onClick={() => switchAction("up")} />
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
-					<HighlightP>{props.numbers[1]}</HighlightP>
+					<HighlightP>0</HighlightP>
 				</SmallerDiv>
 			</KeyDiv>
       <KeyDiv>
         <NameLabel>ACCENT</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive(props.mode, "accent", props.activePitch)} />
-					<ButtonTB name={props.name}
-          onClick={() => props.callbackFunction("accent-or-a")} />
+					<LED active={determineActive("accent")} />
+					<ButtonTB name="accent"
+          onClick={() => switchAction("accent")} />
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
-					<HighlightP>{props.numbers[2]}</HighlightP>
+					<HighlightP>100</HighlightP>
 				</SmallerDiv>
 			</KeyDiv>
       <KeyDiv>
         <NameLabel>SLIDE</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive(props.mode, "slide", props.activePitch)}/>
-					<ButtonTB name={props.name}
-          onClick={() => props.callbackFunction("slide-or-b")} />
+					<LED active={determineActive("slide")}/>
+					<ButtonTB name="slide"
+          onClick={() => switchAction("slide")} />
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
-					<HighlightP>{props.numbers[3]}</HighlightP>
+					<HighlightP>200</HighlightP>
 				</SmallerDiv>
 			</KeyDiv>
 		</Group>
 	);
 };
-
-interface TimeModeKeysProp {
-  callbackFunction: (arg0: string) => void;
-  activePitch: Pitch;
-  mode: "pitch" | "time" | "normal";
-	value: number;
-	name: string;
-	numbers: number[];
-}
 
 export { TimeModeKeys };

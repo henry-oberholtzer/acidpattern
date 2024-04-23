@@ -1,6 +1,8 @@
 import { BorderContainer, ButtonTB, LED, Label, TimeModeKeys } from '.';
 import styled from 'styled-components';
 import { Pallete303 } from './Palette';
+import { PatternContext } from '../../routes/patterns/PatternCreateView';
+import { useContext } from 'react';
 
 const TitleDiv = styled.div`
 	height: 30px;
@@ -31,7 +33,9 @@ const LegendDividingDiv = styled.div`
 	}
 `;
 
-const TimeModeControls = (props: TimeModeControlsProps) => {
+const TimeModeControls = () => {
+	const { mode, setMode } = useContext(PatternContext)
+
 	return (
 		<BorderContainer
 			$width={240}
@@ -42,9 +46,8 @@ const TimeModeControls = (props: TimeModeControlsProps) => {
 						$height={16}>
 						Time Mode
 					</Label>
-					<LED active={props.mode === 'time'} margin={"0"} />
+					<LED active={mode === 'time'} margin={"0"} />
 			</TitleDiv>
-
 			<LegendDiv>
 				<LegendDividingDiv></LegendDividingDiv>
 				<LegendDividingDiv></LegendDividingDiv>
@@ -53,27 +56,13 @@ const TimeModeControls = (props: TimeModeControlsProps) => {
 					<ButtonTB
 						name="enable-time-mode"
 						horizontal={true}
-						onClick={() => props.setMode('time')}
+						onClick={() => setMode('time')}
 					/>
 				</LegendDividingDiv>
 			</LegendDiv>
-      <TimeModeKeys 
-        value={9}
-        name={"step"}
-        numbers={[9,0,100,200]}
-				activePitch={props.activePitch}
-				mode={props.mode}
-				callbackFunction={props.callbackFunction}
-			/>
+      <TimeModeKeys />
 		</BorderContainer>
 	);
 };
-
-interface TimeModeControlsProps {
-	activePitch: Pitch;
-	callbackFunction: (arg0: string) => void;
-	setMode: (value: 'time' | 'pitch' | 'normal') => void;
-	mode: 'time' | 'pitch' | 'normal';
-}
 
 export { TimeModeControls };

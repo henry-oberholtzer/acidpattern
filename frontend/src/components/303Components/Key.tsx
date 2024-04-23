@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import { ButtonTB, LED } from "."
 import { Pallete303 } from "./Palette"
+import { useContext, useState } from "react"
+import { PatternContext } from "../../routes/patterns/PatternCreateView"
 
 const KeyDiv = styled.div`
   width: 60px;
@@ -62,13 +64,29 @@ const HighlightP = styled.div`
   user-select: none;`
 
 const Key = (props: KeysProp) => {
+  const { activeIndex, pitchMode, mode, handlePitchInput, advanceIndex } = useContext(PatternContext)
+  const [ active, setActive ] = useState<boolean>(false)
+
+  const onMouseDown = () => {
+    setActive(true)
+    if (mode === "pitch") {
+      handlePitchInput(props.value)
+    }
+  }
+
+  const onMouseUp = () => {
+    setActive(false)
+    advanceIndex()
+  }
+
   return (
     <KeyDiv>
       <NameLabel htmlFor={props.name}>{props.name}</NameLabel>
       <SwitchDiv>
-        <LED />
-        <ButtonTB name={props.name} 
-        onClick={() => props.callbackFunction(props.value)}/>
+        <LED active={active && mode === "pitch" || (mode === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
+        <ButtonTB name={props.name}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp} />
       </SwitchDiv>
       <Decor>{props.number}</Decor>
       <SmallerDiv>
@@ -81,6 +99,7 @@ const Key = (props: KeysProp) => {
 }
 
 interface KeysProp {
+  sharp?: boolean;
   callbackFunction: (arg0: number) => void;
   value: number;
   name: string;

@@ -8,15 +8,22 @@ const ControlPanelFrame = styled.div`
   justify-content: center;
   height: 240px;
   width: 1080px;
-  background-color: ${Pallete303.ControlPanelColor}`
+  background-color: ${Pallete303.CaseSilver};
+  border: 3px solid ${Pallete303.CaseHighlight};
+  border-left: 3px solid ${Pallete303.CaseShadow};
+  border-bottom: 3px solid ${Pallete303.CaseShadow};
+  border-radius: 3px;`
 
 const ControlPanel = styled.div`
   display: flex;
-  height: 220px;
+  height: 224px;
   align-items: center;
   justify-content: center;
-  border: 1px solid ${Pallete303.Black};
-  width: 1060px;`
+  border: 2px solid ${Pallete303.CaseShadow};
+  border-radius: 2px;
+  border-bottom: 2px solid ${Pallete303.CaseHighlight};
+  background-color: ${Pallete303.ControlPanelColor};
+  width: 1064px;`
 
 const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $width?: number, $height?: number, $flexRow?: boolean}>`
   display: flex;
@@ -34,10 +41,6 @@ const VerticalContainer = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-
-const ParentContainer = styled.div`
-  font-family: 'Inter';
-`
 
 const Label = styled.label<{$silver?: boolean, $small?: boolean, $height?: number, $extraMargin?: boolean, $border?: boolean}>`
   font-family: 'Inter';
@@ -74,4 +77,24 @@ const TextContainer = styled.div<{$height?: number}>`
   user-select: none;
   `
 
-export { ParentContainer, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }
+const MainCase = styled.div`
+  font-family: 'Inter';
+  width: 1080px;
+  height: 520px;
+  background-image: radial-gradient(${Pallete303.CaseSilver}, ${Pallete303.CaseShadow} 20%, ${Pallete303.CaseSilver});
+  background-color: ${Pallete303.CaseSilver};
+  padding-top: 3px;
+  border-radius: 3px;
+  box-shadow: 10px 10px 30px ${Pallete303.CaseShadow};`
+
+const CenterFrame = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;`
+
+
+
+export { MainCase, Text, CenterFrame, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }

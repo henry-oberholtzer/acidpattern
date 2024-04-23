@@ -34,7 +34,9 @@ const ButtonTB = (props: ButtonProps) => {
         $horizontal={props.horizontal}
         $large={props.large}
         name={props.name}
-        onClick={props.onClick}/>
+        onClick={props.onClick}
+        onMouseDown={props.onMouseDown}
+        onMouseUp={props.onMouseUp}/>
     </Div>
   )
 }
@@ -44,6 +46,8 @@ interface ButtonProps {
   large?: boolean;
   name?: string;
   onClick?: () => void;
+  onMouseDown?: () => void;
+  onMouseUp?: () => void;
 }
 
 export { ButtonTB }

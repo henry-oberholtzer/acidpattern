@@ -14,6 +14,8 @@ const KeyboardContainer = styled.div`
 `;
 
 const Keyboard = (props: KeyboardProps) => {
+
+
 	return (
 		<KeyboardContainer>
 			<Key

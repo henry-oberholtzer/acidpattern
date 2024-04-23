@@ -9,7 +9,7 @@ margin: 0;
 height: 40px;
 text-decoration: none;
 a {
-  color: ${Pallete303.ControlPanelColor};
+  color: ${Pallete303.CaseSilver};
   position: relative;
   top: -12px;
   text-decoration: none;

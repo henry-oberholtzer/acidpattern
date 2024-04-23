@@ -9,7 +9,6 @@ import { registerAction } from './scripts/actions';
 import { LogInView } from './routes/auth/LogInView';
 import { LogOutView } from './components/LogOutView';
 import { PatternCreateView } from './routes/patterns/PatternCreateView';
-import { newPattern } from './routes/patterns/pattern-utils';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PatternDetailView } from './routes/patterns/PatternDetailView';
 
@@ -40,7 +39,7 @@ const App = () => {
 						},
 						{
 							path: 'patterns/write',
-							element: <PatternCreateView pattern={newPattern()} />,
+							element: <PatternCreateView />,
 						},
 					],
 				},
