@@ -9,9 +9,10 @@ const Group = styled.div`
 `;
 
 const KeyDiv = styled.div`
-	width: 60px;
+	width: 61px;
 	height: 152px;
 	display: flex;
+	margin-right: -1px;
 	flex-direction: column;
 	background-color: ${Pallete303.ControlPanelColor};
 `;
@@ -73,6 +74,9 @@ const HighlightP = styled.div`
 const TimeModeKeys = (props: TimeModeKeysProp) => {
 
   const determineActive = (mode: "pitch" | "time" | "normal", type: string, activePitch: Pitch) => {
+		if (!activePitch) {
+			return false
+		}
     if (mode === "pitch") {
       if (type === "slide") {
         return activePitch.slide
@@ -121,7 +125,7 @@ const TimeModeKeys = (props: TimeModeKeysProp) => {
 				<SwitchDiv>
 					<LED active={determineActive(props.mode, "accent", props.activePitch)} />
 					<ButtonTB name={props.name}
-          onClick={() => props.callbackFunction("slide-or-a")} />
+          onClick={() => props.callbackFunction("accent-or-a")} />
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>

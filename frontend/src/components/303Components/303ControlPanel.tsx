@@ -66,11 +66,11 @@ const Text = styled.span<{$padding?: number, $fontSize?: number, $noBorder?: boo
   }
   `
 
-const TextContainer = styled.div`\
+const TextContainer = styled.div<{$height?: number}>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 24px;
+  height: ${props => props.$height ? props.$height : 24 } + px;
   user-select: none;
   `
 

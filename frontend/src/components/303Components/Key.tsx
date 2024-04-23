@@ -28,13 +28,12 @@ const NameLabel = styled.label`
     height: 148px;
     border-radius: 0 0 4px 4px;
     border: 1px solid ${Pallete303.Black};
-    margin: -1px;
     padding: 6px;`
 
 const Decor = styled.div`
   background-color: ${Pallete303.Black};
   color: ${Pallete303.LEDRedActive};
-  width: 60px;
+  width: 100%;
   font-size: 10px;
   height: 22px;
   display: flex;
@@ -48,7 +47,7 @@ const SmallerDiv = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 2px;
-  height: 22px;
+  height: 20px;
   font-size: 10px;
   border-top: 1px solid ${Pallete303.Black};
   `

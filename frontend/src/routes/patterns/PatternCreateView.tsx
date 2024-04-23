@@ -16,16 +16,26 @@ import {
 
 const PatternCreateView = (props: PatternCreateProps) => {
 	const { user } = useAuth();
-	const [name, setName] = useState(props.pattern.name);
+	const [name, setName] = useState(props.pattern? props.pattern.name : "");
 	const [mode, setMode] = useState<"pitch" | "time" | "normal">("normal")
 	const [pitchMode, setPitchMode] = useState<Pitch[]>([])
 	// const [timeMode, setTimeMode] = useState<Time[]>([])
 	const [activeIndex, setActiveIndex] = useState<number>(0)
 
+	const patternClear = () => {
+
+	}
+
 	const advanceIndex = () => {
 		setActiveIndex(activeIndex + 1);
 		if (activeIndex >= 15) {
 			setMode("normal");
+		}
+	}
+
+	const reverseIndex = () => {
+		if (activeIndex != 0) {
+			setActiveIndex(activeIndex - 1);
 		}
 	}
 
@@ -89,6 +99,15 @@ const PatternCreateView = (props: PatternCreateProps) => {
 			// Inputs the rhythm values
 		} else {
 			// Inputs for changing pattern sections
+			if (value === "slide-or-b") {
+				// Save time mode and pitch mode to section A
+				// Set active section to "B"
+				// Set time mode and pitch mode to B
+			} else if (value === "accent-or-a") {
+				// Save time mode and pitch mode to section B
+				// Set active section to "A"
+				// Set time mode and pitch mode to A
+			}
 		}
 	}
 
@@ -115,6 +134,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 							<ButtonTB
 								name="pattern-clear"
 								horizontal={true}
+								onClick={patternClear}
 							/>
 						</BorderContainer>
 						<BorderContainer>
@@ -135,10 +155,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 						setMode={setMode}
 						mode={mode}/>
 					{/* Keyboard */}
-					<VerticalContainer>
 						<Keyboard 
 							callbackFunction={handlePitchInput}/>
-					</VerticalContainer>
 					{/* Time Mode */}
 					<TimeModeControls
 						activePitch={pitchMode[activeIndex]}
@@ -163,6 +181,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 							<ButtonTB
 								name="back"
 								horizontal={true}
+								onClick={reverseIndex}
 							/>
 						</BorderContainer>
 						<BorderContainer>
@@ -189,7 +208,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 };
 
 interface PatternCreateProps {
-	pattern: Pattern;
+	pattern?: Pattern;
 }
 
 export { PatternCreateView };
