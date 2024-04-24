@@ -47,6 +47,21 @@
   - Build skeleton pattern form component
   - Build skeleton pattern view
 
+4-22-24
+  - Begin 303 Layout & design
+  - Create switches, create keyboard
+  - Basic state management
+  
+
+4-23-24
+  - Prep for interview
+  - Work on building out TB303 UI
+  - Switching to useContext for state of pattern
+  - Add sections "A" and "B"
+  - Create knob component
+  - Add logos to 303
+
+
 
 To Do:
   - Test user profile
