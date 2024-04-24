@@ -20,6 +20,8 @@ const PatternContext = createContext<PatternContext>({
 	activeSection: "A",
 	switchSections: () => {},
 	mode: "normal",
+	name: "",
+	setName: (string) => {string},
 	setMode: (string) => {string},
 	handlePitchInput: (int) => {int},
 	advanceIndex: () => {}
@@ -31,6 +33,8 @@ interface PatternContext {
 	timeMode: Time[];
 	activeSection: "A" | "B";
 	mode: "pitch" | "time" | "normal",
+	name: string,
+	setName: Dispatch<SetStateAction<string>>
 	setMode: Dispatch<SetStateAction<"pitch" | "time" | "normal">>,
 	switchSections: (section: "A" | "B") =>  void;
 	handlePitchInput: (int: number) => void;
@@ -140,6 +144,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				pitchMode: pitchMode,
 				timeMode: timeMode,
 				mode: mode,
+				name: name,
+				setName: setName,
 				setMode: setMode,
 				switchSections: switchSections,
 				handlePitchInput: handlePitchInput,

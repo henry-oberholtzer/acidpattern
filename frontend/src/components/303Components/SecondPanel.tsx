@@ -19,14 +19,22 @@ const SecondPanel = () => {
     <ControlsContainer>
 						<Knob
             large={true}
-            name={"tempo"} />
+            name={"tempo"}
+            min={40}
+            max={300} />
 						<Knob large={true}
-            name={"track patt.group"} />
+            name={"track patt.group"}
+            min={1}
+            max={7} />
 						<Knob large={true}
-            name={"mode"} />
+            name={"mode"}
+            min={1}
+            max={4} />
             <PatternInfo />
 						<Knob large={true}
-            name={"volume"} />
+            name={"volume"}
+            min={0}
+            max={127} />
 		</ControlsContainer>
   )
 }
