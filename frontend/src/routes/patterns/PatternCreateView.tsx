@@ -223,9 +223,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 										</BorderContainer>
 									</VerticalContainer>
 									{/* Second from left controls */}
-									<PitchNormalControls 
-										setMode={setMode}
-										mode={mode}/>
+									<PitchNormalControls />
 									{/* Keyboard */}
 										<Keyboard 
 											callbackFunction={handlePitchInput}/>

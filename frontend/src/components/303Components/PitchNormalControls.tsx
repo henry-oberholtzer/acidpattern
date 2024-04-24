@@ -1,6 +1,10 @@
+import { useContext } from "react";
 import { Label, VerticalContainer, LED, ButtonTB, BorderContainer } from "."
+import { PatternContext } from "../../routes/patterns/PatternCreateView";
 
-const PitchNormalControls = (props: PitchModeControlsProps) => {
+const PitchNormalControls = () => {
+  const { mode } = useContext(PatternContext)
+
   return (
     <VerticalContainer>
     <BorderContainer
@@ -12,27 +16,23 @@ const PitchNormalControls = (props: PitchModeControlsProps) => {
           $height={16}>
           PITCH MODE
         </Label>
-      <LED active={props.mode === "pitch"} />
+      <LED active={mode.get === "pitch"} />
       <ButtonTB
         horizontal={true}
         name="enable-pitch-mode"
-        onClick={() => props.setMode("pitch")}
+        onClick={() => mode.set("pitch")}
       />
     </BorderContainer>
     <BorderContainer>
-    <LED active={props.mode === "normal"} />
+    <LED active={mode.get === "normal"} />
       <ButtonTB
         name="enable-normal-mode"
-        onClick={() => props.setMode("normal")}
+        onClick={() => mode.set("normal")}
       />
     </BorderContainer>
   </VerticalContainer>
   )
 }
 
-interface PitchModeControlsProps {
-  setMode: (value: "time" | "pitch" | "normal") => void;
-  mode: "time" | "pitch" | "normal";
-}
 
 export { PitchNormalControls }

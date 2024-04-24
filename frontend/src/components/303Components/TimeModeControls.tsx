@@ -34,7 +34,7 @@ const LegendDividingDiv = styled.div`
 `;
 
 const TimeModeControls = () => {
-	const { mode, setMode } = useContext(PatternContext)
+	const { mode } = useContext(PatternContext)
 
 	return (
 		<BorderContainer
@@ -46,7 +46,7 @@ const TimeModeControls = () => {
 						$height={16}>
 						Time Mode
 					</Label>
-					<LED active={mode === 'time'} margin={"0"} />
+					<LED active={mode.get === 'time'} margin={"0"} />
 			</TitleDiv>
 			<LegendDiv>
 				<LegendDividingDiv></LegendDividingDiv>
@@ -56,7 +56,7 @@ const TimeModeControls = () => {
 					<ButtonTB
 						name="enable-time-mode"
 						horizontal={true}
-						onClick={() => setMode('time')}
+						onClick={() => mode.set('time')}
 					/>
 				</LegendDividingDiv>
 			</LegendDiv>

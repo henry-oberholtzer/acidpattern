@@ -69,7 +69,7 @@ const Key = (props: KeysProp) => {
 
   const onMouseDown = () => {
     setActive(true)
-    if (mode === "pitch") {
+    if (mode.get === "pitch") {
       handlePitchInput(props.value)
     }
   }
@@ -83,7 +83,7 @@ const Key = (props: KeysProp) => {
     <KeyDiv>
       <NameLabel htmlFor={props.name}>{props.name}</NameLabel>
       <SwitchDiv>
-        <LED active={active && mode === "pitch" || (mode === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
+        <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
         <ButtonTB name={props.name}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp} />

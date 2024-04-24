@@ -39,7 +39,7 @@ const SecondPanel = () => {
             min={1}
             max={4}
             steps={4}
-            minDeg={30}
+            minDeg={210}
             maxDeg={330}
             />
             <PatternInfo />
