@@ -27,33 +27,51 @@ const FirstPanel = () => {
       <LineDivider/>
       <Knob
         name={"tuning"}
-        min={-500}
-        max={500}
+        min={0}
+        max={49}
+        steps={50}
+        minDeg={30}
+        maxDeg={330}
       />
       <Knob
         name={"cut off freq"}
         min={0}
         max={127}
+        steps={128}
+        minDeg={30}
+        maxDeg={330}
       />
       <Knob
         name={"resonance"}
         min={0}
         max={127}
+        steps={128}
+        minDeg={30}
+        maxDeg={330}
       />
       <Knob
         name={"env mod"}
         min={0}
         max={127}
+        steps={128}
+        minDeg={30}
+        maxDeg={330}
       />
       <Knob
         name={"decay"}
         min={0}
         max={127}
+        steps={128}
+        minDeg={30}
+        maxDeg={330}
         />
       <Knob
         name={"accent"}
         min={0}
         max={127}
+        steps={128}
+        minDeg={30}
+        maxDeg={330}
       />
       <LineDivider/>
       <BassLine />

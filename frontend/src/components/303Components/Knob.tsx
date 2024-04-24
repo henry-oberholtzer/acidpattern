@@ -3,7 +3,8 @@ import { Pallete303 } from "./Palette"
 import SmallKnobBG from "./svgs/small_knob_bg.svg"
 import LargeKnobBG from "./svgs/large_knob_bg_1.svg"
 import TestKnobGUISmall from "./svgs/test_knob_gui_small.svg"
-import { WheelEvent, useState } from "react"
+import { WheelEvent, useRef, useState } from "react"
+import { useCallback } from "react"
 
 const KnobContainer = styled.div<{$large?: boolean}>`
   width: ${props => props.$large? 160 : 80}px;
@@ -64,7 +65,7 @@ const KnobInput = styled.input<{$large?: boolean, rotation: number}>`
   background-position:0px 0%;
   background-color:transparent;
   touch-action:none;
-  transform: rotate(${props => props.rotation}deg);
+  transform: rotate(${props => props.rotation - 180}deg );
   &::-webkit-slider-thumb, &::-moz-range-thumb {
     -moz-appearance:none;
     height:0;
@@ -73,15 +74,57 @@ const KnobInput = styled.input<{$large?: boolean, rotation: number}>`
 `
 const Knob = (props: KnobProps) => {
   const [value, setValue] = useState<number>(63)
+  const [dragFrom, setDragFrom] = useState<DragFrom | null>()
+  
+  const knobRef = useRef<HTMLInputElement | null>(null)
 
-  const changeValue = (e: WheelEvent) => {
-    const newValue = e.deltaY > 0 ? value - 1 : value + 1;
+  const wheelChangeValue = (e: WheelEvent) => {
+    if (knobRef.current != null) {
+      knobRef.current.focus();
+    }
+    let newValue = e.deltaY > 0 ? value - 4 : value + 4;
+    if (e.shiftKey) {
+      newValue = e.deltaY > 0 ? value - 1 : value + 1;
+    }
     if (props.min <= newValue && newValue <= props.max) {
       setValue(newValue)
     }
   }
 
-  const getRotation = () => Math.round((value / (props.min + props.max)) * 360)
+  const mouseDownChangeValue = (e: React.PointerEvent<HTMLInputElement>) => {
+      if (knobRef.current != null) {
+        const rect = knobRef.current.getBoundingClientRect()
+        const cx = (rect.left + rect.right)*0.5;
+        const cy = (rect.top+rect.bottom)*0.5;
+        const dx = e.clientX;
+        const dy = e.clientY;
+        const da = Math.atan2(dx-cx,cy-dy);
+        setDragFrom({
+          x: dx,
+          y: dy,
+          a: da,
+          v: value,
+        })
+      }
+    }
+
+  const mouseMoveChangeValue = (e: React.PointerEvent<HTMLInputElement>) => {
+    if (knobRef.current != null && dragFrom != null) {
+      const dx = e.clientX - dragFrom.x;
+      const dy = e.clientY - dragFrom.y;
+      const newValue = Math.round((dx/64-dy/128)*(props.max-props.min));
+      if (props.min <= newValue && newValue <= props.max) {
+        setValue(newValue);
+      }
+    }
+  }
+
+  const rotate = () => {
+    const step = (props.maxDeg - props.minDeg) / props.steps;
+    return props.minDeg + step * value
+  }
+
+  const calcRotation = useCallback(rotate, [value, rotate])
 
   return (
     <KnobContainer $large={props.large}>
@@ -90,15 +133,19 @@ const Knob = (props: KnobProps) => {
       </LabelDiv>
       <PotentiometerNotch $large={props.large}>
         <PotentiometerCutout $large={props.large}>
-          <KnobInput 
+          <KnobInput
+            ref={knobRef}
             $large={props.large}
             min={props.min}
             max={props.max}
-            rotation={Math.round((value / (props.min + props.max)) * 360)}
+            rotation={calcRotation()}
             value={value}
             type="range"
-            onChange={() => setValue(Math.floor((props.max - props.min) / 2))}
-            onWheel={changeValue}
+            onMouseUp={() => setDragFrom(null)}
+            onPointerDown={(e) => mouseDownChangeValue(e)}
+            onPointerMove={(e) => mouseMoveChangeValue(e)}
+            onDoubleClick={() => setValue(Math.floor((props.max - props.min) / 2))}
+            onWheel={wheelChangeValue}
           />
         </PotentiometerCutout>
       </PotentiometerNotch>
@@ -112,6 +159,16 @@ interface KnobProps {
   name?: string;
   min: number;
   max: number;
+  steps: number;
+  minDeg: number;
+  maxDeg: number;
+}
+
+interface DragFrom {
+  x: number,
+  y: number,
+  a: number,
+  v: number,
 }
 
 export { Knob }
