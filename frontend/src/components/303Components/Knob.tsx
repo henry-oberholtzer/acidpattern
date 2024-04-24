@@ -49,7 +49,7 @@ const LabelDiv = styled.div<{$large? : boolean}>`
   justify-content: center;
   align-items: center;`
 
-const KnobInput = styled.input<{$large?: boolean, rotation: number}>`
+const KnobInput = styled.input<{$large?: boolean, $rotation: number}>`
   width: ${props => props.$large? 74 : 50}px;
   height: ${props => props.$large? 74 : 50}px;
   cursor: pointer;
@@ -65,7 +65,10 @@ const KnobInput = styled.input<{$large?: boolean, rotation: number}>`
   background-position:0px 0%;
   background-color:transparent;
   touch-action:none;
-  transform: rotate(${props => props.rotation - 180}deg );
+  &:focus {
+    outline-color: transparent;
+  }
+  transform: rotate(${props => props.$rotation - 180}deg );
   &::-webkit-slider-thumb, &::-moz-range-thumb {
     -moz-appearance:none;
     height:0;
@@ -73,7 +76,7 @@ const KnobInput = styled.input<{$large?: boolean, rotation: number}>`
   }
 `
 const Knob = (props: KnobProps) => {
-  const [value, setValue] = useState<number>(63)
+  const [value, setValue] = useState<number>(props.initValue ? props.initValue : Math.round((props.max - props.min) / 2))
   const [dragFrom, setDragFrom] = useState<DragFrom | null>()
   
   const knobRef = useRef<HTMLInputElement | null>(null)
@@ -138,9 +141,10 @@ const Knob = (props: KnobProps) => {
             $large={props.large}
             min={props.min}
             max={props.max}
-            rotation={calcRotation()}
+            $rotation={calcRotation()}
             value={value}
             type="range"
+            onChange={() => null}
             onMouseUp={() => setDragFrom(null)}
             onPointerDown={(e) => mouseDownChangeValue(e)}
             onPointerMove={(e) => mouseMoveChangeValue(e)}
@@ -157,6 +161,7 @@ const Knob = (props: KnobProps) => {
 interface KnobProps {
   large?: boolean
   name?: string;
+  initValue?: number,
   min: number;
   max: number;
   steps: number;

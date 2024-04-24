@@ -85,15 +85,14 @@ const MainCase = styled.div`
   background-color: ${Pallete303.CaseSilver};
   padding-top: 3px;
   border-radius: 3px;
-  box-shadow: 10px 10px 30px ${Pallete303.CaseShadow};`
+  box-shadow: 3px 3px 30px ${Pallete303.CaseShadow}, -3px -3px 30px ${Pallete303.CaseShadow};`
 
 const CenterFrame = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000000;`
+  background-color: #000000;
+  flex-direction: column;`
 
 
 

@@ -3,7 +3,7 @@ const TextInput = (props: TextInputProps) => {
     <input 
         type={props.type ? props.type : "text"}
         name={props.name ? props.name : ""}
-        onChange={(e) => props.state[1](e.target.value)}
+        onChange={(e) =>  props.state[1](e.target.value)}
         value={props.state[0]}
     >
     </input>
@@ -12,8 +12,8 @@ const TextInput = (props: TextInputProps) => {
 
 interface TextInputProps {
   state: [string, React.Dispatch<React.SetStateAction<string>>] 
-  name?: string;
-  type?: string;
+  name: string;
+  type: string;
 }
 
 export { TextInput }

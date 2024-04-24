@@ -21,20 +21,36 @@ const SecondPanel = () => {
             large={true}
             name={"tempo"}
             min={40}
-            max={300} />
+            max={300}
+            steps={260}
+            minDeg={30}
+            maxDeg={330}
+            />
 						<Knob large={true}
             name={"track patt.group"}
             min={1}
-            max={7} />
+            max={7}
+            steps={8}
+            minDeg={30}
+            maxDeg={330}
+            />
 						<Knob large={true}
             name={"mode"}
             min={1}
-            max={4} />
+            max={4}
+            steps={4}
+            minDeg={30}
+            maxDeg={330}
+            />
             <PatternInfo />
 						<Knob large={true}
             name={"volume"}
             min={0}
-            max={127} />
+            max={127}
+            steps={128}
+            minDeg={30}
+            maxDeg={330}
+            />
 		</ControlsContainer>
   )
 }

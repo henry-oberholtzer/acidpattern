@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { LED, ButtonTB, TimeModeControls, PitchNormalControls, Keyboard, SecondPanel, FirstPanel } from '../../components/303Components';
+import { LED, ButtonTB, TimeModeControls, PitchNormalControls, Keyboard, SecondPanel, FirstPanel, PatternForm } from '../../components/303Components';
 import {
 	BorderContainer,
 	ControlPanel,
@@ -19,10 +19,17 @@ const PatternContext = createContext<PatternContext>({
 	timeMode: [],
 	activeSection: "A",
 	switchSections: () => {},
-	mode: "normal",
-	name: "",
-	setName: (string) => {string},
-	setMode: (string) => {string},
+	mode: { set: (string) => {string}, get: "normal"},
+	name: { set: (string) => {string}, get: "normal"},
+	waveform: { set: (string) => {string}, get: "saw"},
+	tuning: { set: (number) => {number}, get: 63},
+	cutoff: { set: (number) => {number}, get: 63},
+	decay: { set: (number) => {number}, get: 63},
+	resonance: { set: (number) => {number}, get: 63},
+	envMod: { set: (number) => {number}, get: 63},
+	accent: { set: (number) => {number}, get: 63},
+	tempo: { set: (number) => {number}, get: 63},
+	volume: { set: (number) => {number}, get: 63},
 	handlePitchInput: (int) => {int},
 	advanceIndex: () => {}
 })
@@ -32,24 +39,44 @@ interface PatternContext {
 	pitchMode: Pitch[];
 	timeMode: Time[];
 	activeSection: "A" | "B";
-	mode: "pitch" | "time" | "normal",
-	name: string,
-	setName: Dispatch<SetStateAction<string>>
-	setMode: Dispatch<SetStateAction<"pitch" | "time" | "normal">>,
 	switchSections: (section: "A" | "B") =>  void;
 	handlePitchInput: (int: number) => void;
 	advanceIndex: () => void;
+	mode: { set: Dispatch<SetStateAction<"pitch" | "time" | "normal">>, get: "pitch" | "time" | "normal"},
+	name: { set: Dispatch<SetStateAction<string>>, get: string},
+	waveform: { set: Dispatch<SetStateAction<"saw" | "square">>, get: "saw" | "square" },
+	tuning: { set: Dispatch<SetStateAction<number>>, get: number},
+	cutoff: { set: Dispatch<SetStateAction<number>>, get: number},
+	resonance: { set: Dispatch<SetStateAction<number>>, get: number},
+	decay: { set: Dispatch<SetStateAction<number>>, get: number},
+	envMod: { set: Dispatch<SetStateAction<number>>, get: number},
+	accent: { set: Dispatch<SetStateAction<number>>, get: number},
+	tempo: { set: Dispatch<SetStateAction<number>>, get: number},
+	volume: { set: Dispatch<SetStateAction<number>>, get: number},
 }
 
 const PatternCreateView = (props: PatternCreateProps) => {
 	const { user } = useAuth();
-	const [name, setName] = useState(props.pattern? props.pattern.name : `${user}'s New Pattern`);
+	const [name, setName] = useState(props.pattern? props.pattern.name : `${user?.user.username}'s New Pattern`);
 	const [mode, setMode] = useState<"pitch" | "time" | "normal">("normal")
 	const [sections, setSections] = useState<[Section, Section]>(props.pattern? props.pattern.sections : [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []}])
 	const [activeSection, setActiveSection] = useState<"A" | "B">("A")
 	const [pitchMode, setPitchMode] = useState<Pitch[]>([])
 	const [timeMode, setTimeMode] = useState<Time[]>([])
 	const [activeIndex, setActiveIndex] = useState<number>(0)
+	// Settings state
+	const [waveform, setWaveform] = useState<"saw" | "square">("saw")
+
+	const [tuning, setTuning] = useState<number>(0)
+	const [cutOffFreq, setCutoffFreq] = useState<number>(63)
+	const [resonance, setResonance] = useState<number>(63)
+	const [envMod, setEnvMod] = useState<number>(63)
+	const [decay, setDecay] = useState<number>(63)
+	const [accent, setAccent] = useState<number>(63)
+	// Second panel settings
+	const [tempo, setTempo] = useState<number>(130)
+	const [volume, setVolume] = useState<number>(127)
+
 
 	const switchSections = (sectionToSwitchTo: "A" | "B") => {
 		setActiveSection(sectionToSwitchTo)
@@ -139,18 +166,27 @@ const PatternCreateView = (props: PatternCreateProps) => {
 
 	return (
 		<CenterFrame>
+			
 			<PatternContext.Provider value={{ 
 				activeIndex: activeIndex,
 				pitchMode: pitchMode,
 				timeMode: timeMode,
-				mode: mode,
-				name: name,
-				setName: setName,
-				setMode: setMode,
+				mode: { set: setMode, get: mode},
+				name: { set: setName, get: name},
+				waveform: { set: setWaveform, get: waveform},
+				tuning: { set: setTuning, get: tuning},
+				cutoff: { set: setCutoffFreq, get: cutOffFreq},
+				decay: { set: setDecay, get: decay},
+				resonance: { set: setResonance, get: resonance},
+				envMod: { set: setEnvMod, get: envMod},
+				accent: { set: setAccent, get: accent},
+				tempo: { set: setTempo, get: tempo},
+				volume: { set: setVolume, get: volume},
 				switchSections: switchSections,
 				handlePitchInput: handlePitchInput,
 				advanceIndex: advanceIndex,
 				activeSection: activeSection}}>
+					<PatternForm />
 					<MainCase>
 						<FirstPanel />
 						<SecondPanel />
