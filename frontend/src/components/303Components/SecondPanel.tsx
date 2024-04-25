@@ -17,9 +17,7 @@ const ControlsContainer = styled.div`
   `
 
 const SecondPanel = () => {
-  const { volume, tempo } = useContext(PatternContext)
-
-  const falseState = { set: () => {}, get: 63};
+  const { volume, tempo, writeMode, trackPattGroup } = useContext(PatternContext)
 
   return (
     <ControlsContainer>
@@ -36,16 +34,16 @@ const SecondPanel = () => {
             />
 						<Knob large={true}
             name={"track patt.group"}
-            state={falseState}
+            state={writeMode}
             min={1}
             max={7}
             steps={8}
-            minDeg={30}
+            minDeg={60}
             maxDeg={330}
             />
 						<Knob large={true}
             name={"mode"}
-            state={falseState}
+            state={trackPattGroup}
             min={1}
             max={4}
             steps={4}

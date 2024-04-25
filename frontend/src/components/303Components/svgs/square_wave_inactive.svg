@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="20"
+   height="10"
+   viewBox="0 0 5.8208332 3.1749999"
+   version="1.1"
+   id="svg1"
+   xml:space="preserve"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+     id="defs1"><linearGradient
+       id="linearGradient1"><stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3" /><stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop4" /></linearGradient><linearGradient
+       id="linearGradient1-1"><stop
+         style="stop-color:#63323c;stop-opacity:1;"
+         offset="0"
+         id="stop1" /><stop
+         style="stop-color:#490101;stop-opacity:1;"
+         offset="0.47589099"
+         id="stop2" /></linearGradient><radialGradient
+       xlink:href="#linearGradient1-1"
+       id="radialGradient2"
+       cx="2.9101562"
+       cy="1.5869141"
+       fx="2.9101562"
+       fy="1.5869141"
+       r="2.6464863"
+       gradientTransform="matrix(1,0,0,0.50000039,0,0.79345645)"
+       gradientUnits="userSpaceOnUse" /></defs><g
+     id="layer1"><path
+       style="color:#000000;fill:url(#radialGradient2);stroke-linecap:round;stroke-linejoin:round;-inkscape-stroke:none"
+       d="M 0.52929687,0.26367188 A 0.26460996,0.26460996 0 0 0 0.26367188,0.52929687 V 2.6464844 A 0.2645835,0.2645835 0 0 0 0.52929687,2.9101563 0.2645835,0.2645835 0 0 0 0.79296875,2.6464844 V 0.79296875 H 1.5878906 V 2.6464844 A 0.26460996,0.26460996 0 0 0 1.8515625,2.9101563 H 3.1757813 A 0.26460996,0.26460996 0 0 0 3.4394531,2.6464844 V 0.79296875 H 4.2324219 V 2.6464844 a 0.26460996,0.26460996 0 0 0 0.265625,0.2636719 H 5.2910156 A 0.2645835,0.2645835 0 0 0 5.5566406,2.6464844 0.2645835,0.2645835 0 0 0 5.2910156,2.3808594 H 4.7617187 V 0.52929687 A 0.26460996,0.26460996 0 0 0 4.4980469,0.26367188 H 3.1757813 A 0.26460996,0.26460996 0 0 0 2.9101563,0.52929687 V 2.3808594 H 2.1171875 V 0.52929687 A 0.26460996,0.26460996 0 0 0 1.8515625,0.26367188 Z"
+       id="path2" /></g></svg>

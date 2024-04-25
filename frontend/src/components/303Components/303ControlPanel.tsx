@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Pallete303 } from "./Palette";
-
+import carat from "./svgs/carat.svg"
 
 const ControlPanelFrame = styled.div`
   display: flex;
@@ -96,6 +96,9 @@ const CenterFrame = styled.div`
   background-color: #000000;
   flex-direction: column;`
 
+const Carat = styled.div`
+  background-image: url(${carat});
+  width: 8px;
+  height: 8px;`
 
-
-export { MainCase, Text, CenterFrame, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }
+export { MainCase, Carat, Text, CenterFrame, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }

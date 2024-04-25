@@ -24,6 +24,8 @@ const PatternContext = createContext<PatternContext>({
 	accent: { set: (number) => {number}, get: 63},
 	tempo: { set: (number) => {number}, get: 63},
 	volume: { set: (number) => {number}, get: 63},
+	trackPattGroup: { set: (number) => {number}, get: 1},
+	writeMode: { set: (number) => {number}, get: 1},
 	run: { set: (bool) => {bool}, get: false},
 	handlePitchInput: (int) => {int},
 	advanceIndex: () => {}
@@ -49,6 +51,8 @@ interface PatternContext {
 	accent: { set: Dispatch<SetStateAction<number>>, get: number},
 	tempo: { set: Dispatch<SetStateAction<number>>, get: number},
 	volume: { set: Dispatch<SetStateAction<number>>, get: number},
+	trackPattGroup: { set: Dispatch<SetStateAction<number>>, get: number},
+	writeMode: { set: Dispatch<SetStateAction<number>>, get: number},
 	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
 }
 
@@ -76,6 +80,9 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	// Transport
 	const [run, setRun] = useState<boolean>(false)
 
+	// Other swtiches
+	const [trackPattGroup, setTrackPattGroup] = useState<number>(1)
+	const [writeMode, setWriteMode] = useState<number>(1)
 
 	const switchSections = (sectionToSwitchTo: "A" | "B") => {
 		setActiveSection(sectionToSwitchTo)
@@ -182,6 +189,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				accent: { set: setAccent, get: accent},
 				tempo: { set: setTempo, get: tempo},
 				volume: { set: setVolume, get: volume},
+				trackPattGroup: { set: setTrackPattGroup, get: trackPattGroup},
+				writeMode: { set: setWriteMode, get: writeMode},
 				switchSections: switchSections,
 				handlePitchInput: handlePitchInput,
 				advanceIndex: advanceIndex,
