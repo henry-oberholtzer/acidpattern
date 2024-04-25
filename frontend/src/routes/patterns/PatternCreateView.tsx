@@ -1,17 +1,10 @@
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { ButtonTB, TimeModeControls, PitchNormalControls, Keyboard, SecondPanel, FirstPanel, PatternForm, ClearRunControls } from '../../components/303Components';
+import { PatternForm, } from '../../components/303Components';
 import {
-	BorderContainer,
-	ControlPanel,
-	Label,
-	Text,
-	TextContainer,
-	VerticalContainer,
-	ControlPanelFrame,
-	MainCase,
 	CenterFrame,
 } from '../../components/303Components/303ControlPanel';
+import { TB303 } from '../../components/TB303';
 
 const PatternContext = createContext<PatternContext>({
 	activeIndex: 0,
@@ -194,60 +187,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				advanceIndex: advanceIndex,
 				activeSection: activeSection}}>
 					<PatternForm />
-					<MainCase>
-						<FirstPanel />
-						<SecondPanel />
-							<ControlPanelFrame>
-								<ControlPanel>
-									{/* Left Most Controls */}
-									<ClearRunControls />
-									{/* Second from left controls */}
-									<PitchNormalControls />
-									{/* Keyboard */}
-										<Keyboard />
-									{/* Time Mode */}
-									<TimeModeControls />
-									{/* Furthest right controls */}
-									<VerticalContainer>
-										<BorderContainer $small>
-											<TextContainer>
-												<Text
-													$padding={0}
-													$fontSize={12}>
-													{'\u{1D10B}'}
-												</Text>
-											</TextContainer>
-											<Label
-												htmlFor="back"
-												$small>
-												BACK
-											</Label>
-											<ButtonTB
-												name="back"
-												horizontal={true}
-												onClick={reverseIndex}
-											/>
-										</BorderContainer>
-										<BorderContainer>
-											<TextContainer>
-												<Text>D.S.</Text>
-											</TextContainer>
-											<ButtonTB
-												name="run-stop"
-												large={true}
-												onClick={advanceIndex}
-											/>
-											<Label
-												$extraMargin
-												$border>
-												Write / Next
-											</Label>
-											<Text $noBorder $fontSize={10}>Tap</Text>
-										</BorderContainer>
-									</VerticalContainer>
-								</ControlPanel>
-							</ControlPanelFrame>
-					</MainCase>
+					<TB303 />
 			</PatternContext.Provider>
 		</CenterFrame>
 	);

@@ -26,6 +26,7 @@ const SecondPanel = () => {
 						<Knob
             large={true}
             name={"tempo"}
+            labels={["slow", "fast"]}
             state={tempo}
             min={40}
             max={300}
@@ -60,6 +61,7 @@ const SecondPanel = () => {
             steps={128}
             minDeg={30}
             maxDeg={330}
+            labels={["off", "max"]}
             />
 		</ControlsContainer>
   )

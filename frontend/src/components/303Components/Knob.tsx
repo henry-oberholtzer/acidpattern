@@ -34,10 +34,10 @@ const PotentiometerCutout = styled.div<{$large? : boolean}>`
   align-items: center;
   background-color: ${Pallete303.Black};`
 
-const Label = styled.label<{$large? : boolean}>`
+const Label = styled.label<{$large? : boolean, $left? : boolean, $right? : boolean}>`
   font-family: 'Inter';
   text-transform: uppercase;
-  text-align: center;
+  text-align: ${props => props.$left ? "left" : props.$right ? "right" : "center"};
   user-select: none;
   padding: 0;
   margin: 0;
@@ -48,6 +48,11 @@ const LabelDiv = styled.div<{$large? : boolean}>`
   display: flex;
   justify-content: center;
   align-items: center;`
+
+const BottomLabelDiv = styled.div`
+  width: 76%;
+  display: flex;
+  justify-content: space-between;`
 
 const KnobInput = styled.input<{$large?: boolean, $rotation: number}>`
   width: ${props => props.$large? 74 : 50}px;
@@ -76,16 +81,15 @@ const KnobInput = styled.input<{$large?: boolean, $rotation: number}>`
   }
 `
 const Knob = (props: KnobProps) => {
-  // const [value, setValue] = useState<number>(props.initValue ? props.initValue : Math.round((props.max - props.min) / 2))
   const [dragFrom, setDragFrom] = useState<DragFrom | null>()
-  
   const knobRef = useRef<HTMLInputElement | null>(null)
+  const stepAmount = props.stepAmount ? props.stepAmount : 4;
 
   const wheelChangeValue = (e: WheelEvent) => {
     if (knobRef.current != null) {
       knobRef.current.focus();
     }
-    let newValue = e.deltaY > 0 ? props.state.get - 4 : props.state.get + 4;
+    let newValue = e.deltaY > 0 ? props.state.get - stepAmount : props.state.get + stepAmount;
     if (e.shiftKey || props.steps < 50) {
       newValue = e.deltaY > 0 ? props.state.get - 1 : props.state.get + 1;
     }
@@ -124,7 +128,7 @@ const Knob = (props: KnobProps) => {
 
   const rotate = () => {
     const step = (props.maxDeg - props.minDeg) / props.steps;
-    return props.minDeg + step * props.state.get
+    return props.minDeg + step * (props.state.get - props.min)
   }
 
   const calcRotation = useCallback(rotate, [props.state.get, rotate])
@@ -148,12 +152,15 @@ const Knob = (props: KnobProps) => {
             onMouseUp={() => setDragFrom(null)}
             onPointerDown={(e) => mouseDownChangeValue(e)}
             onPointerMove={(e) => mouseMoveChangeValue(e)}
-            onDoubleClick={() => props.state.set(Math.floor((props.max - props.min) / 2))}
+            onDoubleClick={() => props.state.set(Math.floor((props.max - Math.abs(props.min)) / 2))}
             onWheel={wheelChangeValue}
           />
         </PotentiometerCutout>
       </PotentiometerNotch>
-      <Label>{props.state.get}</Label>
+      {props.labels ? <BottomLabelDiv>
+        <Label $left>{props.labels[0]}</Label>
+        <Label>{props.state.get}</Label>
+        <Label $right>{props.labels[1]}</Label></BottomLabelDiv> : <Label>{props.state.get}</Label>}
     </KnobContainer>
   )
 }
@@ -163,6 +170,8 @@ interface KnobProps {
   large?: boolean
   name?: string;
   initValue?: number,
+  labels?: [string, string],
+  stepAmount?: number,
   min: number;
   max: number;
   steps: number;

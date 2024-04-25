@@ -32,9 +32,10 @@ const FirstPanel = () => {
       <Knob
         name={"tuning"}
         state={tuning}
-        min={0}
-        max={100}
-        steps={100}
+        min={-500}
+        max={500}
+        steps={1000}
+        stepAmount={100}
         minDeg={30}
         maxDeg={330}
       />
