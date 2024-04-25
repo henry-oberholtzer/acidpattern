@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ButtonTB, LED } from '.';
 import { Pallete303 } from './Palette';
 import { PatternContext } from '../../routes/patterns/PatternCreateView';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 const Group = styled.div`
 	width: 240px;
@@ -80,63 +80,40 @@ const TimeModeKeys = () => {
 		index,
 		switchSections,
 	} = useContext(PatternContext);
-
-	const determineActive = (type: string) => {
-		if (mode.get === 'pitch' && pitchMode.get[index.current]) {
-			if (type === 'slide') {
-				return pitchMode.get[index.current].slide;
-			}
-			if (type === 'accent') {
-				return pitchMode.get[index.current].accent;
-			}
-			if (type === 'down' && pitchMode.get[index.current].octave === -12) {
-				return true;
-			} else if (type === 'up' && pitchMode.get[index.current].octave === 12) {
-				return true;
-			} else {
-				return false;
-			}
-		} else if (mode.get === 'time' && timeMode.get[index.current]) {
-			if (type === 'down' && timeMode.get[index.current].timing === 1) {
-				return true;
-			} else if (type === 'up' && timeMode.get[index.current].timing === 2) {
-				return true;
-			} else if (type === 'accent' && timeMode.get[index.current].timing === 0) {
-				return true;
-			} else {
-				return false;
-			}
-		} else if (mode.get === 'normal') {
-			if (type === 'accent' && activeSection === 'A') {
-				return true;
-			} else if (type === 'slide' && activeSection === 'B') {
-				return true;
-			} else {
-				return false;
-			}
+	const [ downActive, setDownActive ] = useState<boolean>(false)
+	const [ upActive, setUpActive ] = useState<boolean>(false)
+	const [ accentActive, setAccentActive ] = useState<boolean>(false)
+	const [ slideActive, setSlideActive ] = useState<boolean>(false)
+		
+	const onMouseUp = (action: React.Dispatch<React.SetStateAction<boolean>>) => {
+		action(false);
+		if (mode.get === "time") {
+			index.next()
 		}
-	};
+	}
 
 	const switchAction = (type: string) => {
 		if (mode.get === 'pitch') {
 			const currentNote: Pitch = pitchMode.get[index.current];
-			switch (type) {
-				case 'accent':
-					currentNote.accent = !currentNote.accent;
-					break;
-				case 'slide':
-					currentNote.slide = !currentNote.slide;
-					break;
-				case 'up':
-					currentNote.octave = currentNote.octave === 12 ? 0 : 12;
-					break;
-				case 'down':
-					currentNote.octave = currentNote.octave === -12 ? 0 : -12;
-					break;
+			if (currentNote) {
+				switch (type) {
+					case 'accent':
+						currentNote.accent = !currentNote.accent;
+						break;
+					case 'slide':
+						currentNote.slide = !currentNote.slide;
+						break;
+					case 'up':
+						currentNote.octave = currentNote.octave === 12 ? 0 : 12;
+						break;
+					case 'down':
+						currentNote.octave = currentNote.octave === -12 ? 0 : -12;
+						break;
+				}
+				const newPitchArray = [...pitchMode.get];
+				newPitchArray[index.current] = currentNote;
+				pitchMode.set(newPitchArray);
 			}
-			const newPitchArray = [...pitchMode.get];
-			newPitchArray[index.current] = currentNote;
-			pitchMode.set(newPitchArray);
 		} else if (mode.get === 'time') {
 			const timeValue =
 				type === 'down' ? 1 : type === 'up' ? 2 : type === 'accent' ? 0 : null;
@@ -153,7 +130,6 @@ const TimeModeKeys = () => {
 					timeMode.set([...timeMode.get, newTime]);
 				}
 			}
-			index.next()
 		} else if (mode.get === 'normal') {
 			if (type === 'accent') {
 				switchSections('A');
@@ -168,10 +144,11 @@ const TimeModeKeys = () => {
 			<KeyDiv>
 				<NameLabel>DOWN</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive('down')} />
+					<LED active={downActive || (mode.get === "pitch" && pitchMode.get[index.current]?.octave === -12) || (mode.get === "time" && timeMode.get[index.current]?.timing === 1)} />
 					<ButtonTB
 						name="down"
-						onClick={() => switchAction('down')}
+						onMouseDown={() => {setDownActive(true); switchAction('down'); }}
+						onMouseUp={() => onMouseUp(setDownActive)}
 					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>
@@ -182,10 +159,11 @@ const TimeModeKeys = () => {
 			<KeyDiv>
 				<NameLabel>UP</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive('up')} />
+					<LED active={upActive || (mode.get === "pitch" && pitchMode.get[index.current]?.octave === 12) || (mode.get === "time" && timeMode.get[index.current]?.timing === 2)} />
 					<ButtonTB
 						name="up"
-						onClick={() => switchAction('up')}
+						onMouseDown={() => {setUpActive(true); switchAction('up')}}
+						onMouseUp={() => onMouseUp(setUpActive)}
 					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>
@@ -196,10 +174,11 @@ const TimeModeKeys = () => {
 			<KeyDiv>
 				<NameLabel>ACCENT</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive('accent')} />
+					<LED active={accentActive || (mode.get === "pitch" && pitchMode.get[index.current]?.accent === true) || (mode.get === "time" && timeMode.get[index.current]?.timing === 0) || (mode.get === "normal" && activeSection === "A")} />
 					<ButtonTB
 						name="accent"
-						onClick={() => switchAction('accent')}
+						onMouseDown={() => {setAccentActive(true); switchAction('accent')}}
+						onMouseUp={() => onMouseUp(setAccentActive)}
 					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>
@@ -210,10 +189,11 @@ const TimeModeKeys = () => {
 			<KeyDiv>
 				<NameLabel>SLIDE</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive('slide')} />
+					<LED active={mode.get === "time" ? false : slideActive || (mode.get === "pitch" && pitchMode.get[index.current]?.slide === true) || (mode.get === "normal" && activeSection === "B")} />
 					<ButtonTB
 						name="slide"
-						onClick={() => switchAction('slide')}
+						onMouseDown={() => {setSlideActive(true); switchAction('slide')}}
+						onMouseUp={() => onMouseUp(setSlideActive)}
 					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>

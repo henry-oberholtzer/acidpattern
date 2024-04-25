@@ -108,6 +108,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	const advanceIndex = () => {
 		setActiveIndex(activeIndex + 1);
 		console.log(timeMode)
+		console.log("trigger")
 		if (activeIndex >= 15) {
 			setMode("normal");
 		}

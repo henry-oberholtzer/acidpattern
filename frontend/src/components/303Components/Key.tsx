@@ -98,7 +98,7 @@ const HighlightP = styled.div`
   user-select: none;`
 
 const Key = (props: KeysProp) => {
-  const { activeIndex, pitchMode, mode, handlePitchInput, advanceIndex } = useContext(PatternContext)
+  const { activeIndex, pitchMode, mode, handlePitchInput, index } = useContext(PatternContext)
   const [ active, setActive ] = useState<boolean>(false)
 
   const onMouseDown = () => {
@@ -110,7 +110,7 @@ const Key = (props: KeysProp) => {
 
   const onMouseUp = () => {
     setActive(false)
-    advanceIndex()
+    index.next()
   }
 
   if (props.name[1] === "#") {
@@ -120,7 +120,7 @@ const Key = (props: KeysProp) => {
           {props.name}
         </SharpNameLabel>
         <SharpSwitchDiv>
-          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode.get[activeIndex]?.pitch === props.value)} />
+          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode.get[index.current]?.pitch === props.value)} />
           <ButtonTB 
             name={props.name}
             onMouseDown={onMouseDown}
