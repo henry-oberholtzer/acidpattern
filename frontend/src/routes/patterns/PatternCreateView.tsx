@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { PatternForm, } from '../../components/303Components';
 import {
 	CenterFrame,
 } from '../../components/303Components/303ControlPanel';
@@ -195,7 +194,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				handlePitchInput: handlePitchInput,
 				advanceIndex: advanceIndex,
 				activeSection: activeSection}}>
-					<PatternForm />
+					{/* <PatternForm /> */}
 					<TB303 />
 			</PatternContext.Provider>
 		</CenterFrame>

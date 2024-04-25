@@ -1,23 +1,29 @@
-import { PatternContext } from "../../routes/patterns/PatternCreateView";
-import { BorderContainer, Label, TextContainer, VerticalContainer, Text } from "./303ControlPanel";
-import { ButtonTB } from "./ButtonTB";
-import { LED } from "./LED";
-import { useContext, useEffect } from "react";
+import { PatternContext } from '../../routes/patterns/PatternCreateView';
+import {
+	BorderContainer,
+	Label,
+	TextContainer,
+	VerticalContainer,
+	Text,
+} from './303ControlPanel';
+import { ButtonTB } from './ButtonTB';
+import { LED } from './LED';
+import { useContext, useEffect } from 'react';
 
 const ClearRunControls = () => {
-  const { mode, run } = useContext(PatternContext)
+	const { mode, run } = useContext(PatternContext);
 
-  const handleRun = () => {
-    if (mode.get === "normal") {
-      run.set(!run.get)
-    }
-  }
+	const handleRun = () => {
+		if (mode.get === 'normal') {
+			run.set(!run.get);
+		}
+	};
 
-  useEffect(() => {
-    if (mode.get !== "normal") {
-      run.set(false)
-    }
-  }, [mode, run])
+	useEffect(() => {
+		if (mode.get !== 'normal') {
+			run.set(false);
+		}
+	}, [mode, run]);
 
 	return (
 		<VerticalContainer>
@@ -41,7 +47,7 @@ const ClearRunControls = () => {
 				<ButtonTB
 					name="run-stop"
 					large={true}
-          onClick={handleRun}
+					onClick={handleRun}
 				/>
 				<Label
 					htmlFor="run-stop"

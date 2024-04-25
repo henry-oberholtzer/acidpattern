@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { Pallete303 } from './Palette';
 import { PatternContext } from '../../routes/patterns/PatternCreateView';
 import { useContext } from 'react';
+import tiedNote from "./svgs/tied_note.svg"
+import sixteenthNote from "./svgs/sixteenth_note.svg"
+import restNote from "./svgs/rest_note.svg"
 
 const TitleDiv = styled.div`
 	height: 30px;
@@ -21,12 +24,13 @@ const LegendDiv = styled.div`
 	display: flex;
 `;
 
-const LegendDividingDiv = styled.div`
+const LegendDividingDiv = styled.div<{ $background?: string }>`
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 60px;
 	height: 26px;
+	background-image: url(${props => props.$background});
 	border-right: 1px solid ${Pallete303.Black};
 	&:first-of-type {
 		border-left: 10px solid ${Pallete303.Black};
@@ -49,9 +53,9 @@ const TimeModeControls = () => {
 					<LED active={mode.get === 'time'} margin={"0"} />
 			</TitleDiv>
 			<LegendDiv>
-				<LegendDividingDiv></LegendDividingDiv>
-				<LegendDividingDiv></LegendDividingDiv>
-				<LegendDividingDiv></LegendDividingDiv>
+				<LegendDividingDiv $background={sixteenthNote}></LegendDividingDiv>
+				<LegendDividingDiv $background={tiedNote}></LegendDividingDiv>
+				<LegendDividingDiv $background={restNote}></LegendDividingDiv>
 				<LegendDividingDiv>
 					<ButtonTB
 						name="enable-time-mode"

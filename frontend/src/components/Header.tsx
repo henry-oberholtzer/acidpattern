@@ -8,6 +8,7 @@ const HeaderDiv = styled.div`
 padding: 20px;
 display: flex;
 align-items: center;
+justify-content: space-between;
 height: 80px;
 width: 100%;
 background-color: ${Pallete303.Black}
