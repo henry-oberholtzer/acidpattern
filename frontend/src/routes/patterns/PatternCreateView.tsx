@@ -4,6 +4,7 @@ import {
 	CenterFrame,
 } from '../../components/303Components/303ControlPanel';
 import { TB303 } from '../../components/TB303';
+import { Voice303 } from '../../components/303Components/Voice303';
 
 const PatternContext = createContext<PatternContext>({
 	activeIndex: 0,
@@ -26,6 +27,7 @@ const PatternContext = createContext<PatternContext>({
 	trackPattGroup: { set: (number) => {number}, get: 1},
 	writeMode: { set: (number) => {number}, get: 1},
 	run: { set: (bool) => {bool}, get: false},
+	context: { set: () => {}, get: null},
 	handlePitchInput: (int) => {int},
 	advanceIndex: () => {}
 })
@@ -53,6 +55,7 @@ interface PatternContext {
 	trackPattGroup: { set: Dispatch<SetStateAction<number>>, get: number},
 	writeMode: { set: Dispatch<SetStateAction<number>>, get: number},
 	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
+	context: { set: Dispatch<SetStateAction<Voice303 | null>>, get: Voice303 | null},
 }
 
 const PatternCreateView = (props: PatternCreateProps) => {
@@ -75,13 +78,15 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	const [accent, setAccent] = useState<number>(63)
 	// Second panel settings
 	const [tempo, setTempo] = useState<number>(130)
-	const [volume, setVolume] = useState<number>(127)
+	const [volume, setVolume] = useState<number>(0)
 	// Transport
 	const [run, setRun] = useState<boolean>(false)
 
 	// Other swtiches
 	const [trackPattGroup, setTrackPattGroup] = useState<number>(1)
 	const [writeMode, setWriteMode] = useState<number>(1)
+
+	const [audioContext, setAudioContext] = useState<Voice303 | null>(null)
 
 	const switchSections = (sectionToSwitchTo: "A" | "B") => {
 		setActiveSection(sectionToSwitchTo)
@@ -166,12 +171,15 @@ const PatternCreateView = (props: PatternCreateProps) => {
 					};
 					setPitchMode([...pitchMode, newPitch]);
 				}
+				if (audioContext) {
+					audioContext.play(value)
+				}
 				console.log(pitchMode)
 		}
 	}
 
 	return (
-		<CenterFrame>
+		<CenterFrame onClick={() => setAudioContext(new Voice303())}>
 			<PatternContext.Provider value={{ 
 				activeIndex: activeIndex,
 				pitchMode: { set: setPitchMode, get: pitchMode },
@@ -191,6 +199,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				volume: { set: setVolume, get: volume},
 				trackPattGroup: { set: setTrackPattGroup, get: trackPattGroup},
 				writeMode: { set: setWriteMode, get: writeMode},
+				context: { set: setAudioContext, get: audioContext },
 				switchSections: switchSections,
 				handlePitchInput: handlePitchInput,
 				advanceIndex: advanceIndex,
