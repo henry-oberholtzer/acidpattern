@@ -4,6 +4,40 @@ import { Pallete303 } from "./Palette"
 import { useContext, useState } from "react"
 import { PatternContext } from "../../routes/patterns/PatternCreateView"
 
+const SharpKeyDiv = styled.div`
+  width: 32px;
+  height: 104px;
+  display: flex;
+  margin-top: -104px;
+  margin-left: -16px;
+  margin-right: -16px;
+  z-index: 2;
+  flex-direction: column;
+  border-radius: 0 0 4px 4px;
+  `
+
+const SharpNameLabel = styled.label`
+  user-select: none;
+  width: 32px;
+  height: 15px;
+  font-size: 12px;
+  background-color: ${Pallete303.Black};
+  color: ${Pallete303.ControlPanelColor};
+  text-align: center;`
+
+const SharpSwitchDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+    height: 88px;
+    margin-top: 2px;
+    background-color: ${Pallete303.Black};
+    border-top: 1px solid ${Pallete303.ControlPanelColor};
+    border-radius: 0 0 4px 4px;
+    padding: 0 0 15px;`
+
 const KeyDiv = styled.div`
   width: 60px;
   height: 208px;
@@ -79,31 +113,50 @@ const Key = (props: KeysProp) => {
     advanceIndex()
   }
 
-  return (
-    <KeyDiv>
-      <NameLabel htmlFor={props.name}>{props.name}</NameLabel>
-      <SwitchDiv>
-        <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
-        <ButtonTB name={props.name}
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp} />
-      </SwitchDiv>
-      <Decor>{props.number}</Decor>
-      <SmallerDiv>
-        <HighlightP>
-          {props.number}
-        </HighlightP>
-      </SmallerDiv>
-    </KeyDiv>
-  )
+  if (props.name[1] === "#") {
+    return (
+      <SharpKeyDiv>
+        <SharpNameLabel htmlFor={props.name}>
+          {props.name}
+        </SharpNameLabel>
+        <SharpSwitchDiv>
+          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
+          <ButtonTB 
+            name={props.name}
+            onMouseDown={onMouseDown}
+            onMouseUp={onMouseUp} />
+        </SharpSwitchDiv>
+      </SharpKeyDiv>
+    )
+  }
+  else {
+    return (
+      <KeyDiv>
+        <NameLabel htmlFor={props.name}>{props.name}</NameLabel>
+        <SwitchDiv>
+          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
+          <ButtonTB name={props.name}
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp} />
+        </SwitchDiv>
+        <Decor>{props.number}</Decor>
+        <SmallerDiv>
+          <HighlightP>
+            {props.number}
+          </HighlightP>
+        </SmallerDiv>
+      </KeyDiv>
+    )
+  }
+  
 }
 
 interface KeysProp {
   sharp?: boolean;
-  callbackFunction: (arg0: number) => void;
+  index?: number;
   value: number;
   name: string;
-  number: number;
+  number?: number;
 }
 
 export { Key }

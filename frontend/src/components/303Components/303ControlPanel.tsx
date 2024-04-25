@@ -51,6 +51,7 @@ const Label = styled.label<{$silver?: boolean, $small?: boolean, $height?: numbe
   height: ${props => props.$height ? props.$height + "px" : props.$border ? "17px" : "24px"};
   margin-bottom: ${props => props.$border ? "7px" : ""};
   padding: ${props => props.$border ? "0px 2px" : "0"};
+  text-align: center;
   text-transform: uppercase;
   user-select: none;
 `
@@ -59,7 +60,7 @@ const Text = styled.span<{$padding?: number, $fontSize?: number, $noBorder?: boo
   font-family: 'Inter';
   text-transform: uppercase;
   font-size: ${props => props.$fontSize ? props.$fontSize + "px" : props.$noBorder ? "12px" : "10px" };
-  padding: ${props => props.$padding + "px" ? props.$padding : "1px" };
+  padding: ${props => props.$padding ? props.$padding  + "px"  : "1px" };
   height: 17px;
   border: ${props => props.$noBorder? "None" : "1px solid " + Pallete303.Black};
   margin-right: 1px;
@@ -73,7 +74,7 @@ const TextContainer = styled.div<{$height?: number}>`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: ${props => props.$height ? props.$height : 24 } + px;
+  height: ${props => props.$height ? props.$height : 24 }px;
   user-select: none;
   `
 
@@ -91,6 +92,7 @@ const CenterFrame = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  align-items: center;
   background-color: #000000;
   flex-direction: column;`
 

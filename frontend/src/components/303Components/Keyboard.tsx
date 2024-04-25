@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Key, KeySharp } from '.';
+import { Key } from '.';
 import { Pallete303 } from './Palette';
 
 const KeyboardContainer = styled.div`
@@ -13,85 +13,68 @@ const KeyboardContainer = styled.div`
 	border-radius: 2px;
 `;
 
-const Keyboard = (props: KeyboardProps) => {
+const Keyboard = () => {
 
 
 	return (
 		<KeyboardContainer>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={36}
 				name={'C'}
 				number={1}
 			/>
-			<KeySharp
-				callbackFunction={props.callbackFunction}
-				index={0}
+			<Key
 				name={'C#'}
 				value={37}
+				index={0}
 			/>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={38}
 				name={'D'}
 				number={2}
 			/>
-			<KeySharp
-				callbackFunction={props.callbackFunction}
-				index={1}
+			<Key
 				name={'D#'}
 				value={39}
 			/>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={40}
 				name={'E'}
 				number={3}
 			/>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={41}
 				name={'F'}
 				number={4}
 			/>
-			<KeySharp
-				callbackFunction={props.callbackFunction}
-				index={3}
+			<Key
 				name={'F#'}
 				value={42}
 			/>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={43}
 				name={'G'}
 				number={5}
 			/>
-			<KeySharp
-				callbackFunction={props.callbackFunction}
-				index={4}
+			<Key
 				name={'G#'}
 				value={44}
 			/>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={45}
 				name={'A'}
 				number={6}
 			/>
-			<KeySharp
-				callbackFunction={props.callbackFunction}
-				index={5}
+			<Key
 				name={'A#'}
 				value={46}
 			/>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={47}
 				name={'B'}
 				number={7}
 			/>
 			<Key
-				callbackFunction={props.callbackFunction}
 				value={48}
 				name={'C'}
 				number={8}
@@ -99,9 +82,5 @@ const Keyboard = (props: KeyboardProps) => {
 		</KeyboardContainer>
 	);
 };
-
-interface KeyboardProps {
-	callbackFunction: (arg0: number) => void;
-}
 
 export { Keyboard };

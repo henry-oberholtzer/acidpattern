@@ -75,7 +75,7 @@ const TimeModeKeys = () => {
 	const { activeIndex, timeMode, pitchMode, mode, activeSection, switchSections } = useContext(PatternContext)
 
   const determineActive = (type: string) => {
-    if (mode === "pitch" && pitchMode[activeIndex]) {
+    if (mode.get === "pitch" && pitchMode[activeIndex]) {
       if (type === "slide") {
         return pitchMode[activeIndex].slide
       }
@@ -89,7 +89,7 @@ const TimeModeKeys = () => {
       } else {
         return false
       }
-    } else if (mode === "time" && timeMode[activeIndex]) {
+    } else if (mode.get === "time" && timeMode[activeIndex]) {
 			if (type === "down" && timeMode[activeIndex].timing === 1) {
 				return true
 			} else if (type === "up" && timeMode[activeIndex].timing === 2) {
@@ -99,7 +99,7 @@ const TimeModeKeys = () => {
 			} else {
 				return false
 			}
-		} else if (mode === "normal") {
+		} else if (mode.get === "normal") {
 			if (type === "accent" && activeSection === "A") {
 				return true
 			} else if (type === "slide" && activeSection === "B") {
@@ -111,11 +111,13 @@ const TimeModeKeys = () => {
   }
 
 	const switchAction = (type: string) => {
-		if (mode === "pitch") {
+		if (mode.get === "pitch") {
 			// Change the properties accordingly for the current note
-		} else if (mode === "time") {
+			// Apply the new setting
+			// Play the new note.
+		} else if (mode.get === "time") {
 			// Create or alter the time accordingly
-		} else if (mode === "normal") {
+		} else if (mode.get === "normal") {
 			if (type === "accent") {
 				switchSections("A")
 			} else if (type === "slide") {

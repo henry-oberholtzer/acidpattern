@@ -76,7 +76,7 @@ const KnobInput = styled.input<{$large?: boolean, $rotation: number}>`
   }
 `
 const Knob = (props: KnobProps) => {
-  const [value, setValue] = useState<number>(props.initValue ? props.initValue : Math.round((props.max - props.min) / 2))
+  // const [value, setValue] = useState<number>(props.initValue ? props.initValue : Math.round((props.max - props.min) / 2))
   const [dragFrom, setDragFrom] = useState<DragFrom | null>()
   
   const knobRef = useRef<HTMLInputElement | null>(null)
@@ -85,12 +85,12 @@ const Knob = (props: KnobProps) => {
     if (knobRef.current != null) {
       knobRef.current.focus();
     }
-    let newValue = e.deltaY > 0 ? value - 4 : value + 4;
-    if (e.shiftKey) {
-      newValue = e.deltaY > 0 ? value - 1 : value + 1;
+    let newValue = e.deltaY > 0 ? props.state.get - 4 : props.state.get + 4;
+    if (e.shiftKey || props.steps < 50) {
+      newValue = e.deltaY > 0 ? props.state.get - 1 : props.state.get + 1;
     }
     if (props.min <= newValue && newValue <= props.max) {
-      setValue(newValue)
+      props.state.set(newValue)
     }
   }
 
@@ -106,7 +106,7 @@ const Knob = (props: KnobProps) => {
           x: dx,
           y: dy,
           a: da,
-          v: value,
+          v: props.state.get,
         })
       }
     }
@@ -117,17 +117,17 @@ const Knob = (props: KnobProps) => {
       const dy = e.clientY - dragFrom.y;
       const newValue = Math.round((dx/64-dy/128)*(props.max-props.min));
       if (props.min <= newValue && newValue <= props.max) {
-        setValue(newValue);
+        props.state.set(newValue);
       }
     }
   }
 
   const rotate = () => {
     const step = (props.maxDeg - props.minDeg) / props.steps;
-    return props.minDeg + step * value
+    return props.minDeg + step * props.state.get
   }
 
-  const calcRotation = useCallback(rotate, [value, rotate])
+  const calcRotation = useCallback(rotate, [props.state.get, rotate])
 
   return (
     <KnobContainer $large={props.large}>
@@ -142,23 +142,24 @@ const Knob = (props: KnobProps) => {
             min={props.min}
             max={props.max}
             $rotation={calcRotation()}
-            value={value}
+            value={props.state.get}
             type="range"
             onChange={() => null}
             onMouseUp={() => setDragFrom(null)}
             onPointerDown={(e) => mouseDownChangeValue(e)}
             onPointerMove={(e) => mouseMoveChangeValue(e)}
-            onDoubleClick={() => setValue(Math.floor((props.max - props.min) / 2))}
+            onDoubleClick={() => props.state.set(Math.floor((props.max - props.min) / 2))}
             onWheel={wheelChangeValue}
           />
         </PotentiometerCutout>
       </PotentiometerNotch>
-      <Label>{value}</Label>
+      <Label>{props.state.get}</Label>
     </KnobContainer>
   )
 }
 
 interface KnobProps {
+  state: { set: React.Dispatch<React.SetStateAction<number>>, get: number}
   large?: boolean
   name?: string;
   initValue?: number,

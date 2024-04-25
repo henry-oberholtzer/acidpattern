@@ -3,6 +3,8 @@ import { Knob } from "./Knob"
 import { Pallete303 } from "./Palette"
 import { BassLine } from "./BassLine"
 import { AcidPattern } from "./AcidPattern"
+import { PatternContext } from "../../routes/patterns/PatternCreateView"
+import { useContext } from "react"
 
 const FirstPanelContainer = styled.div`
   height: 96px;
@@ -21,20 +23,24 @@ const LineDivider = styled.div`
 
 
 const FirstPanel = () => {
+  const { tuning, cutoff, resonance, envMod, decay, accent } = useContext(PatternContext)
+
   return (
     <FirstPanelContainer>
       <AcidPattern />
       <LineDivider/>
       <Knob
         name={"tuning"}
+        state={tuning}
         min={0}
-        max={49}
-        steps={50}
+        max={100}
+        steps={100}
         minDeg={30}
         maxDeg={330}
       />
       <Knob
         name={"cut off freq"}
+        state={cutoff}
         min={0}
         max={127}
         steps={128}
@@ -43,6 +49,7 @@ const FirstPanel = () => {
       />
       <Knob
         name={"resonance"}
+        state={resonance}
         min={0}
         max={127}
         steps={128}
@@ -51,6 +58,7 @@ const FirstPanel = () => {
       />
       <Knob
         name={"env mod"}
+        state={envMod}
         min={0}
         max={127}
         steps={128}
@@ -59,6 +67,7 @@ const FirstPanel = () => {
       />
       <Knob
         name={"decay"}
+        state={decay}
         min={0}
         max={127}
         steps={128}
@@ -67,6 +76,7 @@ const FirstPanel = () => {
         />
       <Knob
         name={"accent"}
+        state={accent}
         min={0}
         max={127}
         steps={128}

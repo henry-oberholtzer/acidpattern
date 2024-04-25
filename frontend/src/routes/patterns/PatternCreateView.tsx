@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import { LED, ButtonTB, TimeModeControls, PitchNormalControls, Keyboard, SecondPanel, FirstPanel, PatternForm } from '../../components/303Components';
+import { ButtonTB, TimeModeControls, PitchNormalControls, Keyboard, SecondPanel, FirstPanel, PatternForm, ClearRunControls } from '../../components/303Components';
 import {
 	BorderContainer,
 	ControlPanel,
@@ -21,6 +21,7 @@ const PatternContext = createContext<PatternContext>({
 	switchSections: () => {},
 	mode: { set: (string) => {string}, get: "normal"},
 	name: { set: (string) => {string}, get: "normal"},
+	index: { next: () => {}, back: () => {}, current: 0},
 	waveform: { set: (string) => {string}, get: "saw"},
 	tuning: { set: (number) => {number}, get: 63},
 	cutoff: { set: (number) => {number}, get: 63},
@@ -30,6 +31,7 @@ const PatternContext = createContext<PatternContext>({
 	accent: { set: (number) => {number}, get: 63},
 	tempo: { set: (number) => {number}, get: 63},
 	volume: { set: (number) => {number}, get: 63},
+	run: { set: (bool) => {bool}, get: false},
 	handlePitchInput: (int) => {int},
 	advanceIndex: () => {}
 })
@@ -42,6 +44,7 @@ interface PatternContext {
 	switchSections: (section: "A" | "B") =>  void;
 	handlePitchInput: (int: number) => void;
 	advanceIndex: () => void;
+	index: { next: () => void, back: () => void, current: number},
 	mode: { set: Dispatch<SetStateAction<"pitch" | "time" | "normal">>, get: "pitch" | "time" | "normal"},
 	name: { set: Dispatch<SetStateAction<string>>, get: string},
 	waveform: { set: Dispatch<SetStateAction<"saw" | "square">>, get: "saw" | "square" },
@@ -53,6 +56,7 @@ interface PatternContext {
 	accent: { set: Dispatch<SetStateAction<number>>, get: number},
 	tempo: { set: Dispatch<SetStateAction<number>>, get: number},
 	volume: { set: Dispatch<SetStateAction<number>>, get: number},
+	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
 }
 
 const PatternCreateView = (props: PatternCreateProps) => {
@@ -76,6 +80,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	// Second panel settings
 	const [tempo, setTempo] = useState<number>(130)
 	const [volume, setVolume] = useState<number>(127)
+	// Transport
+	const [run, setRun] = useState<boolean>(false)
 
 
 	const switchSections = (sectionToSwitchTo: "A" | "B") => {
@@ -166,13 +172,14 @@ const PatternCreateView = (props: PatternCreateProps) => {
 
 	return (
 		<CenterFrame>
-			
 			<PatternContext.Provider value={{ 
 				activeIndex: activeIndex,
 				pitchMode: pitchMode,
 				timeMode: timeMode,
+				index: { next: advanceIndex, back: reverseIndex, current: activeIndex},
 				mode: { set: setMode, get: mode},
 				name: { set: setName, get: name},
+				run: {set: setRun, get: run},
 				waveform: { set: setWaveform, get: waveform},
 				tuning: { set: setTuning, get: tuning},
 				cutoff: { set: setCutoffFreq, get: cutOffFreq},
@@ -193,40 +200,11 @@ const PatternCreateView = (props: PatternCreateProps) => {
 							<ControlPanelFrame>
 								<ControlPanel>
 									{/* Left Most Controls */}
-									<VerticalContainer>
-										<BorderContainer $small>
-											<TextContainer>
-												<Text>D.C.</Text>
-												<Text>BAR RESET</Text>
-											</TextContainer>
-											<Label
-												htmlFor="pattern-clear"
-												$small>
-												PATTERN CLEAR
-											</Label>
-											<ButtonTB
-												name="pattern-clear"
-												horizontal={true}
-											/>
-										</BorderContainer>
-										<BorderContainer>
-											<LED active={true} />
-											<ButtonTB
-												name="run-stop"
-												large={true}
-											/>
-											<Label
-												htmlFor="run-stop"
-												$extraMargin>
-												Run / Stop
-											</Label>
-										</BorderContainer>
-									</VerticalContainer>
+									<ClearRunControls />
 									{/* Second from left controls */}
 									<PitchNormalControls />
 									{/* Keyboard */}
-										<Keyboard 
-											callbackFunction={handlePitchInput}/>
+										<Keyboard />
 									{/* Time Mode */}
 									<TimeModeControls />
 									{/* Furthest right controls */}
