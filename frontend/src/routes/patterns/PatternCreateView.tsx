@@ -8,8 +8,8 @@ import { TB303 } from '../../components/TB303';
 
 const PatternContext = createContext<PatternContext>({
 	activeIndex: 0,
-	pitchMode: [],
-	timeMode: [],
+	pitchMode: { set: (pitch) => {pitch}, get: []},
+	timeMode: { set: (pitch) => {pitch}, get: []},
 	activeSection: "A",
 	switchSections: () => {},
 	mode: { set: (string) => {string}, get: "normal"},
@@ -33,8 +33,8 @@ const PatternContext = createContext<PatternContext>({
 
 interface PatternContext {
 	activeIndex: number;
-	pitchMode: Pitch[];
-	timeMode: Time[];
+	pitchMode: { set: Dispatch<SetStateAction<Pitch[]>>, get: Pitch[]},
+	timeMode: { set: Dispatch<SetStateAction<Time[]>>, get: Time[]},
 	activeSection: "A" | "B";
 	switchSections: (section: "A" | "B") =>  void;
 	handlePitchInput: (int: number) => void;
@@ -108,6 +108,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 
 	const advanceIndex = () => {
 		setActiveIndex(activeIndex + 1);
+		console.log(timeMode)
 		if (activeIndex >= 15) {
 			setMode("normal");
 		}
@@ -119,32 +120,32 @@ const PatternCreateView = (props: PatternCreateProps) => {
 		}
 	}
 
-	const randomPitch = (index: number) => {
-		const getRandom = (range: number) => {
-			return Math.floor(Math.random() * range)
-		}
+	// const randomPitch = (index: number) => {
+	// 	const getRandom = (range: number) => {
+	// 		return Math.floor(Math.random() * range)
+	// 	}
 
-		const newPitch = {
-			index: index,
-			accent: false,
-			slide: false,
-			pitch: getRandom(12) + 36,
-			octave: 0,
-		}
-		return newPitch as Pitch
-	}
+	// 	const newPitch = {
+	// 		index: index,
+	// 		accent: false,
+	// 		slide: false,
+	// 		pitch: getRandom(12) + 36,
+	// 		octave: 0,
+	// 	}
+	// 	return newPitch as Pitch
+	// }
 
 	useEffect(() => {
 		setActiveIndex(0)
-		if (pitchMode.length < 16 && pitchMode.length > 1) {
-			const newArray = [];
-			let index = pitchMode.length;
-			while (newArray.length < (16 - pitchMode.length)) {
-				newArray.push(randomPitch(index));
-				index++;
-			}
-			setPitchMode([...pitchMode, ...newArray])
-		}
+		// if (pitchMode.length < 16 && pitchMode.length > 1) {
+		// 	const newArray = [];
+		// 	let index = pitchMode.length;
+		// 	while (newArray.length < (16 - pitchMode.length)) {
+		// 		newArray.push(randomPitch(index));
+		// 		index++;
+		// 	}
+		// 	setPitchMode([...pitchMode, ...newArray])
+		// }
 	}, [mode])
 
 	const handlePitchInput = (value: number) => {
@@ -166,7 +167,6 @@ const PatternCreateView = (props: PatternCreateProps) => {
 					setPitchMode([...pitchMode, newPitch]);
 				}
 				console.log(pitchMode)
-				advanceIndex()
 		}
 	}
 
@@ -174,8 +174,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 		<CenterFrame>
 			<PatternContext.Provider value={{ 
 				activeIndex: activeIndex,
-				pitchMode: pitchMode,
-				timeMode: timeMode,
+				pitchMode: { set: setPitchMode, get: pitchMode },
+				timeMode: { set: setTimeMode, get: timeMode},
 				index: { next: advanceIndex, back: reverseIndex, current: activeIndex},
 				mode: { set: setMode, get: mode},
 				name: { set: setName, get: name},

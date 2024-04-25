@@ -120,7 +120,7 @@ const Key = (props: KeysProp) => {
           {props.name}
         </SharpNameLabel>
         <SharpSwitchDiv>
-          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
+          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode.get[activeIndex]?.pitch === props.value)} />
           <ButtonTB 
             name={props.name}
             onMouseDown={onMouseDown}
@@ -134,7 +134,7 @@ const Key = (props: KeysProp) => {
       <KeyDiv>
         <NameLabel htmlFor={props.name}>{props.name}</NameLabel>
         <SwitchDiv>
-          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode[activeIndex]?.pitch === props.value)} />
+          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode.get[activeIndex]?.pitch === props.value)} />
           <ButtonTB name={props.name}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp} />

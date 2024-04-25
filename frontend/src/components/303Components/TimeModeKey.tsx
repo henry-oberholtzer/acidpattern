@@ -72,68 +72,107 @@ const HighlightP = styled.div`
 `;
 
 const TimeModeKeys = () => {
-	const { activeIndex, timeMode, pitchMode, mode, activeSection, switchSections } = useContext(PatternContext)
+	const {
+		timeMode,
+		pitchMode,
+		mode,
+		activeSection,
+		index,
+		switchSections,
+	} = useContext(PatternContext);
 
-  const determineActive = (type: string) => {
-    if (mode.get === "pitch" && pitchMode[activeIndex]) {
-      if (type === "slide") {
-        return pitchMode[activeIndex].slide
-      }
-      if (type === "accent") {
-        return pitchMode[activeIndex].accent
-      }
-      if (type === "down" && pitchMode[activeIndex].octave === -12) {
-        return true
-      } else if (type === "up" && pitchMode[activeIndex].octave === 12) {
-        return true
-      } else {
-        return false
-      }
-    } else if (mode.get === "time" && timeMode[activeIndex]) {
-			if (type === "down" && timeMode[activeIndex].timing === 1) {
-				return true
-			} else if (type === "up" && timeMode[activeIndex].timing === 2) {
-				return true
-			} else if (type === "accent" && timeMode[activeIndex].timing === 0) {
-				return true
-			} else {
-				return false
+	const determineActive = (type: string) => {
+		if (mode.get === 'pitch' && pitchMode.get[index.current]) {
+			if (type === 'slide') {
+				return pitchMode.get[index.current].slide;
 			}
-		} else if (mode.get === "normal") {
-			if (type === "accent" && activeSection === "A") {
-				return true
-			} else if (type === "slide" && activeSection === "B") {
-				return true
+			if (type === 'accent') {
+				return pitchMode.get[index.current].accent;
+			}
+			if (type === 'down' && pitchMode.get[index.current].octave === -12) {
+				return true;
+			} else if (type === 'up' && pitchMode.get[index.current].octave === 12) {
+				return true;
 			} else {
-				return false
+				return false;
+			}
+		} else if (mode.get === 'time' && timeMode.get[index.current]) {
+			if (type === 'down' && timeMode.get[index.current].timing === 1) {
+				return true;
+			} else if (type === 'up' && timeMode.get[index.current].timing === 2) {
+				return true;
+			} else if (type === 'accent' && timeMode.get[index.current].timing === 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (mode.get === 'normal') {
+			if (type === 'accent' && activeSection === 'A') {
+				return true;
+			} else if (type === 'slide' && activeSection === 'B') {
+				return true;
+			} else {
+				return false;
 			}
 		}
-  }
+	};
 
 	const switchAction = (type: string) => {
-		if (mode.get === "pitch") {
-			// Change the properties accordingly for the current note
-			// Apply the new setting
-			// Play the new note.
-		} else if (mode.get === "time") {
-			// Create or alter the time accordingly
-		} else if (mode.get === "normal") {
-			if (type === "accent") {
-				switchSections("A")
-			} else if (type === "slide") {
-				switchSections("B")
+		if (mode.get === 'pitch') {
+			const currentNote: Pitch = pitchMode.get[index.current];
+			switch (type) {
+				case 'accent':
+					currentNote.accent = !currentNote.accent;
+					break;
+				case 'slide':
+					currentNote.slide = !currentNote.slide;
+					break;
+				case 'up':
+					currentNote.octave = currentNote.octave === 12 ? 0 : 12;
+					break;
+				case 'down':
+					currentNote.octave = currentNote.octave === -12 ? 0 : -12;
+					break;
+			}
+			const newPitchArray = [...pitchMode.get];
+			newPitchArray[index.current] = currentNote;
+			pitchMode.set(newPitchArray);
+		} else if (mode.get === 'time') {
+			const timeValue =
+				type === 'down' ? 1 : type === 'up' ? 2 : type === 'accent' ? 0 : null;
+			if (timeValue) {
+				const newTime: Time = {
+					index: index.current,
+					timing: timeValue,
+				};
+				if (timeMode.get[index.current]) {
+					const newTimeMode = [...timeMode.get];
+					newTimeMode[index.current] = newTime;
+					timeMode.set(newTimeMode);
+				} else {
+					timeMode.set([...timeMode.get, newTime]);
+				}
+			}
+			index.next()
+		} else if (mode.get === 'normal') {
+			if (type === 'accent') {
+				switchSections('A');
+			} else if (type === 'slide') {
+				switchSections('B');
 			}
 		}
-	}
+	};
 
 	return (
 		<Group>
 			<KeyDiv>
-        <NameLabel>DOWN</NameLabel>
+				<NameLabel>DOWN</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive("down")} />
-					<ButtonTB name="down"
-          onClick={() => switchAction("down")} />
+					<LED active={determineActive('down')} />
+					<ButtonTB
+						name="down"
+						onClick={() => switchAction('down')}
+					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
@@ -141,35 +180,41 @@ const TimeModeKeys = () => {
 				</SmallerDiv>
 			</KeyDiv>
 			<KeyDiv>
-        <NameLabel>UP</NameLabel>
+				<NameLabel>UP</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive("up")} />
-					<ButtonTB name="up"
-          onClick={() => switchAction("up")} />
+					<LED active={determineActive('up')} />
+					<ButtonTB
+						name="up"
+						onClick={() => switchAction('up')}
+					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
 					<HighlightP>0</HighlightP>
 				</SmallerDiv>
 			</KeyDiv>
-      <KeyDiv>
-        <NameLabel>ACCENT</NameLabel>
+			<KeyDiv>
+				<NameLabel>ACCENT</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive("accent")} />
-					<ButtonTB name="accent"
-          onClick={() => switchAction("accent")} />
+					<LED active={determineActive('accent')} />
+					<ButtonTB
+						name="accent"
+						onClick={() => switchAction('accent')}
+					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
 					<HighlightP>100</HighlightP>
 				</SmallerDiv>
 			</KeyDiv>
-      <KeyDiv>
-        <NameLabel>SLIDE</NameLabel>
+			<KeyDiv>
+				<NameLabel>SLIDE</NameLabel>
 				<SwitchDiv>
-					<LED active={determineActive("slide")}/>
-					<ButtonTB name="slide"
-          onClick={() => switchAction("slide")} />
+					<LED active={determineActive('slide')} />
+					<ButtonTB
+						name="slide"
+						onClick={() => switchAction('slide')}
+					/>
 				</SwitchDiv>
 				<Decor>{}</Decor>
 				<SmallerDiv>
