@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Pallete303 } from "./Palette";
+import { WaveformSwitch } from "./WaveformSwitch";
 
 const AcidPatternDiv = styled.div`
   width: 315px;
@@ -19,6 +20,7 @@ const H3 = styled.h3`
 const AcidPattern = () => {
   return (
     <AcidPatternDiv>
+      <WaveformSwitch />
       <H3>acidpattern</H3>
     </AcidPatternDiv>
   )
