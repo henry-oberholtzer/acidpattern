@@ -8,9 +8,13 @@ class Voice303 {
     this.synth = new Tone.Synth().toDestination();
   }
 
-  play(pitch: number) {
+  attack(pitch: number) {
     const frequency = Tone.Frequency(pitch, "midi").toNote()
-    this.synth.triggerAttackRelease(frequency, "8n")
+    this.synth.triggerAttack(frequency)
+  }
+
+  release() {
+    this.synth.triggerRelease()
   }
 }
 

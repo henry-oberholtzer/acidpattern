@@ -10,8 +10,8 @@ const PatternContext = createContext<PatternContext>({
 	activeIndex: 0,
 	pitchMode: { set: (pitch) => {pitch}, get: []},
 	timeMode: { set: (pitch) => {pitch}, get: []},
-	activeSection: "A",
-	switchSections: () => {},
+	sections: { set: (section) => {section}, get: [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []},]},
+	activeSection: { set: (string) => {string}, get: "A" },
 	mode: { set: (string) => {string}, get: "normal"},
 	name: { set: (string) => {string}, get: "normal"},
 	index: { next: () => {}, back: () => {}, current: 0},
@@ -27,8 +27,7 @@ const PatternContext = createContext<PatternContext>({
 	trackPattGroup: { set: (number) => {number}, get: 1},
 	writeMode: { set: (number) => {number}, get: 1},
 	run: { set: (bool) => {bool}, get: false},
-	context: { set: () => {}, get: null},
-	handlePitchInput: (int) => {int},
+	synth: { set: () => {}, get: null},
 	advanceIndex: () => {}
 })
 
@@ -36,9 +35,6 @@ interface PatternContext {
 	activeIndex: number;
 	pitchMode: { set: Dispatch<SetStateAction<Pitch[]>>, get: Pitch[]},
 	timeMode: { set: Dispatch<SetStateAction<Time[]>>, get: Time[]},
-	activeSection: "A" | "B";
-	switchSections: (section: "A" | "B") =>  void;
-	handlePitchInput: (int: number) => void;
 	advanceIndex: () => void;
 	index: { next: () => void, back: () => void, current: number},
 	mode: { set: Dispatch<SetStateAction<"pitch" | "time" | "normal">>, get: "pitch" | "time" | "normal"},
@@ -55,7 +51,9 @@ interface PatternContext {
 	trackPattGroup: { set: Dispatch<SetStateAction<number>>, get: number},
 	writeMode: { set: Dispatch<SetStateAction<number>>, get: number},
 	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
-	context: { set: Dispatch<SetStateAction<Voice303 | null>>, get: Voice303 | null},
+	sections: { set: Dispatch<SetStateAction<[Section, Section]>>, get: [Section, Section]},
+	activeSection: { set: Dispatch<SetStateAction<"A"|"B">>, get: "A" | "B"},
+	synth: { set: Dispatch<SetStateAction<Voice303 | null>>, get: Voice303 | null},
 }
 
 const PatternCreateView = (props: PatternCreateProps) => {
@@ -88,32 +86,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 
 	const [audioContext, setAudioContext] = useState<Voice303 | null>(null)
 
-	const switchSections = (sectionToSwitchTo: "A" | "B") => {
-		setActiveSection(sectionToSwitchTo)
-		let currentName: "A" | "B" = "A";
-		let currentIndex: number = 0;
-		let newIndex = 1
-		if (sectionToSwitchTo === "A") {
-			currentName = "B"
-			currentIndex = 1
-			newIndex = 0
-		}
-		const currentSection: Section = {
-			name: currentName,
-			time_mode: timeMode,
-			pitch_mode: pitchMode,
-		}
-		const newSections: [Section, Section] = [sections[0], sections[1]]
-		newSections[currentIndex] = currentSection;
-		setSections(newSections)
-		setTimeMode(sections[newIndex].time_mode)
-		setPitchMode(sections[newIndex].pitch_mode)
-	}
-
 	const advanceIndex = () => {
 		setActiveIndex(activeIndex + 1);
-		console.log(timeMode)
-		console.log("trigger")
 		if (activeIndex >= 15) {
 			setMode("normal");
 		}
@@ -125,58 +99,34 @@ const PatternCreateView = (props: PatternCreateProps) => {
 		}
 	}
 
-	// const randomPitch = (index: number) => {
-	// 	const getRandom = (range: number) => {
-	// 		return Math.floor(Math.random() * range)
-	// 	}
-
-	// 	const newPitch = {
-	// 		index: index,
-	// 		accent: false,
-	// 		slide: false,
-	// 		pitch: getRandom(12) + 36,
-	// 		octave: 0,
-	// 	}
-	// 	return newPitch as Pitch
-	// }
-
 	useEffect(() => {
 		setActiveIndex(0)
-		// if (pitchMode.length < 16 && pitchMode.length > 1) {
-		// 	const newArray = [];
-		// 	let index = pitchMode.length;
-		// 	while (newArray.length < (16 - pitchMode.length)) {
-		// 		newArray.push(randomPitch(index));
-		// 		index++;
-		// 	}
-		// 	setPitchMode([...pitchMode, ...newArray])
-		// }
 	}, [mode])
 
-	const handlePitchInput = (value: number) => {
-		if (mode === "pitch") {
-				let newPitch: Pitch;
-				if (pitchMode[activeIndex]) {
-					const newPitch = {...pitchMode[activeIndex], pitch: value}
-					const newPitchArray = [...pitchMode]
-					newPitchArray[activeIndex] = newPitch;
-					setPitchMode(newPitchArray);
-				} else {
-					newPitch = {
-						index: activeIndex,
-						accent: false,
-						slide: false,
-						pitch: value,
-						octave: 0,
-					};
-					setPitchMode([...pitchMode, newPitch]);
-				}
-				if (audioContext) {
-					audioContext.play(value)
-				}
-				console.log(pitchMode)
-		}
-	}
+	// const handlePitchInput = (value: number) => {
+	// 	if (mode === "pitch") {
+	// 			let newPitch: Pitch;
+	// 			if (pitchMode[activeIndex]) {
+	// 				const newPitch = {...pitchMode[activeIndex], pitch: value}
+	// 				const newPitchArray = [...pitchMode]
+	// 				newPitchArray[activeIndex] = newPitch;
+	// 				setPitchMode(newPitchArray);
+	// 			} else {
+	// 				newPitch = {
+	// 					index: activeIndex,
+	// 					accent: false,
+	// 					slide: false,
+	// 					pitch: value,
+	// 					octave: 0,
+	// 				};
+	// 				setPitchMode([...pitchMode, newPitch]);
+	// 			}
+	// 			if (audioContext) {
+	// 				audioContext.play(value)
+	// 			}
+	// 			console.log(pitchMode)
+	// 	}
+	// }
 
 	return (
 		<CenterFrame onClick={() => setAudioContext(new Voice303())}>
@@ -199,11 +149,10 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				volume: { set: setVolume, get: volume},
 				trackPattGroup: { set: setTrackPattGroup, get: trackPattGroup},
 				writeMode: { set: setWriteMode, get: writeMode},
-				context: { set: setAudioContext, get: audioContext },
-				switchSections: switchSections,
-				handlePitchInput: handlePitchInput,
-				advanceIndex: advanceIndex,
-				activeSection: activeSection}}>
+				synth: { set: setAudioContext, get: audioContext },
+				activeSection: { set: setActiveSection, get: activeSection},
+				sections: { set: setSections, get: sections},
+				advanceIndex: advanceIndex}}>
 					{/* <PatternForm /> */}
 					<TB303 />
 			</PatternContext.Provider>

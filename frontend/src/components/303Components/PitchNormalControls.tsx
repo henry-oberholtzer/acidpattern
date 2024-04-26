@@ -39,7 +39,7 @@ const LabelDiv = styled.div`
   width: 50px;
   height: 23px;
   display: flex;
-  justifty-content: center;
+  justify-content: center;
   align-items: center;
   background-color: ${Pallete303.Black};`
 

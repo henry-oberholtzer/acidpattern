@@ -98,18 +98,44 @@ const HighlightP = styled.div`
   user-select: none;`
 
 const Key = (props: KeysProp) => {
-  const { activeIndex, pitchMode, mode, handlePitchInput, index } = useContext(PatternContext)
+  const { activeIndex, pitchMode, mode, synth, index } = useContext(PatternContext)
   const [ active, setActive ] = useState<boolean>(false)
+
+  const handlePitchInput = () => {
+				let newPitch: Pitch;
+				if (pitchMode.get[index.current]) {
+					const newPitch = {...pitchMode.get[index.current], pitch: props.value}
+					const newPitchArray = [...pitchMode.get]
+					newPitchArray[index.current] = newPitch;
+					pitchMode.set(newPitchArray);
+				} else {
+					newPitch = {
+						index: index.current,
+						accent: false,
+						slide: false,
+						pitch: props.value,
+						octave: 0,
+					};
+					pitchMode.set([...pitchMode.get, newPitch]);
+				}
+				console.log(pitchMode.get)
+		}
 
   const onMouseDown = () => {
     setActive(true)
     if (mode.get === "pitch") {
-      handlePitchInput(props.value)
+      handlePitchInput()
+      if (synth.get != null) {
+        synth.get.attack(props.value)
+      }
     }
   }
 
   const onMouseUp = () => {
     setActive(false)
+    if (synth.get != null) {
+      synth.get.release()
+    }
     index.next()
   }
 

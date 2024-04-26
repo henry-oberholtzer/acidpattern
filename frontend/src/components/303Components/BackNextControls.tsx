@@ -4,7 +4,24 @@ import { PatternContext } from "../../routes/patterns/PatternCreateView"
 import { useContext } from "react"
 
 const BackNextControls = () => {
-  const { index } = useContext(PatternContext);
+  const { index, synth, pitchMode, mode } = useContext(PatternContext);
+
+  const onMouseDown = (back: boolean = false) => {
+    if (back === false) {
+      index.back()
+    } else {
+      index.next()
+    }
+    if (synth.get != null && mode.get === "pitch" && pitchMode.get[index.current]) {
+      synth.get.attack(pitchMode.get[index.current].pitch)
+    }
+  }
+
+  const onMouseUp = () => {
+    if (synth.get != null && mode.get === "pitch") {
+      synth.get.release()
+    }
+  }
 
   return (
     <VerticalContainer>
@@ -24,7 +41,8 @@ const BackNextControls = () => {
       <ButtonTB
         name="back"
         horizontal={true}
-        onClick={index.back}
+        onMouseDown={() => onMouseDown(true)}
+        onMouseUp={onMouseUp}
       />
     </BorderContainer>
     <BorderContainer>
@@ -34,7 +52,8 @@ const BackNextControls = () => {
       <ButtonTB
         name="run-stop"
         large={true}
-        onClick={index.next}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
       />
       <Label
         $extraMargin
