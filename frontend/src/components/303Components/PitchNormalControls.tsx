@@ -48,7 +48,16 @@ const Pattern = styled.p`
   color: ${Pallete303.LEDRedActive};`
 
 const PitchNormalControls = () => {
-  const { mode } = useContext(PatternContext)
+  const { mode, pitchMode, activeIndex } = useContext(PatternContext)
+
+  const handlePitchMode = () => {
+    mode.set("pitch")
+    if (pitchMode.get.length > 0) {
+      activeIndex.set(-1)
+    } else {
+      activeIndex.set(0)
+    }
+  }
 
   return (
     <VerticalContainer>
@@ -65,7 +74,7 @@ const PitchNormalControls = () => {
       <ButtonTB
         horizontal={true}
         name="enable-pitch-mode"
-        onClick={() => mode.set("pitch")}
+        onClick={handlePitchMode}
       />
     </BorderContainer>
     <BorderContainer>

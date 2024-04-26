@@ -7,18 +7,25 @@ const BackNextControls = () => {
   const { index, synth, pitchMode, mode } = useContext(PatternContext);
 
   const onMouseDown = (back: boolean = false) => {
+    console.log("Previous: ", index.current)
     if (back === false) {
       index.back()
+      if (synth.get != null && mode.get === "pitch" && pitchMode.get[index.current - 1]) {
+        console.log("Starting: ", index.current - 1)
+        synth.get.attack(pitchMode.get[index.current - 1].pitch)
+      }
     } else {
       index.next()
+      if (synth.get != null && mode.get === "pitch" && pitchMode.get[index.current + 1]) {
+        console.log("Starting: ", index.current + 1)
+        synth.get.attack(pitchMode.get[index.current + 1].pitch)
+      }
     }
-    if (synth.get != null && mode.get === "pitch" && pitchMode.get[index.current]) {
-      synth.get.attack(pitchMode.get[index.current].pitch)
-    }
+
   }
 
   const onMouseUp = () => {
-    if (synth.get != null && mode.get === "pitch") {
+    if (synth.get != null) {
       synth.get.release()
     }
   }

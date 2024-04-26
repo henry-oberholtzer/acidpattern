@@ -98,7 +98,7 @@ const HighlightP = styled.div`
   user-select: none;`
 
 const Key = (props: KeysProp) => {
-  const { activeIndex, pitchMode, mode, synth, index } = useContext(PatternContext)
+  const { pitchMode, mode, synth, index } = useContext(PatternContext)
   const [ active, setActive ] = useState<boolean>(false)
 
   const handlePitchInput = () => {
@@ -108,7 +108,7 @@ const Key = (props: KeysProp) => {
 					const newPitchArray = [...pitchMode.get]
 					newPitchArray[index.current] = newPitch;
 					pitchMode.set(newPitchArray);
-				} else {
+				} else if (pitchMode.get.length < 16) {
 					newPitch = {
 						index: pitchMode.get.length,
 						accent: false,
@@ -160,7 +160,7 @@ const Key = (props: KeysProp) => {
       <KeyDiv>
         <NameLabel htmlFor={props.name}>{props.name}</NameLabel>
         <SwitchDiv>
-          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode.get[activeIndex]?.pitch === props.value)} />
+          <LED active={active && mode.get === "pitch" || (mode.get === "pitch" && pitchMode.get[index.current]?.pitch === props.value)} />
           <ButtonTB name={props.name}
           onMouseDown={onMouseDown}
           onMouseUp={onMouseUp} />

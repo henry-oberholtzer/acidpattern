@@ -1,13 +1,10 @@
-import { Dispatch, SetStateAction, createContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, createContext, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
-import {
-	CenterFrame,
-} from '../../components/303Components/303ControlPanel';
 import { TB303 } from '../../components/TB303';
 import { Voice303 } from '../../components/303Components/Voice303';
 
 const PatternContext = createContext<PatternContext>({
-	activeIndex: 0,
+	activeIndex: { set: (number) => {number}, get: 63},
 	pitchMode: { set: (pitch) => {pitch}, get: []},
 	timeMode: { set: (pitch) => {pitch}, get: []},
 	sections: { set: (section) => {section}, get: [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []},]},
@@ -32,7 +29,7 @@ const PatternContext = createContext<PatternContext>({
 })
 
 interface PatternContext {
-	activeIndex: number;
+	activeIndex: { set: Dispatch<SetStateAction<number>>, get: number},
 	pitchMode: { set: Dispatch<SetStateAction<Pitch[]>>, get: Pitch[]},
 	timeMode: { set: Dispatch<SetStateAction<Time[]>>, get: Time[]},
 	advanceIndex: () => void;
@@ -87,10 +84,10 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	const [audioContext, setAudioContext] = useState<Voice303 | null>(null)
 
 	const advanceIndex = () => {
-		setActiveIndex(activeIndex + 1);
-		if (activeIndex >= 15) {
-			setMode("normal");
-		}
+			setActiveIndex(activeIndex + 1);
+			if ((mode === "pitch" && pitchMode.length === 16 && activeIndex >= 15) || (mode === "time" && timeMode.length === 16 && activeIndex >= 15)) {
+				setMode("normal");
+			}
 	}
 
 	const reverseIndex = () => {
@@ -99,39 +96,9 @@ const PatternCreateView = (props: PatternCreateProps) => {
 		}
 	}
 
-	useEffect(() => {
-		setActiveIndex(0)
-	}, [mode])
-
-	// const handlePitchInput = (value: number) => {
-	// 	if (mode === "pitch") {
-	// 			let newPitch: Pitch;
-	// 			if (pitchMode[activeIndex]) {
-	// 				const newPitch = {...pitchMode[activeIndex], pitch: value}
-	// 				const newPitchArray = [...pitchMode]
-	// 				newPitchArray[activeIndex] = newPitch;
-	// 				setPitchMode(newPitchArray);
-	// 			} else {
-	// 				newPitch = {
-	// 					index: activeIndex,
-	// 					accent: false,
-	// 					slide: false,
-	// 					pitch: value,
-	// 					octave: 0,
-	// 				};
-	// 				setPitchMode([...pitchMode, newPitch]);
-	// 			}
-	// 			if (audioContext) {
-	// 				audioContext.play(value)
-	// 			}
-	// 			console.log(pitchMode)
-	// 	}
-	// }
-
 	return (
-		<CenterFrame onClick={() => setAudioContext(new Voice303())}>
 			<PatternContext.Provider value={{ 
-				activeIndex: activeIndex,
+				activeIndex: { set: setActiveIndex, get: activeIndex },
 				pitchMode: { set: setPitchMode, get: pitchMode },
 				timeMode: { set: setTimeMode, get: timeMode},
 				index: { next: advanceIndex, back: reverseIndex, current: activeIndex},
@@ -154,9 +121,10 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				sections: { set: setSections, get: sections},
 				advanceIndex: advanceIndex}}>
 					{/* <PatternForm /> */}
-					<TB303 />
+					<div onClick={() => setAudioContext(new Voice303())}>
+						<TB303/>
+					</div>
 			</PatternContext.Provider>
-		</CenterFrame>
 	);
 };
 

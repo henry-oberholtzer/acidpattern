@@ -28,21 +28,22 @@ const NameLabel = styled.label`
 	user-select: none;
 `;
 
-const SwitchDiv = styled.div`
+const SwitchDiv = styled.div<{ $octave?: boolean}>`
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
 	align-items: center;
 	width: 100%;
 	height: 84px;
-	border-radius: 0 0 4px 4px;
+	${props => props.$octave ? "border-radius: 0px;" : "border-radius: 0 0 4px 4px;"}
 	border: 1px solid ${Pallete303.Black};
+	${props => props.$octave ? "border-bottom: 0;" : ""}
 	padding: 4px 6px 6px 6px;
 `;
 
-const Decor = styled.div`
-	background-color: ${Pallete303.Black};
-	color: ${Pallete303.LEDRedActive};
+const Decor = styled.div<{ $silver?: boolean }>`
+	background-color: ${props => props.$silver ? Pallete303.ControlPanelColor : Pallete303.Black};
+	color: ${props => props.$silver ? Pallete303.Black : Pallete303.LEDRedActive};
 	width: 60px;
 	font-size: 10px;
 	height: 24px;
@@ -146,6 +147,7 @@ const TimeModeKeys = () => {
 					timeMode.set([...timeMode.get, newTime]);
 				}
 			}
+			console.log(timeMode.get)
 		} else if (mode.get === 'normal') {
 			if (type === 'accent') {
 				switchSections('A');
@@ -159,7 +161,7 @@ const TimeModeKeys = () => {
 		<Group>
 			<KeyDiv>
 				<NameLabel>DOWN</NameLabel>
-				<SwitchDiv>
+				<SwitchDiv $octave>
 					<LED
 						active={
 							downActive ||
@@ -177,14 +179,14 @@ const TimeModeKeys = () => {
 						onMouseUp={() => onMouseUp(setDownActive)}
 					/>
 				</SwitchDiv>
-				<Decor>{}</Decor>
+				<Decor $silver>STEP</Decor>
 				<SmallerDiv>
 					<HighlightP>9</HighlightP>
 				</SmallerDiv>
 			</KeyDiv>
 			<KeyDiv>
 				<NameLabel>UP</NameLabel>
-				<SwitchDiv>
+				<SwitchDiv $octave>
 					<LED
 						active={
 							upActive ||
@@ -202,7 +204,7 @@ const TimeModeKeys = () => {
 						onMouseUp={() => onMouseUp(setUpActive)}
 					/>
 				</SwitchDiv>
-				<Decor>{}</Decor>
+				<Decor $silver>{}</Decor>
 				<SmallerDiv>
 					<HighlightP>0</HighlightP>
 				</SmallerDiv>

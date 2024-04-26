@@ -25,16 +25,17 @@ const ControlPanel = styled.div`
   background-color: ${Pallete303.ControlPanelColor};
   width: 1064px;`
 
-const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $width?: number, $height?: number, $flexRow?: boolean}>`
+const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $leftMargin?: boolean, $width?: number, $height?: number, $flexRow?: boolean}>`
   display: flex;
   flex-direction: ${props => props.$flexRow ? "row" : "column"};
   align-items: center;
   width: ${props => props.$width ? props.$width + "px" : "106px"};
-  border-radius: 2px;
+  ${props => props.$leftMargin ? "border-radius: 0px 2px 2px 0px;" : "border-radius: 2px;"}
   background-color: ${props => props.$filled? Pallete303.Black : "transparent"};
   height: ${props => props.$height ? props.$height + "px" : props.$small? "82px" : "126px" };
   border: 1px solid ${Pallete303.Black};
   margin: 1px;
+  ${props => props.$leftMargin ? "margin-left: 0;" : ""}
 `
 const VerticalContainer = styled.div`
   display: flex;
@@ -88,17 +89,11 @@ const MainCase = styled.div`
   border-radius: 3px;
   box-shadow: 3px 3px 30px ${Pallete303.CaseShadow}, -3px -3px 30px ${Pallete303.CaseShadow};`
 
-const CenterFrame = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  background-color: #000000;
-  flex-direction: column;`
+
 
 const Carat = styled.div`
   background-image: url(${carat});
   width: 8px;
   height: 8px;`
 
-export { MainCase, Carat, Text, CenterFrame, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }
+export { MainCase, Carat, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }

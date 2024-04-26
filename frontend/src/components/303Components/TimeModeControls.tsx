@@ -38,12 +38,22 @@ const LegendDividingDiv = styled.div<{ $background?: string }>`
 `;
 
 const TimeModeControls = () => {
-	const { mode } = useContext(PatternContext)
+	const { mode, activeIndex, timeMode } = useContext(PatternContext)
+
+	const handleTimeMode = () => {
+		mode.set("time")
+		if (timeMode.get.length > 0) {
+			activeIndex.set(-1)
+		} else {
+			activeIndex.set(0)
+		}
+	}
 
 	return (
 		<BorderContainer
 			$width={240}
-			$height={210}>
+			$height={210}
+			$leftMargin>
 			<TitleDiv>
 					<Label
 						htmlFor="time-mode"
@@ -60,7 +70,7 @@ const TimeModeControls = () => {
 					<ButtonTB
 						name="enable-time-mode"
 						horizontal={true}
-						onClick={() => mode.set('time')}
+						onClick={handleTimeMode}
 					/>
 				</LegendDividingDiv>
 			</LegendDiv>

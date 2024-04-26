@@ -14,7 +14,7 @@ const UserWidgetDiv = styled.section`
   padding: 10px;`
 
 const Username = styled.p`
-  color: ${Pallete303.CaseSilver};
+  color: ${Pallete303.Black};
   margin: 0;`
 
 const UserWidget = () => {
