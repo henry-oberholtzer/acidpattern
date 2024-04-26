@@ -19,13 +19,13 @@ const PatternInfo = styled.div`
   background-color: black;`
 
 const PatternForm = () => {
-  const { name, setName } = useContext(PatternContext);
+  const { name } = useContext(PatternContext);
 
   return (
     <Container>
       <PatternInfo>
         <TextInput
-          state={[name, setName]}
+          state={[name.get, name.set]}
           name={"Pattern Name"}
           type="string"/>
       </PatternInfo>

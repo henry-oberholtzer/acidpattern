@@ -110,7 +110,7 @@ const Key = (props: KeysProp) => {
 					pitchMode.set(newPitchArray);
 				} else {
 					newPitch = {
-						index: index.current,
+						index: pitchMode.get.length,
 						accent: false,
 						slide: false,
 						pitch: props.value,
