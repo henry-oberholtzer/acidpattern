@@ -231,7 +231,7 @@ const TimeModeKeys = () => {
 						onMouseUp={() => onMouseUp(setAccentActive)}
 					/>
 				</SwitchDiv>
-				<Decor>{}</Decor>
+				<Decor>A</Decor>
 				<SmallerDiv>
 					<HighlightP>100</HighlightP>
 				</SmallerDiv>
@@ -258,7 +258,7 @@ const TimeModeKeys = () => {
 						onMouseUp={() => onMouseUp(setSlideActive)}
 					/>
 				</SwitchDiv>
-				<Decor>{}</Decor>
+				<Decor>B</Decor>
 				<SmallerDiv>
 					<HighlightP>200</HighlightP>
 				</SmallerDiv>

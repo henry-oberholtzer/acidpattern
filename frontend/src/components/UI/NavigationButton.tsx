@@ -10,11 +10,11 @@ const NavButton = styled.button<{ $color?: string; $bgColor?: string }>`
 	font-family: 'Inter';
   font-size: 16px;
 	background-color: ${(props) =>
-		props.$bgColor ? props.$bgColor : Pallete303.ControlPanelColor};
+		props.$bgColor ? props.$bgColor : Pallete303.CaseSilver};
     color: ${(props) => (props.$color ? props.$color : Pallete303.Black)};
   text-align: center;
   text-decoration: none;
-  width: 80px;
+  width: 90px;
 	display: flex;
 	align-items: center;
   border: 0;
@@ -28,7 +28,7 @@ const NavButton = styled.button<{ $color?: string; $bgColor?: string }>`
 `;
 
 const NavDiv = styled.div`
-	width: 100%;
+	width: 119px;
 	height: 36px;
 	display: flex;
 	justify-content: end;

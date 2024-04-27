@@ -4,18 +4,14 @@ import styled from "styled-components";
 import { Pallete303 } from "./303Components/Palette";
 
 const UserWidgetDiv = styled.section`
-  width: 200px;
+  width: 100%;
   height: 60px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: right;
   border: 2px solid ${Pallete303.CaseSilver};
   border-radius: 5px;
   padding: 10px;`
-
-const Username = styled.p`
-  color: ${Pallete303.Black};
-  margin: 0;`
 
 const UserWidget = () => {
   const { user } = useAuth();
@@ -23,7 +19,10 @@ const UserWidget = () => {
   if (user) {
     return (
       <UserWidgetDiv>
-        <Username>{user.user.username}</Username>
+        <NavigationButton
+          to={"/profile"}
+          text={user.user.username}
+        />
         <NavigationButton
           to={"/logout"}
           text={"logout"}

@@ -10,7 +10,8 @@ const KeyboardContainer = styled.div`
 	height: 210px;
 	border: 1px solid ${Pallete303.Black};
 	margin: 1px;
-	border-radius: 2px;
+	margin-right: 0px;
+	border-radius: 2px 0px 0px 2px;
 `;
 
 const Keyboard = () => {
