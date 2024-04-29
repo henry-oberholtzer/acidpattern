@@ -64,6 +64,17 @@
 
 
 To Do:
+  - Connect all potentiometers to control correct parts of the 303
+  - Fix the knobs to prevent creating so many classes, causing re-rendering in chrome
+  - Switch the main page just the 303
+  - Add pattern view widgets
+  - Add log in modal
+  - Add clear pattern modal
+  - Add pattern name field
+  - Add "post" button
+  - Add pattern view widgets
+
+
   - Test user profile
   - Test user login & user creating a pattern
   - Assign that method to an API endpoint (/midi)
