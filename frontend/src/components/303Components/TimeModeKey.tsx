@@ -73,7 +73,7 @@ const HighlightP = styled.div`
 `;
 
 const TimeModeKeys = () => {
-	const { timeMode, pitchMode, mode, activeSection, index, sections } =
+	const { timeMode, pitchMode, mode, activeSection, index, sections, synth } =
 		useContext(PatternContext);
 	const [downActive, setDownActive] = useState<boolean>(false);
 	const [upActive, setUpActive] = useState<boolean>(false);
@@ -84,6 +84,9 @@ const TimeModeKeys = () => {
 		action(false);
 		if (mode.get === 'time') {
 			index.next();
+		}
+		if (synth?.current != null) {
+			synth.current.release()
 		}
 	};
 
@@ -130,6 +133,9 @@ const TimeModeKeys = () => {
 				const newPitchArray = [...pitchMode.get];
 				newPitchArray[index.current] = currentNote;
 				pitchMode.set(newPitchArray);
+				if (synth?.current != null) {
+					synth.current.attack(currentNote)
+				}
 			}
 		} else if (mode.get === 'time') {
 			const timeValue =
@@ -147,7 +153,6 @@ const TimeModeKeys = () => {
 					timeMode.set([...timeMode.get, newTime]);
 				}
 			}
-			console.log(timeMode.get)
 		} else if (mode.get === 'normal') {
 			if (type === 'accent') {
 				switchSections('A');

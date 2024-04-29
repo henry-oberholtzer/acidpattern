@@ -102,30 +102,32 @@ const Key = (props: KeysProp) => {
   const [ active, setActive ] = useState<boolean>(false)
 
   const handlePitchInput = () => {
-				let newPitch: Pitch;
+				let newPitch: Pitch = {
+          index: pitchMode.get.length,
+          accent: false,
+          slide: false,
+          pitch: props.value,
+          octave: 0,
+        };
 				if (pitchMode.get[index.current]) {
-					const newPitch = {...pitchMode.get[index.current], pitch: props.value}
+					newPitch = {...pitchMode.get[index.current], pitch: props.value}
 					const newPitchArray = [...pitchMode.get]
 					newPitchArray[index.current] = newPitch;
 					pitchMode.set(newPitchArray);
+          
 				} else if (pitchMode.get.length < 16) {
-					newPitch = {
-						index: pitchMode.get.length,
-						accent: false,
-						slide: false,
-						pitch: props.value,
-						octave: 0,
-					};
+					newPitch.pitch = props.value
 					pitchMode.set([...pitchMode.get, newPitch]);
 				}
+        return newPitch
 		}
 
   const onMouseDown = () => {
     setActive(true)
     if (mode.get === "pitch") {
-      handlePitchInput()
+      const newPitch = handlePitchInput()
       if (synth?.current != null) {
-        synth.current.attack(pitchMode.get[index.current])
+        synth.current.attack(newPitch)
       }
     }
   }

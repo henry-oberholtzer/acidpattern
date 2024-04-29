@@ -9,8 +9,8 @@ class Voice303 {
 	saw = 'sawtooth';
 	square = 'square';
 	
-  // private filterMin = 140;
-  // private filterMax = 1500;
+  private filterMin = 200;
+  private filterMax = 9000;
 	
 	tempo: number;
 	cutoffFreq: number;
@@ -29,7 +29,7 @@ class Voice303 {
   }
 
   ccToCutoff(value: number) {
-    return 140 + value * 10.625
+    return this.filterMin + value * ((this.filterMax - this.filterMin) / 127)
   }
 
 
@@ -123,21 +123,24 @@ class Voice303 {
 	// }
 
 	triggerFilterEnvelope(time: number, accent: boolean) {
-		const attackTime = 0.015
-		const decayTime = accent ? .2 : .2 + (2.6 * (this.decay/127))
+		const attackTime = accent ? .2 : 0.015
+		const decayTime = accent ? .2 : .2 + (2 * (this.decay/127))
+		const cutoff = this.filterMin + ((this.cutoffFreq - this.filterMin) * (this.envMod / 127))
+		this.filterOne.frequency.cancelScheduledValues(time)
+		this.filterTwo.frequency.cancelScheduledValues(time)
 		// Attack
-		this.filterOne.frequency.linearRampToValueAtTime(this.cutoffFreq, time + attackTime)
-    this.filterTwo.frequency.linearRampToValueAtTime(this.cutoffFreq, time  + attackTime)
+		this.filterOne.frequency.linearRampToValueAtTime(cutoff, time + attackTime)
+    this.filterTwo.frequency.linearRampToValueAtTime(cutoff, time  + attackTime)
 		// Decay
-		this.filterOne.frequency.exponentialRampToValueAtTime(this.cutoffFreq, time + attackTime + decayTime)
-    this.filterTwo.frequency.exponentialRampToValueAtTime(this.cutoffFreq, time + attackTime + decayTime)
+		this.filterOne.frequency.exponentialRampToValueAtTime(this.filterMin, time + attackTime + decayTime)
+    this.filterTwo.frequency.exponentialRampToValueAtTime(this.filterMin, time + attackTime + decayTime)
 
 	}
 
 	triggerVolumeEnvelope(time: number, accent: boolean) {
 		const attackTime = 0.015
 		const decayTime = 4
-		const gainAmount = accent ? 0.5 + 0.5 * (this.accent/127) : 0.5
+		const gainAmount = accent ? 0.5 + 0.4 * (this.accent/127) : 0.5
 		this.ampEnvelope.gain.cancelScheduledValues(time)
 		this.ampEnvelope.gain.setTargetAtTime(gainAmount, time, attackTime)
 		this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, time + attackTime + decayTime)
@@ -175,6 +178,8 @@ class Voice303 {
 
 	release() {
       const t = this.context.currentTime
+			this.filterOne.frequency.cancelScheduledValues(t)
+			this.filterTwo.frequency.cancelScheduledValues(t)
 			this.ampEnvelope.gain.cancelScheduledValues(t)
       this.ampEnvelope.gain.setTargetAtTime(0, t, 0.02)
   }
