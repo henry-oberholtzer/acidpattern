@@ -79,7 +79,9 @@ const TextContainer = styled.div<{$height?: number}>`
   user-select: none;
   `
 
-
+const GroupDiv = styled.div`
+  display: flex;
+  justify-content: space-between;`
 
 
 
@@ -88,4 +90,4 @@ const Carat = styled.div`
   width: 8px;
   height: 8px;`
 
-export { Carat, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }
+export { Carat, GroupDiv, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }

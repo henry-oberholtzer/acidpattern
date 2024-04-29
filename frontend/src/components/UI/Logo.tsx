@@ -17,9 +17,7 @@ a {
 
 const Logo = () => {
   return (
-    
       <H1><Link to="/">acidpattern.com</Link></H1>
-    
   )
 }
 

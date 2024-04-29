@@ -21,6 +21,10 @@ const App = () => {
 			loader: api.patterns,
 			children: [
 				{
+					path: '',
+					element: <PatternCreateView />
+				},
+				{
 					path: 'patterns/',
 					element: <PatternListView />,
 					loader: api.patterns,
@@ -28,10 +32,6 @@ const App = () => {
 				{
 					path: 'patterns/id',
 					element: <PatternDetailView />,
-				},
-				{
-					path: 'patterns/write',
-					element: <PatternCreateView />,
 				},
 				{
 					element: <ProtectedRoute />,

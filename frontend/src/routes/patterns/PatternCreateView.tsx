@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, createContext, useRef, useState } from 'react
 import { useAuth } from '../../hooks/useAuth';
 import { TB303 } from '../../components/TB303';
 import { Voice303 } from '../../components/303Components/Voice303';
+import { GroupDiv, PatternCard } from '../../components/303Components';
 
 const PatternContext = createContext<PatternContext>({
 	activeIndex: { set: (number) => {number}, get: 63},
@@ -54,8 +55,7 @@ interface PatternContext {
 }
 
 const PatternCreateView = (props: PatternCreateProps) => {
-	const { user } = useAuth();
-	const [name, setName] = useState(props.pattern? props.pattern.name : `${user?.user.username}'s New Pattern`);
+	const [name, setName] = useState(props.pattern? props.pattern.name : `New Pattern`);
 	const [mode, setMode] = useState<"pitch" | "time" | "normal">("normal")
 	const [sections, setSections] = useState<[Section, Section]>(props.pattern? props.pattern.sections : [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []}])
 	const [activeSection, setActiveSection] = useState<"A" | "B">("A")
@@ -121,18 +121,21 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				sections: { set: setSections, get: sections},
 				advanceIndex: advanceIndex}}>
 					{/* <PatternForm /> */}
-					<div onClick={() => synth.current === null ? synth.current = new Voice303({
-						tempo: tempo,
-						tuning: tuning,
-						cut_off_freq: cutOffFreq,
-						resonance: resonance,
-						env_mod: envMod,
-						decay: decay,
-						accent: accent,
-						waveform: waveform
-					}) : ""}>
-						<TB303/>
-					</div>
+					<GroupDiv>
+						<div onClick={() => synth.current === null ? synth.current = new Voice303({
+							tempo: tempo,
+							tuning: tuning,
+							cut_off_freq: cutOffFreq,
+							resonance: resonance,
+							env_mod: envMod,
+							decay: decay,
+							accent: accent,
+							waveform: waveform
+						}) : ""}>
+							<TB303/>
+						</div>
+						<PatternCard />
+					</GroupDiv>
 			</PatternContext.Provider>
 	);
 };

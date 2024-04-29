@@ -49,8 +49,8 @@ const NavigationButton = (props: NavButtonProps) => {
 				<NavButton
 					$color={props.color}
 					$bgColor={props.bgColor}
-					onMouseDown={() => setActive(true)}
-					onMouseUp={() => setActive(false)}>
+					onPointerEnter={() => setActive(true)}
+					onPointerLeave={() => setActive(false)}>
 					{props.text}
 					
 				</NavButton>

@@ -1,17 +1,14 @@
 import { useAuth } from "../hooks/useAuth";
 import { NavigationButton } from "./UI";
 import styled from "styled-components";
-import { Pallete303 } from "./303Components/Palette";
 
 const UserWidgetDiv = styled.section`
   width: 100%;
-  height: 60px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: right;
-  border: 2px solid ${Pallete303.CaseSilver};
-  border-radius: 5px;
-  padding: 10px;`
+  border-radius: 5px;`
 
 const UserWidget = () => {
   const { user } = useAuth();

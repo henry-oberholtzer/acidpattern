@@ -124,7 +124,7 @@ const Knob = (props: KnobProps) => {
     if (knobRef.current != null && dragFrom != null) {
       const dx = e.clientX - dragFrom.x;
       const dy = e.clientY - dragFrom.y;
-      const newValue = Math.round((dx/64-dy/128)*(props.max-props.min));
+      const newValue = dragFrom.v + Math.round((dx/64-dy/128)*(props.max-props.min));
       if (props.min <= newValue && newValue <= props.max) {
         props.state.set(newValue);
       }
