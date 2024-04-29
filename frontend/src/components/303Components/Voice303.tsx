@@ -1,106 +1,182 @@
 class Voice303 {
-  context: AudioContext
-  osc: OscillatorNode;
-  filter: BiquadFilterNode;
-  filterEnvelope: Fre;
-  ampEnvelope: ;
-  volume: GainNode;
-  saw = "sawtooth"
-  square = "square"
+	
+	private context: AudioContext;
+	private osc: OscillatorNode;
+	private filterOne: BiquadFilterNode;
+  private filterTwo: BiquadFilterNode;
+	private ampEnvelope: GainNode;
+	private volumeNode: GainNode;
+	saw = 'sawtooth';
+	square = 'square';
+	
+  // private filterMin = 140;
+  // private filterMax = 1500;
+	
+	tempo: number;
+	cutoffFreq: number;
+	resonance: number;
+	decay: number;
+	accent: number;
+	envMod: number;
+	tuning: number;
+	waveform: "square" | "saw";
+	volume: number;
 
-  pitches = new Map([
-    [24, 32.70320],
-    [25, 34.64783],
-    [26, 36.70810],
-    [27, 38.89087],
-    [28, 41.20344],
-    [29, 43.65353],
-    [30, 46.24930],
-    [31, 48.99943],
-    [32, 51.91309],
-    [33, 55.00000],
-    [34, 58.27047],
-    [35, 61.73541],
-    [36, 65.40639],
-    [37, 69.29566],
-    [38, 73.41619],
-    [39, 77.78175],
-    [40, 82.40689],
-    [41, 87.30706],
-    [42, 92.49861],
-    [43, 97.99886],
-    [44, 103.8262],
-    [45, 110.0000],
-    [46, 116.5409],
-    [47, 123.4708],
-    [48, 130.8128],    
-  ])
+	midiToFrequency = (note: number) => 440 * 2 ** ((note - 69) / 12);
 
-
-  constructor(settings: Settings) {
-    this.context = new AudioContext()
-    this.osc = new OscillatorNode(this.context, {
-      frequency: 440,
-      type: "sawtooth",
-    });
-    this.osc.type = "square"
-    this.filter = new BiquadFilterNode(this.context, {
-      type: "lowpass",
-      frequency: 18000,
-    })
-    this.filterEnvelope 
-    this.ampEnvelope = new Tone.AmplitudeEnvelope()
-    this.volume = new Tone.Volume().connect(this.filter)
+	centToFrequency(value: number, f1: number) {
+    return f1 * 2 ** (value / 1200) 
   }
 
-  adjustTuning(value: number) {
-
-  }
-
-  adjustCutoff(value: number) {
-
-  }
-
-  adjustResonance(value: number) {
-
+  ccToCutoff(value: number) {
+    return 140 + value * 10.625
   }
 
 
-  adjustWaveform(waveform: "saw" | "square") {
-    if (waveform === "saw") {
-      this.osc.type = this.saw as OscillatorType
-    } else {
-      this.osc.type = this.square as OscillatorType
-    }
+	constructor(settings: Settings) {
+		this.tempo = settings.tempo;
+		this.tuning = settings.tuning;
+		this.cutoffFreq = this.ccToCutoff(settings.cut_off_freq);
+		this.resonance = settings.resonance;
+		this.envMod = settings.env_mod;
+		this.decay = settings.decay;
+		this.accent = settings.accent;
+		this.waveform = settings.waveform;
+		this.volume = 63
+
+		this.context = new AudioContext();
+		this.osc = new OscillatorNode(this.context, {
+			frequency: 440,
+			type: 'sawtooth',
+		});
+		this.osc.type = 'square';
+		this.filterOne = new BiquadFilterNode(this.context, {
+			type: 'lowpass',
+			frequency: 400,
+      Q: 0.0,
+		});
+    this.filterTwo = new BiquadFilterNode(this.context, {
+			type: 'lowpass',
+			frequency: 400,
+      Q: 0.0,
+		});
+		this.ampEnvelope = new GainNode(this.context, { gain: 0 });
+		this.volumeNode = new GainNode(this.context, { gain: 1});
+		this.osc
+			.connect(this.filterOne)
+      .connect(this.filterTwo)
+			.connect(this.ampEnvelope)
+			.connect(this.volumeNode)
+			.connect(this.context.destination);
+    this.osc.start();
+	}
+
+	setTempo(value: number) {
+    this.tempo = value;
+	}
+
+  setCutoff(value: number) {
+		this.cutoffFreq = this.ccToCutoff(value);
   }
 
-  adjustEnv(value: number) {
+	setTuning(value: number) {
+		this.tuning = value
+	}
 
-  }
+	setResonance(value: number) {
+		this.resonance = 16 * (value/127)
+	}
 
-  adjustDecay(value: number) {
+	setEnvMod(value: number) {
+		this.envMod = value
+	}
 
-  }
+	setDecay(value: number) {
+		this.decay = value
+	}
 
-  adjustAccent(value: number) {
+	setAccent(value: number) {
+		this.accent = value
+	}
 
-  }
+	setVolume(value: number) {
+		this.volume = (value/127)
+		const t = this.context.currentTime
+		this.volumeNode.gain.setValueAtTime((value/127), t)
+	}
 
-  playPattern(timeMode: Time[], pitchMode: Pitch[]) {
-  }
+	
 
-  attack(pitch: number) {
-    this.osc.frequency.setValueAtTime(this.pitches.get(pitch), this.context.currentTime) 
-    this.ampEnvelope.triggerAttack()
-    this.filterEnvelope.triggerAttack()
-    this.osc.start()
-  }
+	adjustWaveform(waveform: 'saw' | 'square') {
+		if (waveform === 'saw') {
+      this.osc.type = this.saw as OscillatorType;
+      console.log(this.osc.type)
+		} else {
+			this.osc.type = this.square as OscillatorType;
+		}
+	}
 
-  release() {
-    this.ampEnvelope.triggerRelease(time);
-		this.filterEnvelope.triggerRelease(time);
-		this.osc.stop(time + this.toSeconds(this.envelope.release));
+	// playPattern(timeMode: Time[], pitchMode: Pitch[]) {
+  //   while(this.run === true) {
+  //     console.log()
+  //   }
+	// }
+
+	triggerFilterEnvelope(time: number) {
+		const attackTime = 0.015
+		const decayTime = .2 + (2.6 * (this.decay/127))
+		// Attack
+		this.filterOne.frequency.linearRampToValueAtTime(this.cutoffFreq, time + attackTime)
+    this.filterTwo.frequency.linearRampToValueAtTime(this.cutoffFreq, time  + attackTime)
+		// Decay
+		this.filterOne.frequency.exponentialRampToValueAtTime(this.cutoffFreq, time + attackTime + decayTime)
+    this.filterTwo.frequency.exponentialRampToValueAtTime(this.cutoffFreq, time + attackTime + decayTime)
+
+	}
+
+	triggerVolumeEnvelope(time: number) {
+		const attackTime = 0.015
+		const decayTime = 4
+		this.ampEnvelope.gain.cancelScheduledValues(time)
+		this.ampEnvelope.gain.setTargetAtTime(0.6, time, attackTime)
+		this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, time + attackTime + decayTime)
+		this.ampEnvelope.gain.setValueAtTime(0, time + attackTime + decayTime + 0.1)
+	}
+
+	attack(pitch: number) {
+    
+    const t = this.context.currentTime
+		this.osc.frequency.setValueAtTime(
+			this.centToFrequency(
+				this.tuning,
+				this.midiToFrequency(pitch)), t );
+		this.triggerVolumeEnvelope(t)
+		this.triggerFilterEnvelope(t)
+		// console.log(this.osc.frequency)
+		// console.log(this.filterOne.Q)
+    
+    // this.filterOne.frequency.cancelScheduledValues(t)
+    // this.filterTwo.frequency.cancelScheduledValues(t)
+
+		// this.filterOne.Q.setValueAtTime(res, t)
+		// this.filterTwo.Q.setValueAtTime(res, t)
+
+    // this.filterOne.frequency.linearRampToValueAtTime(this.cutoffFreq, t + 0.06)
+    // this.filterTwo.frequency.linearRampToValueAtTime(this.cutoffFreq, t + 0.06)
+
+		// this.filterOne.frequency.linearRampToValueAtTime(600, t + 0.06 + (this.decay / 4))
+    // this.filterTwo.frequency.linearRampToValueAtTime(600, t + 0.06 + (this.decay / 4))
+
+    // this.ampEnvelope.gain.cancelScheduledValues(t)
+    // this.ampEnvelope.gain.exponentialRampToValueAtTime(1, t + 0.06)
+		// this.ampEnvelope.gain.linearRampToValueAtTime(0.0001, t + 0.06 + this.decay)
+	}
+
+	release() {
+      const t = this.context.currentTime
+			this.ampEnvelope.gain.cancelScheduledValues(t)
+      this.ampEnvelope.gain.setTargetAtTime(0, t, 0.02)
   }
 }
 
-export { Voice303 }
+export { Voice303 };

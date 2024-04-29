@@ -17,7 +17,13 @@ const ControlsContainer = styled.div`
   `
 
 const SecondPanel = () => {
-  const { volume, tempo, writeMode, trackPattGroup } = useContext(PatternContext)
+  const { volume, tempo, writeMode, trackPattGroup, synth } = useContext(PatternContext)
+
+  const adjustVolume = (value: number) => synth?.current != null ? 
+      synth.current.setVolume(value) : null
+
+  const adjustTempo = (value: number) => synth?.current != null ? 
+      synth.current.setTempo(value) : null
 
   return (
     <ControlsContainer>
@@ -25,6 +31,7 @@ const SecondPanel = () => {
             large={true}
             name={"tempo"}
             labels={["slow", "fast"]}
+            onChange={adjustTempo}
             state={tempo}
             min={40}
             max={300}
@@ -35,6 +42,7 @@ const SecondPanel = () => {
 						<Knob large={true}
             name={"track patt.group"}
             state={writeMode}
+            onChange={() => {}}
             min={1}
             max={7}
             steps={8}
@@ -44,6 +52,7 @@ const SecondPanel = () => {
 						<Knob large={true}
             name={"mode"}
             state={trackPattGroup}
+            onChange={() => {}}
             min={1}
             max={4}
             steps={4}
@@ -53,6 +62,7 @@ const SecondPanel = () => {
             <PatternInfo />
 						<Knob large={true}
             name={"volume"}
+            onChange={adjustVolume}
             state={volume}
             min={0}
             max={127}

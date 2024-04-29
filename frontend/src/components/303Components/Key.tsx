@@ -118,23 +118,22 @@ const Key = (props: KeysProp) => {
 					};
 					pitchMode.set([...pitchMode.get, newPitch]);
 				}
-				console.log(pitchMode.get)
 		}
 
   const onMouseDown = () => {
     setActive(true)
     if (mode.get === "pitch") {
       handlePitchInput()
-      if (synth.get != null) {
-        synth.get.attack(props.value)
+      if (synth?.current != null) {
+        synth.current.attack(props.value)
       }
     }
   }
 
   const onMouseUp = () => {
     setActive(false)
-    if (synth.get != null) {
-      synth.get.release()
+    if (synth?.current != null) {
+      synth.current.release()
     }
     index.next()
   }

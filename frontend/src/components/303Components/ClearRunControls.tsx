@@ -11,13 +11,15 @@ import { LED } from './LED';
 import { useContext, useEffect } from 'react';
 
 const ClearRunControls = () => {
-	const { mode, run } = useContext(PatternContext);
+	const { mode, run, } = useContext(PatternContext);
 
 	const handleRun = () => {
 		if (mode.get === 'normal') {
 			run.set(!run.get);
 		}
 	};
+
+
 
 	useEffect(() => {
 		if (mode.get !== 'normal') {

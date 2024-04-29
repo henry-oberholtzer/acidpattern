@@ -79,15 +79,7 @@ const TextContainer = styled.div<{$height?: number}>`
   user-select: none;
   `
 
-const MainCase = styled.div`
-  font-family: 'Inter';
-  width: 1080px;
-  height: 520px;
-  background-image: radial-gradient(${Pallete303.CaseSilver}, ${Pallete303.CaseShadow} 20%, ${Pallete303.CaseSilver});
-  background-color: ${Pallete303.CaseSilver};
-  padding-top: 3px;
-  border-radius: 3px;
-  box-shadow: 3px 3px 30px ${Pallete303.CaseShadow}, -3px -3px 30px ${Pallete303.CaseShadow};`
+
 
 
 
@@ -96,4 +88,4 @@ const Carat = styled.div`
   width: 8px;
   height: 8px;`
 
-export { MainCase, Carat, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }
+export { Carat, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }

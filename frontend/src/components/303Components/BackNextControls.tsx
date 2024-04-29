@@ -10,23 +10,21 @@ const BackNextControls = () => {
     console.log("Previous: ", index.current)
     if (back === false) {
       index.back()
-      if (synth.get != null && mode.get === "pitch" && pitchMode.get[index.current - 1]) {
-        console.log("Starting: ", index.current - 1)
-        synth.get.attack(pitchMode.get[index.current - 1].pitch)
+      if (synth?.current != null && mode.get === "pitch" && pitchMode.get[index.current - 1]) {
+        synth.current.attack(pitchMode.get[index.current - 1].pitch)
       }
     } else {
       index.next()
-      if (synth.get != null && mode.get === "pitch" && pitchMode.get[index.current + 1]) {
-        console.log("Starting: ", index.current + 1)
-        synth.get.attack(pitchMode.get[index.current + 1].pitch)
+      if (synth?.current != null && mode.get === "pitch" && pitchMode.get[index.current + 1]) {
+        synth.current.attack(pitchMode.get[index.current + 1].pitch)
       }
     }
 
   }
 
   const onMouseUp = () => {
-    if (synth.get != null) {
-      synth.get.release()
+    if (synth?.current != null) {
+      synth.current.release()
     }
   }
 

@@ -41,14 +41,20 @@ const SwitchDiv = styled.div`
 	flex-direction: column;`
 
 const WaveformSwitch = () => {
-	const { waveform } = useContext(PatternContext);
+	const { waveform, synth } = useContext(PatternContext);
 
 	const handleWaveform = () => {
 		if (waveform.get === "saw") {
 			waveform.set("square")
+			if (synth?.current) {
+				synth.current.adjustWaveform("square")
+			}
 		} else
 		{
 			waveform.set("saw")
+			if (synth?.current) {
+				synth.current.adjustWaveform("saw")
+			}
 		}
 	}
 

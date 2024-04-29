@@ -23,8 +23,27 @@ const LineDivider = styled.div`
 
 
 const FirstPanel = () => {
-  const { tuning, cutoff, resonance, envMod, decay, accent } = useContext(PatternContext)
+  const { tuning, cutoff, resonance, envMod, decay, accent, synth } = useContext(PatternContext)
 
+  const adjustCutoff = (value: number) => synth?.current != null ? 
+      synth.current.setCutoff(value) : null
+
+  const adjustTuning = (value: number) => synth?.current != null ? 
+    synth.current.setTuning(value) : null
+
+  const adjustEnvMod = (value: number) => synth?.current != null ? 
+    synth.current.setEnvMod(value) : null
+  
+  const adjustResonance = (value: number) => synth?.current != null ? 
+    synth.current.setResonance(value) : null
+
+  const adjustDecay = (value: number) => synth?.current != null ? 
+    synth.current.setDecay(value) : null
+  
+  const adjustAccent = (value: number) => synth?.current != null ? 
+    synth.current.setAccent(value) : null
+  
+  
   return (
     <FirstPanelContainer>
       <AcidPattern />
@@ -32,6 +51,7 @@ const FirstPanel = () => {
       <Knob
         name={"tuning"}
         state={tuning}
+        onChange={adjustTuning}
         min={-500}
         max={500}
         steps={1000}
@@ -41,6 +61,7 @@ const FirstPanel = () => {
       />
       <Knob
         name={"cut off freq"}
+        onChange={adjustCutoff}
         state={cutoff}
         min={0}
         max={127}
@@ -51,6 +72,7 @@ const FirstPanel = () => {
       <Knob
         name={"resonance"}
         state={resonance}
+        onChange={adjustResonance}
         min={0}
         max={127}
         steps={128}
@@ -60,6 +82,7 @@ const FirstPanel = () => {
       <Knob
         name={"env mod"}
         state={envMod}
+        onChange={adjustEnvMod}
         min={0}
         max={127}
         steps={128}
@@ -69,6 +92,7 @@ const FirstPanel = () => {
       <Knob
         name={"decay"}
         state={decay}
+        onChange={adjustDecay}
         min={0}
         max={127}
         steps={128}
@@ -78,6 +102,7 @@ const FirstPanel = () => {
       <Knob
         name={"accent"}
         state={accent}
+        onChange={adjustAccent}
         min={0}
         max={127}
         steps={128}

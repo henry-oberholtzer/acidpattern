@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, createContext, useState } from 'react';
+import { Dispatch, SetStateAction, createContext, useRef, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { TB303 } from '../../components/TB303';
 import { Voice303 } from '../../components/303Components/Voice303';
@@ -24,7 +24,7 @@ const PatternContext = createContext<PatternContext>({
 	trackPattGroup: { set: (number) => {number}, get: 1},
 	writeMode: { set: (number) => {number}, get: 1},
 	run: { set: (bool) => {bool}, get: false},
-	synth: { set: () => {}, get: null},
+	synth: null,
 	advanceIndex: () => {}
 })
 
@@ -50,7 +50,7 @@ interface PatternContext {
 	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
 	sections: { set: Dispatch<SetStateAction<[Section, Section]>>, get: [Section, Section]},
 	activeSection: { set: Dispatch<SetStateAction<"A"|"B">>, get: "A" | "B"},
-	synth: { set: Dispatch<SetStateAction<Voice303 | null>>, get: Voice303 | null},
+	synth: React.MutableRefObject<Voice303 | null> | null,
 }
 
 const PatternCreateView = (props: PatternCreateProps) => {
@@ -73,7 +73,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	const [accent, setAccent] = useState<number>(63)
 	// Second panel settings
 	const [tempo, setTempo] = useState<number>(130)
-	const [volume, setVolume] = useState<number>(0)
+	const [volume, setVolume] = useState<number>(127)
 	// Transport
 	const [run, setRun] = useState<boolean>(false)
 
@@ -81,7 +81,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	const [trackPattGroup, setTrackPattGroup] = useState<number>(1)
 	const [writeMode, setWriteMode] = useState<number>(1)
 
-	const [audioContext, setAudioContext] = useState<Voice303 | null>(null)
+	const synth = useRef<Voice303 | null>(null)
 
 	const advanceIndex = () => {
 			setActiveIndex(activeIndex + 1);
@@ -116,12 +116,21 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				volume: { set: setVolume, get: volume},
 				trackPattGroup: { set: setTrackPattGroup, get: trackPattGroup},
 				writeMode: { set: setWriteMode, get: writeMode},
-				synth: { set: setAudioContext, get: audioContext },
+				synth: synth,
 				activeSection: { set: setActiveSection, get: activeSection},
 				sections: { set: setSections, get: sections},
 				advanceIndex: advanceIndex}}>
 					{/* <PatternForm /> */}
-					<div onClick={() => setAudioContext(new Voice303())}>
+					<div onClick={() => synth.current === null ? synth.current = new Voice303({
+						tempo: tempo,
+						tuning: tuning,
+						cut_off_freq: cutOffFreq,
+						resonance: resonance,
+						env_mod: envMod,
+						decay: decay,
+						accent: accent,
+						waveform: waveform
+					}) : ""}>
 						<TB303/>
 					</div>
 			</PatternContext.Provider>

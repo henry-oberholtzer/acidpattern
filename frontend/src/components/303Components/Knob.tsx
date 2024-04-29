@@ -148,7 +148,7 @@ const Knob = (props: KnobProps) => {
             $rotation={calcRotation()}
             value={props.state.get}
             type="range"
-            onChange={() => null}
+            onChange={(e) => props.onChange(parseInt(e.target.value))}
             onMouseUp={() => setDragFrom(null)}
             onPointerDown={(e) => mouseDownChangeValue(e)}
             onPointerMove={(e) => mouseMoveChangeValue(e)}
@@ -170,6 +170,7 @@ interface KnobProps {
   large?: boolean
   name?: string;
   initValue?: number,
+  onChange: (arg0: number) => void;
   labels?: [string, string],
   stepAmount?: number,
   min: number;
