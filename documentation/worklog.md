@@ -63,9 +63,9 @@
 
 4-29-24
   - Fix knobs to not be reliant on styled-components.
+  - Connect all potentiometers to control correct parts of the 303
 
 To Do:
-  - Connect all potentiometers to control correct parts of the 303
   - Fix the knobs to prevent creating so many classes, causing re-rendering in chrome
   - Switch the main page just the 303
   - Add pattern view widgets
@@ -74,7 +74,7 @@ To Do:
   - Add pattern name field
   - Add "post" button
   - Add pattern view widgets
-
+  - Fix range thumb on chrome.
 
   - Test user profile
   - Test user login & user creating a pattern

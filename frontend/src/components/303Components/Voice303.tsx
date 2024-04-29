@@ -122,9 +122,9 @@ class Voice303 {
   //   }
 	// }
 
-	triggerFilterEnvelope(time: number) {
+	triggerFilterEnvelope(time: number, accent: boolean) {
 		const attackTime = 0.015
-		const decayTime = .2 + (2.6 * (this.decay/127))
+		const decayTime = accent ? .2 : .2 + (2.6 * (this.decay/127))
 		// Attack
 		this.filterOne.frequency.linearRampToValueAtTime(this.cutoffFreq, time + attackTime)
     this.filterTwo.frequency.linearRampToValueAtTime(this.cutoffFreq, time  + attackTime)
@@ -134,24 +134,25 @@ class Voice303 {
 
 	}
 
-	triggerVolumeEnvelope(time: number) {
+	triggerVolumeEnvelope(time: number, accent: boolean) {
 		const attackTime = 0.015
 		const decayTime = 4
+		const gainAmount = accent ? 0.5 + 0.5 * (this.accent/127) : 0.5
 		this.ampEnvelope.gain.cancelScheduledValues(time)
-		this.ampEnvelope.gain.setTargetAtTime(0.6, time, attackTime)
+		this.ampEnvelope.gain.setTargetAtTime(gainAmount, time, attackTime)
 		this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, time + attackTime + decayTime)
 		this.ampEnvelope.gain.setValueAtTime(0, time + attackTime + decayTime + 0.1)
 	}
 
-	attack(pitch: number) {
+	attack(pitch: Pitch) {
     
     const t = this.context.currentTime
 		this.osc.frequency.setValueAtTime(
 			this.centToFrequency(
 				this.tuning,
-				this.midiToFrequency(pitch)), t );
-		this.triggerVolumeEnvelope(t)
-		this.triggerFilterEnvelope(t)
+				this.midiToFrequency(pitch.pitch + pitch.octave)), t );
+		this.triggerVolumeEnvelope(t, pitch.accent)
+		this.triggerFilterEnvelope(t, pitch.accent)
 		// console.log(this.osc.frequency)
 		// console.log(this.filterOne.Q)
     

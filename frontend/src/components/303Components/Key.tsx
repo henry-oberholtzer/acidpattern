@@ -125,7 +125,7 @@ const Key = (props: KeysProp) => {
     if (mode.get === "pitch") {
       handlePitchInput()
       if (synth?.current != null) {
-        synth.current.attack(props.value)
+        synth.current.attack(pitchMode.get[index.current])
       }
     }
   }
