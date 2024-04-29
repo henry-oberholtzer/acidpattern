@@ -61,7 +61,8 @@
   - Create knob component
   - Add logos to 303
 
-
+4-29-24
+  - Fix knobs to not be reliant on styled-components.
 
 To Do:
   - Connect all potentiometers to control correct parts of the 303
