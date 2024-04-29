@@ -2,8 +2,8 @@ import styled from "styled-components"
 import { Pallete303 } from "./Palette"
 import SmallKnobBG from "./svgs/small_knob_bg.svg"
 import LargeKnobBG from "./svgs/large_knob_bg_1.svg"
-import TestKnobGUISmall from "./svgs/test_knob_gui_small.svg"
 import { WheelEvent, useRef, useState } from "react"
+import { KnobSvg } from "./svgs/KnobSvg"
 import { useCallback } from "react"
 
 const KnobContainer = styled.div<{$large?: boolean}>`
@@ -54,17 +54,17 @@ const BottomLabelDiv = styled.div`
   display: flex;
   justify-content: space-between;`
 
-const KnobInput = styled.input<{$large?: boolean, $rotation: number}>`
+const KnobInput = styled.input<{$large?: boolean }>`
   width: ${props => props.$large? 74 : 50}px;
   height: ${props => props.$large? 74 : 50}px;
+  z-index: 3;
+  position: fixed;
   cursor: pointer;
   -webkit-appearance:none;
   -moz-appearance:none;
   border:none;
-  margin: 0;
   box-sizing:border-box;
   overflow:hidden;
-  background-image: url(${TestKnobGUISmall});
   background-repeat:no-repeat;
   background-size:100% 100%;
   background-position:0px 0%;
@@ -72,10 +72,15 @@ const KnobInput = styled.input<{$large?: boolean, $rotation: number}>`
   touch-action:none;
   &:focus {
     outline-color: transparent;
+    outline: none;
+    border: 1px solid ${Pallete303.LEDRedActive};
+    box-shadow: 0 0 8px ${Pallete303.LEDRedActive}, 0 0 4px ${Pallete303.LEDRedActiveHighlight};
+    border-radius: 50%;
   }
-  transform: rotate(${props => props.$rotation - 180}deg );
-  &::-webkit-slider-thumb, &::-moz-range-thumb {
-    -moz-appearance:none;
+  input[type=range]::-webkit-slider-thumb, &::-webkit-slider-thumb, &::-moz-range-thumb {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
     height:0;
     border:none;
   }
@@ -145,16 +150,20 @@ const Knob = (props: KnobProps) => {
             $large={props.large}
             min={props.min}
             max={props.max}
-            $rotation={calcRotation()}
             value={props.state.get}
             type="range"
-            onChange={(e) => props.onChange(parseInt(e.target.value))}
+            onChange={(e) => props?.onChange ? props.onChange(parseInt(e.target.value)) : ""}
             onMouseUp={() => setDragFrom(null)}
             onPointerDown={(e) => mouseDownChangeValue(e)}
             onPointerMove={(e) => mouseMoveChangeValue(e)}
             onDoubleClick={() => props.state.set(Math.floor((props.max - Math.abs(props.min)) / 2))}
             onWheel={wheelChangeValue}
           />
+          <KnobSvg 
+            width={props.large ? 74 : 50}
+            height={props.large ? 75 : 50 }
+            rotation={calcRotation()}
+            />
         </PotentiometerCutout>
       </PotentiometerNotch>
       {props.labels ? <BottomLabelDiv>
@@ -170,7 +179,7 @@ interface KnobProps {
   large?: boolean
   name?: string;
   initValue?: number,
-  onChange: (arg0: number) => void;
+  onChange?: (arg0: number) => void;
   labels?: [string, string],
   stepAmount?: number,
   min: number;
