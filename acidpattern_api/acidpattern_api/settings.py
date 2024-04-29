@@ -10,7 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv('../.env')
+env = {
+    'DJANGO_SERVER': os.getenv("VITE_DJANGO_SERVER"),
+    'DJANGO_SECRET_KEY': os.getenv('DJANGO_SECRET_KEY'),
+    'FRONTEND_SERVER': os.getenv('FRONTEND_SERVER'),
+}
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +31,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0b2i=s2qcqr2w-8ynvx3yv#3du8m4^lcgna7vm(!z48h7s5sg3'
+SECRET_KEY = env['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# SECURITY: This is only for development
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    env.get('FRONTEND_SERVER'),
+)
 
 ALLOWED_HOSTS = []
 
@@ -42,11 +54,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tests',
     'rest_framework',
+    'corsheaders',
     'patterns',
     'users',
-
+    'tests',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +147,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+REST_KNOX = {
+    'TOKEN_TTL': timedelta(hours=24),
+    'USER_SERIALIZER': 'users.serializers.UserViewSerializer',
+}
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

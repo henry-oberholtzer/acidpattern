@@ -23,7 +23,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
     if errors:
       raise serializers.ValidationError(errors)
     user = User.objects.create_user(**validated_data)
-    
+    Profile.objects.create(user=user)
     return user
   
 class ProfileSerializer(serializers.ModelSerializer):
@@ -37,7 +37,7 @@ class UserViewSerializer(serializers.ModelSerializer):
   
   class Meta:
     model = User
-    fields = ['username', 'profile', 'patterns']
+    fields = ['username', 'id', 'profile', 'patterns']
 
 
 class LoginSerializer(serializers.Serializer):
