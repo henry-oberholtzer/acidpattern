@@ -1,8 +1,7 @@
 import { Dispatch, SetStateAction, createContext, useRef, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
 import { TB303 } from '../../components/TB303';
 import { Voice303 } from '../../components/303Components/Voice303';
-import { GroupDiv, PatternCard } from '../../components/303Components';
+import { GroupDiv, Steps } from '../../components/303Components';
 
 const PatternContext = createContext<PatternContext>({
 	activeIndex: { set: (number) => {number}, get: 63},
@@ -134,7 +133,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 						}) : ""}>
 							<TB303/>
 						</div>
-						<PatternCard />
+						<Steps />
 					</GroupDiv>
 			</PatternContext.Provider>
 	);

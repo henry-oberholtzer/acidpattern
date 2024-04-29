@@ -28,22 +28,25 @@ const NameLabel = styled.label`
 	user-select: none;
 `;
 
-const SwitchDiv = styled.div<{ $octave?: boolean}>`
+const SwitchDiv = styled.div<{ $octave?: boolean }>`
 	display: flex;
 	flex-direction: column;
 	justify-content: end;
 	align-items: center;
 	width: 100%;
 	height: 84px;
-	${props => props.$octave ? "border-radius: 0px;" : "border-radius: 0 0 4px 4px;"}
+	${(props) =>
+		props.$octave ? 'border-radius: 0px;' : 'border-radius: 0 0 4px 4px;'}
 	border: 1px solid ${Pallete303.Black};
-	${props => props.$octave ? "border-bottom: 0;" : ""}
+	${(props) => (props.$octave ? 'border-bottom: 0;' : '')}
 	padding: 4px 6px 6px 6px;
 `;
 
 const Decor = styled.div<{ $silver?: boolean }>`
-	background-color: ${props => props.$silver ? Pallete303.ControlPanelColor : Pallete303.Black};
-	color: ${props => props.$silver ? Pallete303.Black : Pallete303.LEDRedActive};
+	background-color: ${(props) =>
+		props.$silver ? Pallete303.ControlPanelColor : Pallete303.Black};
+	color: ${(props) =>
+		props.$silver ? Pallete303.Black : Pallete303.LEDRedActive};
 	width: 60px;
 	font-size: 10px;
 	height: 24px;
@@ -86,7 +89,7 @@ const TimeModeKeys = () => {
 			index.next();
 		}
 		if (synth?.current != null) {
-			synth.current.release()
+			synth.current.release();
 		}
 	};
 
@@ -134,7 +137,7 @@ const TimeModeKeys = () => {
 				newPitchArray[index.current] = currentNote;
 				pitchMode.set(newPitchArray);
 				if (synth?.current != null) {
-					synth.current.attack(currentNote)
+					synth.current.attack(currentNote);
 				}
 			}
 		} else if (mode.get === 'time') {
@@ -149,7 +152,7 @@ const TimeModeKeys = () => {
 					const newTimeMode = [...timeMode.get];
 					newTimeMode[index.current] = newTime;
 					timeMode.set(newTimeMode);
-				} else {
+				} else if (timeMode.get.length < 16){
 					timeMode.set([...timeMode.get, newTime]);
 				}
 			}
