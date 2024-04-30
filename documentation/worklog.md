@@ -67,19 +67,20 @@
   - Switch the main page just the 303
   - Add pattern view widgets
 
+4-30-24
+  - Restyle login view
   - Handle log in errors
 
 To Do:
   - Add pattern name field (Above 303)
+  - Set logout if token expires.
   - Add "post" button
   - Add auth check to post button
   - Add clear pattern modal
   - Add pattern play
   - Connect resonance
 
-  - Add log in modal
   - Fix range thumb on chrome.
-  - Set logout if token expires.
 
   - Pattern browse view
 

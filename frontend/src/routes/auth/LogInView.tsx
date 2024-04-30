@@ -3,12 +3,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { api } from "../../scripts/api";
 import { TextInput } from "../../components/TextInput";
 import { useNavigate} from "react-router-dom";
-import { FormFrame, ModalFrame, NavigationButton, DisplayTitle } from "../../components/UI";
+import { FormFrame, ModalFrame, NavigationButton, DisplayTitle, ErrorField } from "../../components/UI";
 
 const LogInView = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const { login, user } = useAuth();
+  const [errors, setErrors] = useState("")
   const navigate = useNavigate()
   
   const handleLogin = async (e: FormEvent) => {
@@ -20,6 +21,8 @@ const LogInView = () => {
     const response = await api.login(header)
     if (response.token && response.expiry) {
       login(response)
+    } else if (response.detail) {
+      setErrors(response.detail)
     }
   }
 
@@ -30,6 +33,7 @@ const LogInView = () => {
   })
 
   return (
+    <>
     <ModalFrame>
     <DisplayTitle $size={"md"}>Log In</DisplayTitle>
     <FormFrame onSubmit={handleLogin}>
@@ -48,6 +52,8 @@ const LogInView = () => {
       <NavigationButton text={"log in"}></NavigationButton>
     </FormFrame>
     </ModalFrame>
+      {errors ? <ErrorField $active>{errors}</ErrorField> : <ErrorField></ErrorField>}
+      </>
   )
 }
 
