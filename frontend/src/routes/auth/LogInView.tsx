@@ -1,9 +1,8 @@
 import { useAuth } from "../../hooks/useAuth";
 import { FormEvent, useEffect, useState } from "react";
 import { api } from "../../scripts/api";
-import { TextInput } from "../../components/TextInput";
 import { useNavigate} from "react-router-dom";
-import { FormFrame, ModalFrame, NavigationButton, DisplayTitle, ErrorField } from "../../components/UI";
+import { FormFrame, ModalFrame, NavigationButton, DisplayTitle, ErrorField, TextInput } from "../../components/UI";
 
 const LogInView = () => {
   const [username, setUsername] = useState("")

@@ -71,7 +71,11 @@
   - Restyle login view
   - Handle log in errors
 
+
 To Do:
+    - Restyle register view
+  - Handle errors in register view
+  
   - Add pattern name field (Above 303)
   - Set logout if token expires.
   - Add "post" button

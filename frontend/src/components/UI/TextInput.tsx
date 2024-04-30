@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Pallete303 } from "./303Components/Palette";
+import { Pallete303 } from "../303Components/Palette";
 
 const Input = styled.input`
   font-size: 16px;

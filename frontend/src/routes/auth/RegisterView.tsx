@@ -1,36 +1,55 @@
-import { Form, useActionData } from "react-router-dom";
-
+import { useActionData } from "react-router-dom";
+import { useState } from "react";
+import { FormFrame, ModalFrame, NavigationButton, DisplayTitle, ErrorField, TextInput } from "../../components/UI";
 
 
 const RegisterView = () => {
   const errors = useActionData() as RegisterErrors
+
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
+
+  const handleRegister = () => {
+    
+  }
+
   return (
-    <>
-    <h2>Register</h2>
-    <Form method="post">
-      <label htmlFor="username">Username:</label>
-      <br/>
-      <input type="text" name="username"></input>
+    <ModalFrame>
+    <DisplayTitle $size={"md"}>Register</DisplayTitle>
+    <FormFrame onSubmit={handleRegister}>
+      <TextInput
+        state={[username, setUsername]}
+        name={"username"}
+        type={"text"}
+        label={"Username:"}
+      />
       {errors?.username && <span>{errors.username}</span>}
-      <br/>
-      <label htmlFor="email">Email:</label>
-      <br />
-      <input type="email" name="email"></input>
+      <TextInput
+        state={[email, setEmail]}
+        name={"email"}
+        type={"email"}
+        label={"Email:"}
+      />
       {errors?.email && <span>{errors.email}</span>}
-      <br/>
-      <label htmlFor="password">Password:</label>
-      <br />
+      <TextInput
+        state={[password, setPassword]}
+        name={"password"}
+        type={"password"}
+        label={"Password:"}
+      />
       {errors?.password && <span>{errors.password}</span>}
-      <input type="password" name="password"></input>
-      <br />
-      <label htmlFor="confirmPassword">Confirm Password:</label>
-      <br />
-      <input type="password" name="confirmPassword"></input>
+      <TextInput
+        state={[confirmPassword, setConfirmPassword]}
+        name={"confirmPassword"}
+        type={"password"}
+        label={"Confirm Password:"}
+      />
       {errors?.confirmPassword && <span>{errors.confirmPassword}</span>}
-      <br />
-      <button type="submit">Register</button>
-    </Form>
-    </>
+      <NavigationButton text={"register"}></NavigationButton>
+    </FormFrame>
+    </ModalFrame>
   )
 }
 
