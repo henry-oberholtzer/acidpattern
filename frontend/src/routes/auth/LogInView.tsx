@@ -3,6 +3,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { api } from "../../scripts/api";
 import { TextInput } from "../../components/TextInput";
 import { useNavigate} from "react-router-dom";
+import { FormFrame, ModalFrame, NavigationButton, DisplayTitle } from "../../components/UI";
 
 const LogInView = () => {
   const [username, setUsername] = useState("")
@@ -29,27 +30,24 @@ const LogInView = () => {
   })
 
   return (
-    <>
-    <h2>Log In</h2>
-    <form onSubmit={handleLogin}>
-      <label htmlFor="username">Username:</label>
-      <br/>
+    <ModalFrame>
+    <DisplayTitle $size={"md"}>Log In</DisplayTitle>
+    <FormFrame onSubmit={handleLogin}>
       <TextInput
         state={[username, setUsername]}
         name={"username"}
+        type={"text"}
+        label={"Username:"}
       />
-      <br/>
-      <label htmlFor="password">Password:</label>
-      <br />
       <TextInput
         state={[password, setPassword]}
         name={"password"}
         type={"password"}
+        label={"Password:"}
       />
-      <br />
-      <button type="submit">Log In</button>
-    </form>
-    </>
+      <NavigationButton text={"log in"}></NavigationButton>
+    </FormFrame>
+    </ModalFrame>
   )
 }
 

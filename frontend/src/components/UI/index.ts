@@ -1,2 +1,5 @@
 export * from './Logo.tsx'
 export * from './NavigationButton.tsx'
+export * from './ModalFrame.tsx'
+export * from './FormFrame.tsx'
+export * from './DisplayTitle.tsx'

@@ -67,8 +67,10 @@
   - Switch the main page just the 303
   - Add pattern view widgets
 
+  - Handle log in errors
+
 To Do:
-  - Add pattern name field
+  - Add pattern name field (Above 303)
   - Add "post" button
   - Add auth check to post button
   - Add clear pattern modal

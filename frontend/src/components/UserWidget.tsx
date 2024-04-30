@@ -32,7 +32,7 @@ const UserWidget = () => {
     <UserWidgetDiv> 
       <NavigationButton
         to={"/login"}
-        text={"login"}
+        text={"log in"}
       />
       <NavigationButton
         to={"/register"}
