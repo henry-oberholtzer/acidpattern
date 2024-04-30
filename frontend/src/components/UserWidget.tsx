@@ -7,6 +7,7 @@ const UserWidgetDiv = styled.section`
   height: 40px;
   display: flex;
   align-items: center;
+  gap: 10px;
   justify-content: right;
   border-radius: 5px;`
 
@@ -16,13 +17,10 @@ const UserWidget = () => {
   if (user) {
     return (
       <UserWidgetDiv>
+        <p>{user.user.username}</p>
         <NavigationButton
           to={"/profile"}
-          text={user.user.username}
-        />
-        <NavigationButton
-          to={"/logout"}
-          text={"logout"}
+          text={"profile"}
         />
       </ UserWidgetDiv>
     )

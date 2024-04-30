@@ -1,11 +1,10 @@
-import { useActionData } from "react-router-dom";
 import { useState } from "react";
 import { FormFrame, ModalFrame, NavigationButton, DisplayTitle, TextInput, ValidationTile } from "../../components/UI";
 import { api } from "../../scripts/api";
+import { redirect } from "react-router-dom";
 
 
 const RegisterView = () => {
-  const errors = useActionData() as RegisterErrors
 
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
@@ -18,6 +17,8 @@ const RegisterView = () => {
   const [ confirmPasswordValid, setConfirmPasswordValid ] = useState<boolean>(false)
   const [ xoxCheck, setXoxCheck ] = useState<boolean>(false)
 
+  const [usernameErrors, setUsernameErrors] = useState<string[]>([""])
+  const [emailErrors, setEmailErrors] = useState<string[]>([""])
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const response = await api.register({
@@ -25,6 +26,20 @@ const RegisterView = () => {
       password: password,
       email: email,
     })
+    if (response.username && response.email && response.id) {
+      redirect('/login')
+    }
+    if (response.username) {
+      setUsernameErrors(response.username)
+    } else {
+      setUsernameErrors([])
+    }
+    if (response.email) {
+      setEmailErrors(response.email)
+    } else {
+      setEmailErrors([])
+    }
+    console.log(response)
   }
 
   const validateUsername = (username: string) => {
@@ -61,7 +76,7 @@ const RegisterView = () => {
         label={"Username:"}
         validator={[usernameValid, validateUsername]}
       />
-      {errors?.username && <span>{errors.username}</span>}
+      {usernameErrors}
       <TextInput
         state={[email, setEmail]}
         name={"email"}
@@ -69,7 +84,7 @@ const RegisterView = () => {
         label={"Email:"}
         validator={[emailValid, validateEmail]}
       />
-      {errors?.email && <span>{errors.email}</span>}
+      {emailErrors}
       <TextInput
         state={[password, setPassword]}
         name={"password"}
@@ -77,7 +92,7 @@ const RegisterView = () => {
         label={"Password:"}
         validator={[passwordValid, validatePassword]}
       />
-      {errors?.password && <span>{errors.password}</span>}
+
       <TextInput
         state={[confirmPassword, setConfirmPassword]}
         name={"confirmPassword"}
@@ -85,7 +100,6 @@ const RegisterView = () => {
         label={"Confirm Password:"}
         validator={[confirmPasswordValid, validateConfirmPassword]}
       />
-      {errors?.confirmPassword && <span>{errors.confirmPassword}</span>}
       <ValidationTile
         state={[ xoxCheck, setXoxCheck ]}
       />

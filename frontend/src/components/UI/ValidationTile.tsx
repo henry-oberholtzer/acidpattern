@@ -9,8 +9,8 @@ const Div = styled.div`
 `;
 
 const ValidationTile = (props: ValidationTileProps) => {
-  const [small] = useState(Math.round(Math.random() * 4))
-  const [large] = useState(Math.round(Math.random() * 5))
+  const [small] = useState(Math.round(Math.random() * 3) + 1)
+  const [large] = useState(Math.round(Math.random() * 4 ) + 1)
 	const smallString = small + '0' + small;
 	const largeString = large + '0' + large;
 	const answer = small + large + '0' + (small + large);

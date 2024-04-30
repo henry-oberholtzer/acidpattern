@@ -23,7 +23,7 @@ function apiFactory(host: string) {
 						}
 						const data = await response.json();
 						return data;
-					} else if (response.status === 401) {
+					} else if (response.status === 401 || response.status === 400) {
 						const data = await response.json();
 						return data;
 					} else {

@@ -43,7 +43,7 @@ const NavDiv = styled.div<{ $margin?: number}>`
 	background-color: ${Pallete303.Black};
 	border-radius: 2px 4px 4px 2px;
 	padding: 0 5px 0px 0px;
-	${props => props.$margin? `margin: ${props.$margin}px;` : "margin-right: 10px;"}
+	${props => props.$margin? `margin: ${props.$margin}px;` : ""}
 	`
 
 const NavigationButton = (props: NavButtonProps) => {

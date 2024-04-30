@@ -38,7 +38,10 @@ const Header = () => {
         <LineDivider />
         <Navigation />
       </HeaderSection>
-      <UserWidget />
+      <HeaderSection>
+        <LineDivider />
+        <UserWidget />
+      </HeaderSection>
     </HeaderDiv>
   )
 }
