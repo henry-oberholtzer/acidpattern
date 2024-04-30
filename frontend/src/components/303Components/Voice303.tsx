@@ -1,3 +1,6 @@
+import { warmSaw } from "./06_Warm_Saw";
+import { squareWave } from "./11_TB303_Square";
+
 class Voice303 {
 	
 	private context: AudioContext;
@@ -6,8 +9,8 @@ class Voice303 {
   private filterTwo: BiquadFilterNode;
 	private ampEnvelope: GainNode;
 	private volumeNode: GainNode;
-	saw = 'sawtooth';
-	square = 'square';
+	private saw: PeriodicWave;
+	private square: PeriodicWave;
 	
   private filterMin = 200;
   private filterMax = 9000;
@@ -43,11 +46,20 @@ class Voice303 {
 		this.accent = settings.accent;
 		this.waveform = settings.waveform;
 		this.volume = 63
-
 		this.context = new AudioContext();
+		this.saw = new PeriodicWave(this.context, {
+			real: warmSaw.real,
+			imag: warmSaw.imag,
+		})
+		this.square = new PeriodicWave(this.context, {
+			real: squareWave.real,
+			imag: squareWave.imag,
+		})
+
 		this.osc = new OscillatorNode(this.context, {
 			frequency: 440,
-			type: 'sawtooth',
+			type: 'custom',
+			periodicWave: this.saw,
 		});
 		this.osc.type = 'square';
 		this.filterOne = new BiquadFilterNode(this.context, {
@@ -109,18 +121,13 @@ class Voice303 {
 
 	adjustWaveform(waveform: 'saw' | 'square') {
 		if (waveform === 'saw') {
-      this.osc.type = this.saw as OscillatorType;
+      this.osc.setPeriodicWave(this.saw)
       console.log(this.osc.type)
 		} else {
-			this.osc.type = this.square as OscillatorType;
+			this.osc.setPeriodicWave(this.square)
 		}
 	}
 
-	// playPattern(timeMode: Time[], pitchMode: Pitch[]) {
-  //   while(this.run === true) {
-  //     console.log()
-  //   }
-	// }
 
 	triggerFilterEnvelope(time: number, accent: boolean) {
 		const attackTime = accent ? .2 : 0.015
@@ -156,24 +163,6 @@ class Voice303 {
 				this.midiToFrequency(pitch.pitch + pitch.octave)), t );
 		this.triggerVolumeEnvelope(t, pitch.accent)
 		this.triggerFilterEnvelope(t, pitch.accent)
-		// console.log(this.osc.frequency)
-		// console.log(this.filterOne.Q)
-    
-    // this.filterOne.frequency.cancelScheduledValues(t)
-    // this.filterTwo.frequency.cancelScheduledValues(t)
-
-		// this.filterOne.Q.setValueAtTime(res, t)
-		// this.filterTwo.Q.setValueAtTime(res, t)
-
-    // this.filterOne.frequency.linearRampToValueAtTime(this.cutoffFreq, t + 0.06)
-    // this.filterTwo.frequency.linearRampToValueAtTime(this.cutoffFreq, t + 0.06)
-
-		// this.filterOne.frequency.linearRampToValueAtTime(600, t + 0.06 + (this.decay / 4))
-    // this.filterTwo.frequency.linearRampToValueAtTime(600, t + 0.06 + (this.decay / 4))
-
-    // this.ampEnvelope.gain.cancelScheduledValues(t)
-    // this.ampEnvelope.gain.exponentialRampToValueAtTime(1, t + 0.06)
-		// this.ampEnvelope.gain.linearRampToValueAtTime(0.0001, t + 0.06 + this.decay)
 	}
 
 	release() {
