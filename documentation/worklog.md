@@ -62,19 +62,24 @@
   - Add logos to 303
 
 4-29-24
-  - Fix knobs to not be reliant on styled-components.
-  - Connect all potentiometers to control correct parts of the 303
-
-To Do:
   - Fix the knobs to prevent creating so many classes, causing re-rendering in chrome
+  - Connect all potentiometers to control correct parts of the 303
   - Switch the main page just the 303
   - Add pattern view widgets
-  - Add log in modal
-  - Add clear pattern modal
+
+To Do:
   - Add pattern name field
   - Add "post" button
-  - Add pattern view widgets
+  - Add auth check to post button
+  - Add clear pattern modal
+  - Add pattern play
+  - Connect resonance
+
+  - Add log in modal
   - Fix range thumb on chrome.
+  - Set logout if token expires.
+
+  - Pattern browse view
 
   - Test user profile
   - Test user login & user creating a pattern
