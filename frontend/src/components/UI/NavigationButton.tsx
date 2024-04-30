@@ -25,6 +25,13 @@ const AcidButton = styled.button<{ $color?: string; $bgColor?: string }>`
   &:hover {
     cursor: pointer;
   }
+	&:disabled {
+		opacity: 0.5;
+		border-top: 1px solid ${Pallete303.CaseHighlight};
+  	border-bottom: 1px solid ${Pallete303.CaseShadow};
+  	border-left: 1px solid ${Pallete303.ButtonLeft};
+  	border-right: 1px solid ${Pallete303.ButtonRight};
+	}
 `;
 
 const NavDiv = styled.div<{ $margin?: number}>`
@@ -64,10 +71,11 @@ const NavigationButton = (props: NavButtonProps) => {
 			<NavDiv $margin={props.margin}>
 				<LED active={(active || location.pathname === props.to)}/>
 					<AcidButton
+						disabled={props.disabled}
 						$color={props.color}
 						$bgColor={props.bgColor}
-						onPointerEnter={() => setActive(true)}
-						onPointerLeave={() => setActive(false)}
+						onPointerEnter={() => props.disabled ? "" : setActive(true)}
+						onPointerLeave={() => props.disabled ? "" : setActive(false)}
 						type={"submit"}>
 						{props.text}
 						
@@ -84,6 +92,7 @@ interface NavButtonProps {
 	type?: string;
 	color?: string;
 	bgColor?: string;
+	disabled?: boolean;
 }
 
 export { NavigationButton };
