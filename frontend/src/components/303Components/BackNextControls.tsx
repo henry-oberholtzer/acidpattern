@@ -1,4 +1,4 @@
-import { BorderContainer, TextContainer, VerticalContainer, Text, Label } from "./303ControlPanel"
+import { BorderContainer, TextContainer, VerticalContainer, Text, Label } from "./Containers"
 import { ButtonTB } from "."
 import { PatternContext } from "../../routes/patterns/PatternCreateView"
 import { useContext } from "react"

@@ -7,7 +7,7 @@ import saw_wave_inactive from "./svgs/saw_wave_inactive.svg"
 import square_wave_active from "./svgs/square_wave_active.svg"
 import square_wave_inactive from "./svgs/square_wave_inactive.svg"
 import { Pallete303 } from './Palette';
-import { Carat, Label } from './303ControlPanel';
+import { Carat, Label } from './Containers';
 
 const SwitchContainer = styled.button`
 	margin-top: 2px;

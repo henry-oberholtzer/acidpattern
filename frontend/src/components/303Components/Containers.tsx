@@ -2,29 +2,6 @@ import styled from "styled-components";
 import { Pallete303 } from "./Palette";
 import carat from "./svgs/carat.svg"
 
-const ControlPanelFrame = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 240px;
-  width: 1080px;
-  background-color: ${Pallete303.CaseSilver};
-  border: 3px solid ${Pallete303.CaseHighlight};
-  border-left: 3px solid ${Pallete303.CaseShadow};
-  border-bottom: 3px solid ${Pallete303.CaseShadow};
-  border-radius: 3px;`
-
-const ControlPanel = styled.div`
-  display: flex;
-  height: 224px;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid ${Pallete303.CaseShadow};
-  border-radius: 2px;
-  border-bottom: 2px solid ${Pallete303.CaseHighlight};
-  background-color: ${Pallete303.ControlPanelColor};
-  width: 1064px;`
-
 const BorderContainer = styled.div<{$small?: boolean, $filled?: boolean, $leftMargin?: boolean, $width?: number, $height?: number, $flexRow?: boolean}>`
   display: flex;
   flex-direction: ${props => props.$flexRow ? "row" : "column"};
@@ -92,4 +69,4 @@ const Carat = styled.div`
   width: 8px;
   height: 8px;`
 
-export { Carat, GroupDiv, Text, TextContainer, ControlPanel, ControlPanelFrame, BorderContainer, VerticalContainer, Label }
+export { Carat, GroupDiv, Text, TextContainer, BorderContainer, VerticalContainer, Label }

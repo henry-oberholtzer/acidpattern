@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, createContext, useRef, useState } from 'react';
-import { TB303 } from '../../components/TB303';
+import { AcidPattern303 } from '../../components/AcidPattern303';
 import { Voice303 } from '../../components/303Components/Voice303';
 import { GroupDiv, Steps } from '../../components/303Components';
 
@@ -119,7 +119,6 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				activeSection: { set: setActiveSection, get: activeSection},
 				sections: { set: setSections, get: sections},
 				advanceIndex: advanceIndex}}>
-					{/* <PatternForm /> */}
 					<GroupDiv>
 						<div onClick={() => synth.current === null ? synth.current = new Voice303({
 							tempo: tempo,
@@ -131,7 +130,7 @@ const PatternCreateView = (props: PatternCreateProps) => {
 							accent: accent,
 							waveform: waveform
 						}) : ""}>
-							<TB303/>
+							<AcidPattern303/>
 						</div>
 						<Steps />
 					</GroupDiv>
