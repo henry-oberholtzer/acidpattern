@@ -21,8 +21,6 @@ const PatternContext = createContext<PatternContext>({
 	accent: { set: (number) => {number}, get: 63},
 	tempo: { set: (number) => {number}, get: 63},
 	volume: { set: (number) => {number}, get: 63},
-	trackPattGroup: { set: (number) => {number}, get: 1},
-	writeMode: { set: (number) => {number}, get: 1},
 	run: { set: (bool) => {bool}, get: false},
 	synth: null,
 	advanceIndex: () => {}
@@ -45,8 +43,6 @@ interface PatternContext {
 	accent: { set: Dispatch<SetStateAction<number>>, get: number},
 	tempo: { set: Dispatch<SetStateAction<number>>, get: number},
 	volume: { set: Dispatch<SetStateAction<number>>, get: number},
-	trackPattGroup: { set: Dispatch<SetStateAction<number>>, get: number},
-	writeMode: { set: Dispatch<SetStateAction<number>>, get: number},
 	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
 	sections: { set: Dispatch<SetStateAction<[Section, Section]>>, get: [Section, Section]},
 	activeSection: { set: Dispatch<SetStateAction<"A"|"B">>, get: "A" | "B"},
@@ -75,10 +71,6 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	const [volume, setVolume] = useState<number>(127)
 	// Transport
 	const [run, setRun] = useState<boolean>(false)
-
-	// Other swtiches
-	const [trackPattGroup, setTrackPattGroup] = useState<number>(1)
-	const [writeMode, setWriteMode] = useState<number>(1)
 
 	const synth = useRef<Voice303 | null>(null)
 
@@ -113,8 +105,6 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				accent: { set: setAccent, get: accent},
 				tempo: { set: setTempo, get: tempo},
 				volume: { set: setVolume, get: volume},
-				trackPattGroup: { set: setTrackPattGroup, get: trackPattGroup},
-				writeMode: { set: setWriteMode, get: writeMode},
 				synth: synth,
 				activeSection: { set: setActiveSection, get: activeSection},
 				sections: { set: setSections, get: sections},
