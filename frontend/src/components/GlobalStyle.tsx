@@ -2,6 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import InterMedium from '../fonts/InterMedium.ttf';
 import OptiAggie from '../fonts/OPTIAggie.otf';
 import Androcles from '../fonts/AndroclesOpti-Regular.otf';
+import Pixel5x7 from '../fonts/5x7pixel/5x7-pixel-monospace.ttf'
 
 const GlobalStyleProvider = createGlobalStyle`
   body {
@@ -28,6 +29,11 @@ const GlobalStyleProvider = createGlobalStyle`
     font-family: 'Aggie Solid';
     font-style: Normal;
     src: url(${OptiAggie}) format("opentype");
+  }
+  @font-face {
+    font-family: '5x7 Pixel';
+    font-style: Normal;
+    src: url(${Pixel5x7}) format("truetype");
   }
 `;
 

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { PatternContext } from '../../routes/patterns/PatternCreateView';
 import styled from 'styled-components';
 import { Pallete303 } from './Palette';
@@ -6,49 +6,41 @@ import chartNote from './svgs/chart_note.svg';
 import chartRest from './svgs/chart_rest.svg';
 import chartTied from './svgs/chart_tied.svg';
 
-const StepsContainer = styled.div`
-	width: 520px;
-	height: 145px;
-	padding: 10px;
-	display: flex;
-	gap: 10px;
-	background-color: #ffffff;
-	border-radius: 5px;
-`;
-
-const SectionContainer = styled.div`
-	width: 500px;
-	height: 125px;
-	border-radius: 2px;
-	display: flex;
-`;
-
-const PatternTable = styled.table`
+const PatternTableStyle = styled.table`
 	border-collapse: collapse;
 	border-radius: 2px;
 	height: 100px;
-	font-size: 12px;
-	border: 1px solid ${Pallete303.CaseSilver};
+	display: block;
+	font-size: 16px;
+	color: ${Pallete303.LCDFont};
 	th,
 	tbody > tr > td {
+		overflow: hidden;
+		padding: 0;
 		font-weight: normal;
-		border: 1px solid ${Pallete303.CaseSilver};
 		text-align: center;
-		width: 25px;
-		height: 25px;
+		width: 30px;
+		height: 18px;
+		border-bottom: 2px solid ${Pallete303.LCDFont}55;
 	}
-	th[scope='row'] {
-		width: 100px;
+	th[scope='row']:first-of-type {
+		width: ${80}px;
 		text-align: left;
 	}
 	tbody > tr > td:nth-of-type(4n + 1),
 	th[scope='col']:nth-of-type(4n + 2) {
-		background-color: ${Pallete303.CaseSilver}88;
+		background-color: ${Pallete303.LCDFont};
+		color: ${Pallete303.LCDBackground};
+		border-bottom: 2px solid ${Pallete303.LCDBackground}55;
 	}
 `;
 
-const Steps = () => {
-	const { timeMode, pitchMode, activeSection } = useContext(PatternContext);
+const Index = styled.th<{ $active?: boolean }>`
+	${props => props.$active ? "border: 2px solid ${Pallete303.LCDFont};" : ""}`
+
+const PatternTable = () => {
+	const { timeMode, pitchMode, activeSection, index } = useContext(PatternContext);
+	const indexRex = useRef([])
 
 	const pairedList = () => {
 		const pitches = [...pitchMode.get];
@@ -94,19 +86,22 @@ const Steps = () => {
 		}
 	};
 
+	useEffect(() => {
+		
+	}, [index])
+
 	return (
-		<StepsContainer>
-			<SectionContainer>
-				<PatternTable>
+				<PatternTableStyle>
 					<tbody>
 						<tr>
-							<th>{activeSection.get}</th>
+							<th colSpan={2}>Section '{activeSection.get}'</th>
 							{timeMode.get.map((t, i) => {
-								return <th scope="col">{i + 1}</th>;
+								return <Index key={i} scope="col">{i + 1}</Index>
 							})}
 						</tr>
 						<tr>
 							<th scope="row">Time</th>
+							<th>:</th>
 							{timeMode.get.map((t) => {
 								return (
 									<td>
@@ -132,6 +127,7 @@ const Steps = () => {
 						</tr>
 						<tr>
 							<th scope="row">Pitch</th>
+							<th>:</th>
 							{pairedList().map((pair) => {
 								return (
 									<td>{pair[1] != null ? pitchToName(pair[1].pitch) : ''}</td>
@@ -140,6 +136,7 @@ const Steps = () => {
 						</tr>
 						<tr>
 							<th scope="row">Octave</th>
+							<th>:</th>
 							{pairedList().map((pair) => {
 								return (
 									<td>
@@ -155,7 +152,8 @@ const Steps = () => {
 							})}
 						</tr>
 						<tr>
-							<th scope="row">Slide / Accent</th>
+							<th scope="row">Sld/Ac</th>
+							<th>:</th>
 							{pairedList().map((pair) => {
 								return (
 									<td>
@@ -173,10 +171,8 @@ const Steps = () => {
 							})}
 						</tr>
 					</tbody>
-				</PatternTable>
-			</SectionContainer>
-		</StepsContainer>
+				</PatternTableStyle>
 	);
 };
 
-export { Steps };
+export { PatternTable };

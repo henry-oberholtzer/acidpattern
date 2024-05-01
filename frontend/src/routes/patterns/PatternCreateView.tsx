@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, createContext, useRef, useState } from 'react';
 import { AcidPattern303 } from '../../components/AcidPattern303';
 import { Voice303 } from '../../components/303Components/Voice303';
-import { GroupDiv, Steps } from '../../components/303Components';
+import { GroupDiv } from '../../components/303Components';
 
 const PatternContext = createContext<PatternContext>({
 	activeIndex: { set: (number) => {number}, get: 63},
@@ -122,7 +122,6 @@ const PatternCreateView = (props: PatternCreateProps) => {
 						}) : ""}>
 							<AcidPattern303/>
 						</div>
-						<Steps />
 					</GroupDiv>
 			</PatternContext.Provider>
 	);

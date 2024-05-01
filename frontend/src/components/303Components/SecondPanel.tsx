@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Pallete303 } from "./Palette"
-import { ModelName, Knob, PatternInfo } from "."
+import { Knob, PatternInfo } from "."
 import { PatternContext } from "../../routes/patterns/PatternCreateView"
 import { useContext } from "react"
 
