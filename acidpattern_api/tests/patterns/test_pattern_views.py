@@ -42,11 +42,11 @@ general_data = {
         'time_mode': [
           {
             'index': 0,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 1,
-            'time': 1
+            'timing': 1
           },
         ],
         },
@@ -106,11 +106,11 @@ class PatternListView(APITestCase):
         'time_mode': [
           {
             'index': 0,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 1,
-            'time': 1
+            'timing': 1
           },
         ],
         },
@@ -185,11 +185,11 @@ class PatternListView(APITestCase):
         'time_mode': [
           {
             'index': 0,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 1,
-            'time': 1
+            'timing': 1
           },
         ],
         },
@@ -238,11 +238,11 @@ class PatternListView(APITestCase):
         'time_mode': [
           {
             'index': 0,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 1,
-            'time': 1
+            'timing': 1
           },
         ],
         },
@@ -441,67 +441,67 @@ class PatternListView(APITestCase):
         [
           {
             'index': 1,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 2,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 3,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 4,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 5,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 6,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 7,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 8,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 9,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 10,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 11,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 12,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 13,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 14,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 15,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 16,
-            'time': 1
+            'timing': 1
           },
         ],
         },
@@ -551,11 +551,11 @@ class PatternDetailView(APITestCase):
         'time_mode': [
           {
             'index': 0,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 1,
-            'time': 1
+            'timing': 1
           },
         ],
         },
@@ -631,11 +631,11 @@ class PatternDetailView(APITestCase):
         'time_mode': [
           {
             'index': 0,
-            'time': 1
+            'timing': 1
           },
           {
             'index': 1,
-            'time': 1
+            'timing': 1
           },
         ],
         },

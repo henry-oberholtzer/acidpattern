@@ -31,7 +31,7 @@ class TestPatternModel(TestCase):
       Time.objects.create(
       section=a,
       index=i,
-      time=1)
+      timing=1)
     for i in range(0, 16):
       Pitch.objects.create(
       section=a,
@@ -43,7 +43,7 @@ class TestPatternModel(TestCase):
       Time.objects.create(
       section=b,
       index=i,
-      time=1)
+      timing=1)
     for i in range(0, 16):
       Pitch.objects.create(
       section=b,
@@ -65,7 +65,7 @@ class TestPatternModel(TestCase):
       Time.objects.create(
       section=a,
       index=i,
-      time=1)
+      timing=1)
     for i in range(0, 16):
       Pitch.objects.create(
       section=a,
@@ -77,7 +77,7 @@ class TestPatternModel(TestCase):
       Time.objects.create(
       section=b,
       index=i,
-      time=1)
+      timing=1)
     for i in range(0, 16):
       Pitch.objects.create(
       section=b,
@@ -197,7 +197,7 @@ class TestTimeModel(TestCase):
     time = Time.objects.create(
       section=section,
       index=0,
-      time=1
+      timing=1
     )
     self.assertEqual(Time.objects.get(section=section), time)
   def test_create_batch(self):
@@ -206,5 +206,5 @@ class TestTimeModel(TestCase):
       Time.objects.create(
       section=section,
       index=i,
-      time=1)
+      timing=1)
     self.assertEqual(len(Time.objects.filter(section=section)), 16)
