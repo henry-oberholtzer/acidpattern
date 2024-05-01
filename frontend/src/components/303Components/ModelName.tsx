@@ -28,7 +28,7 @@ const WordSpacing = styled.div`
   width: 206px;
   justify-content: space-between;`
 
-const PatternInfo = () => {
+const ModelName = () => {
   return (
     <InfoDiv>
     <Text $fontSize={24} $textAlign>TB-303</Text>
@@ -41,4 +41,4 @@ const PatternInfo = () => {
   )
 }
 
-export { PatternInfo }
+export { ModelName }

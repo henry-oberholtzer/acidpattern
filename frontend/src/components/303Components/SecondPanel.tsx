@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { Pallete303 } from "./Palette"
-import { PatternInfo, Knob } from "."
+import { ModelName, Knob } from "."
 import { PatternContext } from "../../routes/patterns/PatternCreateView"
 import { useContext } from "react"
 
@@ -59,7 +59,7 @@ const SecondPanel = () => {
             minDeg={210}
             maxDeg={330}
             />
-            <PatternInfo />
+            <ModelName />
 						<Knob large={true}
             name={"volume"}
             onChange={adjustVolume}
