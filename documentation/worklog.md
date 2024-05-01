@@ -71,18 +71,21 @@
   - Restyle login view
   - Handle log in errors
   - Restyle register view
+  - Handle errors in register view
+  - Set logout if token expires.
 
+5-1-24
+  - ? Finishing pattern post mode
+    - ? Add pattern name field (Above 303)
+    - ? Add "post" button
+    - Add auth check to post button
+  - ? Pattern play mode
+  - ? Pattern clear button
+    - ? Add clear pattern modal
+  - ? Resonance connected
 
 To Do:
-  - Handle errors in register view
 
-  - Add pattern name field (Above 303)
-  - Set logout if token expires.
-  - Add "post" button
-  - Add auth check to post button
-  - Add clear pattern modal
-  - Add pattern play
-  - Connect resonance
 
   - Fix range thumb on chrome.
 
