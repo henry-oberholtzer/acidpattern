@@ -5,7 +5,7 @@ import { LED } from '../303Components';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const NavButton = styled.button<{ $color?: string; $bgColor?: string }>`
+const AcidButton = styled.button<{ $color?: string; $bgColor?: string }>`
 	height: 30px;
 	font-family: 'Inter';
   font-size: 16px;
@@ -25,9 +25,16 @@ const NavButton = styled.button<{ $color?: string; $bgColor?: string }>`
   &:hover {
     cursor: pointer;
   }
+	&:disabled {
+		opacity: 0.5;
+		border-top: 1px solid ${Pallete303.CaseHighlight};
+  	border-bottom: 1px solid ${Pallete303.CaseShadow};
+  	border-left: 1px solid ${Pallete303.ButtonLeft};
+  	border-right: 1px solid ${Pallete303.ButtonRight};
+	}
 `;
 
-const NavDiv = styled.div`
+const NavDiv = styled.div<{ $margin?: number}>`
 	width: 119px;
 	height: 36px;
 	display: flex;
@@ -36,34 +43,56 @@ const NavDiv = styled.div`
 	background-color: ${Pallete303.Black};
 	border-radius: 2px 4px 4px 2px;
 	padding: 0 5px 0px 0px;
-	margin-right: 10px;`
+	${props => props.$margin? `margin: ${props.$margin}px;` : ""}
+	`
 
 const NavigationButton = (props: NavButtonProps) => {
 	const [active, setActive] = useState<boolean>(false)
 	const location = useLocation()
 
-	return (
-		<NavDiv>
-			<LED active={(active || location.pathname === props.to)}/>
-			<Link to={props.to}>
-				<NavButton
-					$color={props.color}
-					$bgColor={props.bgColor}
-					onMouseDown={() => setActive(true)}
-					onMouseUp={() => setActive(false)}>
-					{props.text}
-					
-				</NavButton>
-			</Link>
-		</NavDiv>
-	);
+	if (props.to) {
+		return (
+			<NavDiv>
+				<LED active={(active || location.pathname === props.to)}/>
+				<Link to={props.to}>
+					<AcidButton
+						$color={props.color}
+						$bgColor={props.bgColor}
+						onPointerEnter={() => setActive(true)}
+						onPointerLeave={() => setActive(false)}>
+						{props.text}
+						
+					</AcidButton>
+				</Link>
+			</NavDiv>
+		);
+	} else {
+		return (
+			<NavDiv $margin={props.margin}>
+				<LED active={(active || location.pathname === props.to)}/>
+					<AcidButton
+						disabled={props.disabled}
+						$color={props.color}
+						$bgColor={props.bgColor}
+						onPointerEnter={() => props.disabled ? "" : setActive(true)}
+						onPointerLeave={() => props.disabled ? "" : setActive(false)}
+						type={"submit"}>
+						{props.text}
+						
+					</AcidButton>
+			</NavDiv>
+		);
+	}
 };
 
 interface NavButtonProps {
 	text: string;
-	to: string;
+	margin?: number;
+	to?: string;
+	type?: string;
 	color?: string;
 	bgColor?: string;
+	disabled?: boolean;
 }
 
 export { NavigationButton };

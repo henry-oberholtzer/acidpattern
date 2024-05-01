@@ -11,7 +11,7 @@ position: fixed;
 z-index: 3;
 align-items: center;
 justify-content: space-between;
-height: 96px;
+height: 60px;
 width: 100%;
 background-color: ${Pallete303.CaseSilver};
 box-shadow: 3px 3px 30px ${Pallete303.CaseShadow}, -3px -3px 30px ${Pallete303.CaseShadow};
@@ -21,7 +21,7 @@ border-bottom: 3px solid ${Pallete303.CaseShadow};
 `
 
 const LineDivider = styled.div`
-  height: 78px;
+  height: 40px;
   border-left: 2px solid ${Pallete303.Black};
   margin: 6px 24px;`
 
@@ -38,7 +38,10 @@ const Header = () => {
         <LineDivider />
         <Navigation />
       </HeaderSection>
-      <UserWidget />
+      <HeaderSection>
+        <LineDivider />
+        <UserWidget />
+      </HeaderSection>
     </HeaderDiv>
   )
 }

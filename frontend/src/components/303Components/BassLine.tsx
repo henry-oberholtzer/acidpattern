@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Pallete303 } from "./Palette";
 
 const BasslineDiv = styled.div`
-  width: 254px;
+  width: 250px;
   height: 90px;
   display: flex;
   align-items: center;

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../scripts/api';
+import { api } from '../../scripts/api';
 
 const LogOutView = () => {
 	const navigate = useNavigate();

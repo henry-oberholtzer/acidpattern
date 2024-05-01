@@ -1,16 +1,18 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Root } from './routes/root';
-import { ErrorPage } from './routes/error-page';
-import { PatternListView } from './routes/patterns/PatternListView';
-import { UserListView } from './routes/users/UserListView';
 import { api } from './scripts/api';
-import { RegisterView } from './routes/auth/RegisterView';
-import { registerAction } from './scripts/actions';
-import { LogInView } from './routes/auth/LogInView';
-import { LogOutView } from './components/LogOutView';
-import { PatternCreateView } from './routes/patterns/PatternCreateView';
-import { ProtectedRoute } from './components/ProtectedRoute';
-import { PatternDetailView } from './routes/patterns/PatternDetailView';
+import {
+	RegisterView,
+	PatternListView,
+	ErrorPage,
+	Root,
+	UserListView,
+	LogInView,
+	ProfileView,
+	PatternDetailView,
+	ProtectedRoute,
+	PatternCreateView,
+	LogOutView,
+} from './routes';
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -21,6 +23,10 @@ const App = () => {
 			loader: api.patterns,
 			children: [
 				{
+					path: '',
+					element: <PatternCreateView />,
+				},
+				{
 					path: 'patterns/',
 					element: <PatternListView />,
 					loader: api.patterns,
@@ -30,10 +36,6 @@ const App = () => {
 					element: <PatternDetailView />,
 				},
 				{
-					path: 'patterns/write',
-					element: <PatternCreateView />,
-				},
-				{
 					element: <ProtectedRoute />,
 					children: [
 						{
@@ -41,7 +43,10 @@ const App = () => {
 							element: <UserListView />,
 							loader: api.users,
 						},
-						
+						{
+							path: 'profile/',
+							element: <ProfileView />,
+						},
 					],
 				},
 				{
@@ -55,7 +60,6 @@ const App = () => {
 				{
 					path: 'register/',
 					element: <RegisterView />,
-					action: registerAction,
 				},
 			],
 		},

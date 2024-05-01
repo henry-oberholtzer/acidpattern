@@ -61,9 +61,36 @@
   - Create knob component
   - Add logos to 303
 
+4-29-24
+  - Fix the knobs to prevent creating so many classes, causing re-rendering in chrome
+  - Connect all potentiometers to control correct parts of the 303
+  - Switch the main page just the 303
+  - Add pattern view widgets
 
+4-30-24
+  - Restyle login view
+  - Handle log in errors
+  - Restyle register view
+  - Handle errors in register view
+  - Set logout if token expires.
+
+5-1-24
+  - ? Finishing pattern post mode
+    - ? Add pattern name field (Above 303)
+    - ? Add "post" button
+    - Add auth check to post button
+  - ? Pattern play mode
+  - ? Pattern clear button
+    - ? Add clear pattern modal
+  - ? Resonance connected
 
 To Do:
+
+
+  - Fix range thumb on chrome.
+
+  - Pattern browse view
+
   - Test user profile
   - Test user login & user creating a pattern
   - Assign that method to an API endpoint (/midi)

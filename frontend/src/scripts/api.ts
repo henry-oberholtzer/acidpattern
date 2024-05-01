@@ -3,7 +3,7 @@ const simpleHeader = { 'Content-Type': 'application/json', }
 function apiFactory(host: string) {
 	return (method: string) => {
 		return (route: string) => {
-			return async (routeParams: string | null = null, headers: HeadersInit = { 'Content-Type': 'application/json', }, body: object | null = null ) => {
+			return async (routeParams: string | null = null, headers: HeadersInit = { 'Content-Type': 'application/json', }, body: object | null = null) => {
 				let url = host + route;
 				const request: RequestInit = {
 					method: method,
@@ -23,19 +23,21 @@ function apiFactory(host: string) {
 						}
 						const data = await response.json();
 						return data;
+					} else if (response.status === 401 || response.status === 400) {
+						const data = await response.json();
+						return data;
 					} else {
-						throw new Error(`ERROR: ${response.status}: ${response.statusText}`);
+						throw new Error(`ERROR: ${response.status}: ${response.statusText}`)
 					}
 				} catch (error) {
-					console.error(error);
-					throw error;
+					console.error(error)
 				}
 			};
 		}
 	}
 }
 
-const baseAPI = apiFactory(import.meta.env.VITE_DJANGO_SERVER + "/")
+const baseAPI = apiFactory(import.meta.env.VITE_BACKEND + "/")
 const getAPI = baseAPI("GET")
 const postAPI = baseAPI("POST")
 

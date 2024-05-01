@@ -6,20 +6,22 @@ import { useContext } from "react"
 const BackNextControls = () => {
   const { index, synth, pitchMode, mode } = useContext(PatternContext);
 
-  const onMouseDown = (back: boolean = false) => {
-    console.log("Previous: ", index.current)
-    if (back === false) {
-      index.back()
-      if (synth?.current != null && mode.get === "pitch" && pitchMode.get[index.current - 1]) {
-        synth.current.attack(pitchMode.get[index.current - 1].pitch)
-      }
-    } else {
-      index.next()
+  const onMouseDownNext = () => {
       if (synth?.current != null && mode.get === "pitch" && pitchMode.get[index.current + 1]) {
-        synth.current.attack(pitchMode.get[index.current + 1].pitch)
+        synth.current.attack(pitchMode.get[index.current + 1])
       }
-    }
+      index.next()
+      console.log(index.current)
+  }
 
+  const onMouseDownBack = () => {
+    index.back()
+    if (synth?.current != null && mode.get === "pitch" && index.current === 0) {
+      synth.current.attack(pitchMode.get[0])
+    } else if (synth?.current != null && mode.get === "pitch" && pitchMode.get[index.current - 1]) {
+      synth.current.attack(pitchMode.get[index.current - 1])
+    }
+    console.log(index.current)
   }
 
   const onMouseUp = () => {
@@ -46,7 +48,7 @@ const BackNextControls = () => {
       <ButtonTB
         name="back"
         horizontal={true}
-        onMouseDown={() => onMouseDown(true)}
+        onMouseDown={onMouseDownBack}
         onMouseUp={onMouseUp}
       />
     </BorderContainer>
@@ -57,7 +59,7 @@ const BackNextControls = () => {
       <ButtonTB
         name="run-stop"
         large={true}
-        onMouseDown={onMouseDown}
+        onMouseDown={onMouseDownNext}
         onMouseUp={onMouseUp}
       />
       <Label
