@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef } from 'react';
+import { useContext} from 'react';
 import { PatternContext } from '../../routes/patterns/PatternCreateView';
 import styled from 'styled-components';
 import { Pallete303 } from './Palette';
@@ -39,8 +39,7 @@ const Index = styled.th<{ $active?: boolean }>`
 	${props => props.$active ? "border: 2px solid ${Pallete303.LCDFont};" : ""}`
 
 const PatternTable = () => {
-	const { timeMode, pitchMode, activeSection, index } = useContext(PatternContext);
-	const indexRex = useRef([])
+	const { timeMode, pitchMode, activeSection, } = useContext(PatternContext);
 
 	const pairedList = () => {
 		const pitches = [...pitchMode.get];
@@ -86,16 +85,12 @@ const PatternTable = () => {
 		}
 	};
 
-	useEffect(() => {
-		
-	}, [index])
-
 	return (
 				<PatternTableStyle>
 					<tbody>
 						<tr>
 							<th colSpan={2}>Section '{activeSection.get}'</th>
-							{timeMode.get.map((t, i) => {
+							{timeMode.get.map((_, i) => {
 								return <Index key={i} scope="col">{i + 1}</Index>
 							})}
 						</tr>
