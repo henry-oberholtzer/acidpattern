@@ -42,10 +42,6 @@ const PatternClearModal = () => {
     patternClearModal.set(false)
   }
 
-  const onMouseUp = (value: string) => {
-    case: 
-  }
-
 	return (
 		<Modal>
       <SectionOptionGroup $row $evenSpace>

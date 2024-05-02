@@ -79,18 +79,20 @@
     - Add pattern name field (Above 303)
     - Add "post" button
     - Add auth check to post button
-  - ? Active index indicator on pattern info
-  - ? Pattern play mode
-  - ? Pattern clear button
-    - ? Add clear pattern modal
+  - Add clear pattern modal
+
+5-2-24
+  - Pattern clear button functionality
+  - Pattern browse view
   - ? Resonance connected
+  - ? Pattern play mode
 
 To Do:
 
 
+  - ? Active index indicator on pattern info
   - Fix range thumb on chrome.
 
-  - Pattern browse view
 
   - Test user profile
   - Test user login & user creating a pattern
