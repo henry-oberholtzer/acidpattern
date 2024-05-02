@@ -38,7 +38,7 @@ const ButtonTB = (props: ButtonProps) => {
         
         onPointerDown={props.onMouseDown}
         onPointerUp={props.onMouseUp}
-        onPointerLeave={props.onMouseUp}/>
+        onPointerLeave={props.onPointerLeave}/>
     </Div>
   )
 }
@@ -50,6 +50,7 @@ interface ButtonProps {
   onClick?: () => void;
   onMouseDown?: () => void;
   onMouseUp?: () => void;
+  onPointerLeave?: () => void;
 }
 
 export { ButtonTB }
