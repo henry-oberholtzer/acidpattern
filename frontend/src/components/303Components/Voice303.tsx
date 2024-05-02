@@ -11,6 +11,7 @@ class Voice303 {
 	private volumeNode: GainNode;
 	private saw: PeriodicWave;
 	private square: PeriodicWave;
+	private pattern: [Time, Pitch | null][]
 	
   private filterMin = 200;
   private filterMax = 9000;
@@ -37,6 +38,7 @@ class Voice303 {
 
 
 	constructor(settings: Settings) {
+		this.pattern = []
 		this.tempo = settings.tempo;
 		this.tuning = settings.tuning;
 		this.cutoffFreq = this.ccToCutoff(settings.cut_off_freq);
@@ -122,16 +124,34 @@ class Voice303 {
 	adjustWaveform(waveform: 'saw' | 'square') {
 		if (waveform === 'saw') {
       this.osc.setPeriodicWave(this.saw)
-      console.log(this.osc.type)
 		} else {
 			this.osc.setPeriodicWave(this.square)
+		}
+	}
+
+	setPattern(time: Time[], pitches: Pitch[]) {
+		const pitchList = [...pitches];
+		const pairs: [Time, Pitch | null][] = [];
+		time.forEach((t) => {
+			if (t.timing === 1 && pitchList[0]) {
+				pairs.push([t, pitchList.shift() as Pitch]);
+			} else {
+				pairs.push([t, null]);
+			}
+		});
+		return pairs;
+	}
+
+	runPattern() {
+		if (this.pattern.length) {
+			// Run through the loop of the pattern.
 		}
 	}
 
 
 	triggerFilterEnvelope(time: number, accent: boolean) {
 		const attackTime = accent ? .2 : 0.015
-		const decayTime = accent ? .2 : .2 + (2 * (this.decay/127))
+		const decayTime = accent ? .1 : .2 + (2 * (this.decay/127))
 		const cutoff = this.filterMin + ((this.cutoffFreq - this.filterMin) * (this.envMod / 127))
 		this.filterOne.frequency.cancelScheduledValues(time)
 		this.filterTwo.frequency.cancelScheduledValues(time)
@@ -147,7 +167,7 @@ class Voice303 {
 	triggerVolumeEnvelope(time: number, accent: boolean) {
 		const attackTime = 0.015
 		const decayTime = 4
-		const gainAmount = accent ? 0.5 + 0.4 * (this.accent/127) : 0.5
+		const gainAmount = accent ? 0.5 + 0.5 * (this.accent/127) : 0.5
 		this.ampEnvelope.gain.cancelScheduledValues(time)
 		this.ampEnvelope.gain.setTargetAtTime(gainAmount, time, attackTime)
 		this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, time + attackTime + decayTime)

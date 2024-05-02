@@ -20,7 +20,7 @@ const App = () => {
 			path: '/',
 			element: <Root />,
 			errorElement: <ErrorPage />,
-			loader: api.patterns,
+			loader: () => api.patterns(null),
 			children: [
 				{
 					path: '',
@@ -29,7 +29,7 @@ const App = () => {
 				{
 					path: 'patterns/',
 					element: <PatternListView />,
-					loader: api.patterns,
+					loader: () => api.patterns(null),
 				},
 				{
 					path: 'patterns/id',

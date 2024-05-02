@@ -35,3 +35,10 @@ type Pitch = {
   pitch: number;
   octave: -12 | 0 | 12;
 }
+
+interface PatternPage {
+  count: number;
+  next: number | null;
+  previous: number | null;
+  results: Pattern[]
+}

@@ -1,44 +1,121 @@
-import styled from "styled-components"
-import { Pallete303 } from "./Palette"
+import styled from "styled-components";
+import { PatternTable } from "./PatternTable";
+import { Pallete303 } from "./Palette";
+import { useContext, useState } from "react";
+import { PatternContext } from "../../routes";
+import { useAuth } from "../../hooks/useAuth";
+import { PatternClearModal } from "./PatternClearModal";
 
-const InfoDiv = styled.div`
-  font-family: 'Androcles';
-  height: 156px;
-  width: 305px;
+const Container = styled.div`
+  width: 625px;
+  height: 136px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: '5x7 Pixel';
   display: flex;
-  padding-top: 16px;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;`
+  flex-direction: column;
+  text-rendering: geometricPrecision;
+  color: ${Pallete303.LCDFont};
+  border-top: 3px solid ${Pallete303.CaseShadow};
+  border-bottom: 3px solid ${Pallete303.CaseHighlight};
+  border-left: 3px solid ${Pallete303.ButtonRight};
+  border-right: 3px solid ${Pallete303.ButtonLeft};
+  background-color: ${Pallete303.LCDBackground};
+  background-image: ${Pallete303.LCDBackgroundGradient};
+  padding: 4px;`
 
-const Text = styled.h4<{$fontSize: number, $textAlign?: boolean}>`
-  margin: 0;
-  text-align: ${props => props.$textAlign ? "right" : "left"};
-  font-size: ${props => props.$fontSize}px;
-  width: 206px;`
+const NameInputLabel = styled.label`
+  height: 20px;
+  width: ${9 * 15}px;
+  font-size: 14px;
+  background-color: ${Pallete303.LCDFont};
+  color: ${Pallete303.LCDBackground};
+  outline: 2px solid ${Pallete303.LCDFont};`
 
-const Line = styled.div`
-  width: 206px;
-  height: 2px;
-  border-radius: 1px;
-  background-color: ${Pallete303.Black};`
+const NameInput = styled.input`
+  font-family: '5x7 Pixel';
+  width: ${16*15}px;
+  height: 20px;
+  font-size: 14px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  padding-left: 4px;
+  cursor: pointer;
+  &:focus, &:active {
+    outline: 2px solid ${Pallete303.LCDFont};
+  }
+  `
 
-const WordSpacing = styled.div`
-  display: flex;
-  width: 206px;
-  justify-content: space-between;`
+const NameInputGroup = styled.div`
+  height: 20px;
+  display: inline;
+  margin-bottom: 2px;`
+
+const LCDButton = styled.button<{ $width?: number }>`
+  height: 20px;
+  font-family: '5x7 Pixel';
+  font-size: 14px;
+  width: ${props => props.$width ? props.$width :  8 * 10}px;
+  cursor: pointer;
+  background-color: ${Pallete303.LCDFont};
+  color: ${Pallete303.LCDBackground};
+  border: none;
+  outline: 2px solid transparent;
+  transition: outline 50ms;
+  &:focus, &:active {
+    outline: 2px solid ${Pallete303.LCDFont};
+  }
+  &:hover {
+    background-color: ${Pallete303.LCDFont}DD;
+  }`
 
 const PatternInfo = () => {
+  const { user } = useAuth()
+  const { pitchMode, timeMode, name, activeSection, postPattern, patternClearModal} = useContext(PatternContext)
+  const [ saveMessage, setSaveMessage ] = useState<string>("POST")
+
+
+  const handlePatternPost = () => {
+    if (patternClearModal.get === false) {
+      if (!(activeSection.get === 'A' && pitchMode.get.length > 1 && timeMode.get.length > 1)) {
+        setSaveMessage("Your pattern may not be empty.")
+      }
+      else if (name.get.trim().length <= 0 ) {
+        setSaveMessage("name required")
+      } else {
+        postPattern()
+        setSaveMessage("posted!")
+      }
+    }
+  }
+
+  if (patternClearModal.get) {
+    return (
+      <Container>
+        <PatternClearModal />
+      </Container>
+    )
+  }
+
   return (
-    <InfoDiv>
-    <Text $fontSize={24} $textAlign>TB-303</Text>
-    <Line/>
-    <WordSpacing>
-      <Text $fontSize={21}>Computer</Text>
-      <Text $fontSize={21} $textAlign>Controlled</Text>
-    </WordSpacing>
-    </InfoDiv>
+    <Container>
+      <NameInputGroup>
+        <NameInputLabel>PATT NAME:</NameInputLabel>
+        <NameInput 
+          placeholder={"CLICK TO ADD NAME"}
+          value={name.get}
+          onChange={(e) => name.set(e.target.value)}/>
+          {user?.user &&
+            <LCDButton $width={8*32} onClick={handlePatternPost}>{saveMessage}</LCDButton>
+          }
+          {!user && 
+            <LCDButton $width={8*32} >AN ACCOUNT IS REQUIRED TO POST</LCDButton>
+          }
+      </NameInputGroup>
+      <PatternTable />
+    </Container>
   )
 }
 
-export { PatternInfo }
+export { PatternInfo, LCDButton } 

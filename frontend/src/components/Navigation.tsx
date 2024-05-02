@@ -11,12 +11,12 @@ const Navigation = () => {
   return (
     <Nav>
       <NavigationButton
-        to={"/patterns"}
-        text={"patterns"}
+        to={"/"}
+        text={"write"}
       />
       <NavigationButton
-        to={"/patterns/write"}
-        text={"write"}
+        to={"/patterns"}
+        text={"patterns"}
       />
     </Nav>
   )

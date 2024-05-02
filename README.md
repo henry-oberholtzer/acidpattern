@@ -2,6 +2,7 @@
 
 A site dedicated to sharing and composing patterns for the Roland TB-303 and its various clones and emulations.
 
+Graphically inspired by early rave music forums, chunky VST design and old LCD panels.
 
 
 ## Set Up

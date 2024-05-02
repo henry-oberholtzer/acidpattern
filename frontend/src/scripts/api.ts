@@ -43,7 +43,8 @@ const postAPI = baseAPI("POST")
 
 const api = {
 	root: () => getAPI('/'),
-	patterns: () => getAPI('patterns/'),
+	patterns: (params: string | null) => getAPI('patterns/')(params, simpleHeader, null),
+	postPattern: (header: HeadersInit, body: Pattern) => postAPI('patterns/')(null, header, body),
   users: () => getAPI('users/'),
 	register: (data: RegisterData) => postAPI('register/')(null, simpleHeader, data),
 	login: (header: HeadersInit) => postAPI('login/')(null, header),

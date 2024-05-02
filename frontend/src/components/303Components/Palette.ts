@@ -14,6 +14,11 @@ const Pallete303 = {
   Black: "#000000",
   KnobTop: "#7e7e76",
   KnobSlope: "#a6a6a6",
+  LCDFont: "#082708",
+  LCDBackground: "#749e1c",
+  LCDBackgroundDark: "5a730d",
+  LCDBackgroundGradient: "linear-gradient(#5a730d 1%, #749e1c 3%, #749e1c)"
+
 }
 
 export { Pallete303 }

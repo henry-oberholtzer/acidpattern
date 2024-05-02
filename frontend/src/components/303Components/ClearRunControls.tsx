@@ -11,7 +11,7 @@ import { LED } from './LED';
 import { useContext, useEffect } from 'react';
 
 const ClearRunControls = () => {
-	const { mode, run, } = useContext(PatternContext);
+	const { mode, run, patternClearModal} = useContext(PatternContext);
 
 	const handleRun = () => {
 		if (mode.get === 'normal') {
@@ -19,6 +19,9 @@ const ClearRunControls = () => {
 		}
 	};
 
+	const handlePatternClear = () => {
+		patternClearModal.set(!patternClearModal.get)
+	}
 
 
 	useEffect(() => {
@@ -42,6 +45,7 @@ const ClearRunControls = () => {
 				<ButtonTB
 					name="pattern-clear"
 					horizontal={true}
+					onClick={handlePatternClear}
 				/>
 			</BorderContainer>
 			<BorderContainer>

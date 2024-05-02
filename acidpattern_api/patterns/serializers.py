@@ -13,8 +13,8 @@ class TimeSerializer(serializers.ModelSerializer):
     exclude = ['section']
     
 class SectionSerializer(WritableNestedModelSerializer):
-  pitch_mode = PitchSerializer(many=True, max_length=16)
-  time_mode = TimeSerializer(many=True, max_length=16)
+  pitch_mode = PitchSerializer(many=True, required=False, max_length=16)
+  time_mode = TimeSerializer(many=True, required=False, max_length=16)
   
   class Meta:
     model = Section

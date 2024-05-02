@@ -114,7 +114,7 @@ class Time(models.Model):
     NOTE = 1,
     TIED = 2,
   
-  time = models.SmallIntegerField(
+  timing = models.SmallIntegerField(
     choices=Timing.choices
   )
 
