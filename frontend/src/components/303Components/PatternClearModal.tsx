@@ -36,22 +36,122 @@ const SectionLabel = styled.p<{ $width?: number; $center?: boolean }>`
 `;
 
 const PatternClearModal = () => {
-  const { patternClearModal } = useContext(PatternContext)
+	const { patternClearModal, activeSection, timeMode, pitchMode, sections, name } =
+		useContext(PatternContext);
 
-  const closeModal = () => {
-    patternClearModal.set(false)
-  }
+	const closeModal = () => {
+		patternClearModal.set(false);
+	};
+
+	const clearProperty = (property: string) => {
+		return (section: 'A' | 'B') => {
+			if (property === 'pitch') {
+				if (activeSection.get === section) {
+					pitchMode.set([]);
+				} else {
+					const newSections: [Section, Section] = [...sections.get];
+					if (section === 'B') {
+						newSections[1].pitch_mode = [];
+					} else {
+						newSections[0].pitch_mode = [];
+					}
+					sections.set(newSections);
+				}
+			} else if (property === 'time') {
+				if (activeSection.get === section) {
+					timeMode.set([]);
+				} else {
+					const newSections: [Section, Section] = [...sections.get];
+					if (section === 'B') {
+						newSections[1].time_mode = [];
+					} else {
+						newSections[0].time_mode = [];
+					}
+					sections.set(newSections);
+				}
+			} else if (property === 'slides') {
+				if (activeSection.get === section) {
+					const noSlides = pitchMode.get.map((p) => {
+						p.slide = false;
+						return p
+					})
+					pitchMode.set(noSlides);
+				} else {
+					const newSections: [Section, Section] = [...sections.get];
+					if (section === 'B') {
+						const noSlides = newSections[1].pitch_mode.map((p) => {
+							p.slide = false;
+							return p
+						})
+						newSections[1].pitch_mode = noSlides;
+					} else {
+						const noSlides = newSections[0].pitch_mode.map((p) => {
+							p.slide = false;
+							return p
+						})
+						newSections[0].pitch_mode = noSlides;
+					}
+					sections.set(newSections);
+				}
+			} else if (property === "accents") {
+				if (activeSection.get === section) {
+					const noSlides = pitchMode.get.map((p) => {
+						p.accent = false;
+						return p
+					})
+					pitchMode.set(noSlides);
+				} else {
+					const newSections: [Section, Section] = [...sections.get];
+					if (section === 'B') {
+						const noSlides = newSections[1].pitch_mode.map((p) => {
+							p.accent = false;
+							return p
+						})
+						newSections[1].pitch_mode = noSlides;
+					} else {
+						const noSlides = newSections[0].pitch_mode.map((p) => {
+							p.accent = false;
+							return p
+						})
+						newSections[0].pitch_mode = noSlides;
+					}
+					sections.set(newSections);
+				}
+			}
+		};
+	};
+
+	const clearPitch = clearProperty('pitch');
+	const clearTime = clearProperty('time');
+	const clearAccent = clearProperty('accents')
+	const clearSlide = clearProperty('slides')
+
+	const clearEverything = () => {
+		sections.set([{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []}])
+		timeMode.set([])
+		pitchMode.set([])
+		name.set("")
+	}
 
 	return (
 		<Modal>
-      <SectionOptionGroup $row $evenSpace>
-				<SectionLabel $width={400}
+			<SectionOptionGroup
+				$row
+				$evenSpace>
+				<SectionLabel
+					$width={400}
 					$center>
 					Pattern Clear
 				</SectionLabel>
-				<LCDButton $width={4 * 15} onClick={closeModal}>Exit</LCDButton>
-      </SectionOptionGroup>
-			<SectionOptionGroup $row $evenSpace>
+				<LCDButton
+					$width={4 * 15}
+					onClick={closeModal}>
+					Exit
+				</LCDButton>
+			</SectionOptionGroup>
+			<SectionOptionGroup
+				$row
+				$evenSpace>
 				<div>
 					<SectionLabel
 						$center
@@ -60,12 +160,28 @@ const PatternClearModal = () => {
 					</SectionLabel>
 					<SectionOptionGroup $row>
 						<SectionOptionGroup>
-							<LCDButton $width={15 * 7} value={"A-pitch"}>Pitch</LCDButton>
-							<LCDButton $width={15 * 7} value={"A-accent"}>Accents</LCDButton>
+							<LCDButton
+								$width={15 * 7}
+								onClick={() => clearPitch("A")}>
+								Pitch
+							</LCDButton>
+							<LCDButton
+								$width={15 * 7}
+								onClick={() => clearAccent("A")}>
+								Accents
+							</LCDButton>
 						</SectionOptionGroup>
 						<SectionOptionGroup>
-							<LCDButton $width={15 * 7} value={"A-time"}>Time</LCDButton>
-							<LCDButton $width={15 * 7} value={"A-slide"}>Slides</LCDButton>
+							<LCDButton
+								$width={15 * 7}
+								onClick={() => clearTime("A")}>
+								Time
+							</LCDButton>
+							<LCDButton
+								$width={15 * 7}
+								onClick={() => clearSlide("A")}>
+								Slides
+							</LCDButton>
 						</SectionOptionGroup>
 					</SectionOptionGroup>
 				</div>
@@ -77,17 +193,25 @@ const PatternClearModal = () => {
 					</SectionLabel>
 					<SectionOptionGroup $row>
 						<SectionOptionGroup>
-							<LCDButton $width={15 * 7}>Pitch</LCDButton>
-							<LCDButton $width={15 * 7}>Accents</LCDButton>
+							<LCDButton $width={15 * 7}
+							onClick={() => clearPitch("B")}>Pitch</LCDButton>
+							<LCDButton $width={15 * 7}
+							onClick={() => clearAccent("B")}>Accents</LCDButton>
 						</SectionOptionGroup>
 						<SectionOptionGroup>
-							<LCDButton $width={15 * 7}>Time</LCDButton>
-							<LCDButton $width={15 * 7}>Slides</LCDButton>
+							<LCDButton $width={15 * 7}
+							onClick={() => clearTime("B")}>Time</LCDButton>
+							<LCDButton $width={15 * 7}
+							onClick={() => clearSlide("B")}>Slides</LCDButton>
 						</SectionOptionGroup>
 					</SectionOptionGroup>
 				</div>
 			</SectionOptionGroup>
-			<LCDButton $width={15 * 40} value={"Everything"}>Clear Everything</LCDButton>
+			<LCDButton
+				$width={15 * 40}
+				onClick={clearEverything}>
+				Clear Everything
+			</LCDButton>
 		</Modal>
 	);
 };
