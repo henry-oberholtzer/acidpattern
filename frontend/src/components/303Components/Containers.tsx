@@ -58,8 +58,11 @@ const TextContainer = styled.div<{$height?: number}>`
 
 const GroupDiv = styled.div`
   display: flex;
+  width: 100%;
+  height: 100%;
+  padding-top: 60px;
   flex-direction: column;
-  gap: 30px;
+  align-items: center;
   justify-content: space-between;`
 
 

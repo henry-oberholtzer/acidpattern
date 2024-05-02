@@ -4,6 +4,7 @@ import { Pallete303 } from "../303Components/Palette";
 const PatternFrame = styled.div`
   width: 360px;
   height: 155px;
+  padding: 5px;
   background-color: ${Pallete303.CaseSilver};
   border-radius: 3px;`
 

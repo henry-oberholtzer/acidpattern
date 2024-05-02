@@ -156,7 +156,7 @@ const PatternTable = () => {
 									<td>
 										{pair[1] != null
 											? pair[1].slide && pair[1].accent
-												? 'S/A'
+												? 'SA'
 												: pair[1].slide
 												? 'S'
 												: pair[1].accent

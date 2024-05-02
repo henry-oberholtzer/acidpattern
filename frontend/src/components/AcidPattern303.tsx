@@ -13,8 +13,7 @@ const MainCase = styled.div`
   background-image: radial-gradient(${Pallete303.CaseSilver}, ${Pallete303.CaseShadow} 20%, ${Pallete303.CaseSilver});
   background-color: ${Pallete303.CaseSilver};
   padding-top: 3px;
-  border-radius: 3px;
-  box-shadow: 3px 3px 30px ${Pallete303.CaseShadow}, -3px -3px 30px ${Pallete303.CaseShadow};`
+  border-radius: 3px;`
 
 const AcidPattern303 = () => {
 	return (

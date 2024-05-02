@@ -26,7 +26,7 @@ const Footer = () => {
   return (
     <FooterFrame>
       <Attribution href="https://bdsmovement.net/" target="blank">Free Palestine 🇵🇸</Attribution>
-      <p>(c) {getYear(Date.now())} <Attribution href="https://henryoberholtzer.com/" target="blank">Henry Oberholtzer</Attribution></p>
+      <p><Attribution href="https://henryoberholtzer.com/" target="blank">Henry Oberholtzer {getYear(Date.now())}</Attribution></p>
       <Attribution href="https://github.com/henry-oberholtzer/acidpattern/issues" target="blank">Contribute 🛠️</Attribution>
     </FooterFrame>
   )
