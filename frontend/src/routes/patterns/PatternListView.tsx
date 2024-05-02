@@ -1,13 +1,17 @@
-import { useLoaderData } from "react-router-dom"
+import { useLoaderData } from 'react-router-dom';
+import { Grid, PatternTile } from '../../components';
 
 const PatternListView = () => {
-  const data = useLoaderData()
+	const data = useLoaderData() as PatternPage;
 
-  return (
-    <>
-      <p>This is a list of patterns.</p>
-    </>
-  )
-}
+	return (
+		<Grid>
+			{data.results && data.results.map((p) => {
+        console.log(p)
+				return <PatternTile pattern={p}/>;
+			})}
+		</Grid>
+	);
+};
 
-export { PatternListView }
+export { PatternListView };

@@ -7,7 +7,6 @@ import styled from "styled-components"
 const HeaderDiv = styled.div`
 padding: 20px;
 display: flex;
-position: fixed;
 z-index: 3;
 align-items: center;
 justify-content: space-between;
@@ -47,4 +46,4 @@ const Header = () => {
 }
 
 
-export default Header
+export { Header }

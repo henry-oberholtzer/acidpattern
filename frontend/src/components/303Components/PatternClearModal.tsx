@@ -118,6 +118,7 @@ const PatternClearModal = () => {
 					sections.set(newSections);
 				}
 			}
+			closeModal()
 		};
 	};
 
@@ -131,6 +132,7 @@ const PatternClearModal = () => {
 		timeMode.set([])
 		pitchMode.set([])
 		name.set("")
+		closeModal()
 	}
 
 	return (
