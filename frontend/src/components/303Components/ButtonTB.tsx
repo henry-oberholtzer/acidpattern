@@ -35,8 +35,10 @@ const ButtonTB = (props: ButtonProps) => {
         $large={props.large}
         name={props.name}
         onClick={props.onClick}
-        onMouseDown={props.onMouseDown}
-        onMouseUp={props.onMouseUp}/>
+        
+        onPointerDown={props.onMouseDown}
+        onPointerUp={props.onMouseUp}
+        onPointerLeave={props.onPointerLeave}/>
     </Div>
   )
 }
@@ -48,6 +50,7 @@ interface ButtonProps {
   onClick?: () => void;
   onMouseDown?: () => void;
   onMouseUp?: () => void;
+  onPointerLeave?: () => void;
 }
 
 export { ButtonTB }

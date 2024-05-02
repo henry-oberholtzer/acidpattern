@@ -140,6 +140,7 @@ const Key = (props: KeysProp) => {
     index.next()
   }
 
+
   if (props.name[1] === "#") {
     return (
       <SharpKeyDiv>
@@ -151,7 +152,8 @@ const Key = (props: KeysProp) => {
           <ButtonTB 
             name={props.name}
             onMouseDown={onMouseDown}
-            onMouseUp={onMouseUp} />
+            onMouseUp={onMouseUp}
+            />
         </SharpSwitchDiv>
       </SharpKeyDiv>
     )

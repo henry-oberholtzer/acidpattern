@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import InterMedium from '../fonts/InterMedium.ttf';
 import OptiAggie from '../fonts/OPTIAggie.otf';
 import Androcles from '../fonts/AndroclesOpti-Regular.otf';
-import LCDFont from '../fonts/LCDFont.ttf'
+import LCDFont from '../fonts/LCDFont.woff'
 import { Pallete303 } from './303Components/Palette';
 
 const GlobalStyleProvider = createGlobalStyle`
@@ -35,7 +35,7 @@ const GlobalStyleProvider = createGlobalStyle`
   @font-face {
     font-family: '5x7 Pixel';
     font-style: Normal;
-    src: url(${LCDFont}) format("truetype");
+    src: url(${LCDFont});
   }
 `;
 
