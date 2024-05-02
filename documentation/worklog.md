@@ -75,7 +75,7 @@
   - Set logout if token expires.
 
 5-1-24
-  - ? Finishing pattern post mode
+  - Finishing pattern post mode
     - Add pattern name field (Above 303)
     - Add "post" button
     - Add auth check to post button

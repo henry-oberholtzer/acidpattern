@@ -7,28 +7,29 @@ import chartRest from './svgs/chart_rest.svg';
 import chartTied from './svgs/chart_tied.svg';
 
 const PatternTableStyle = styled.table`
-	border-collapse: collapse;
-	border-radius: 2px;
 	height: 100px;
 	display: block;
-	font-size: 16px;
+	font-size: 14px;
+	border-collapse: collapse;
 	color: ${Pallete303.LCDFont};
-	th,
-	tbody > tr > td {
-		overflow: hidden;
+	tbody > tr > th, tbody > tr > td {
 		padding: 0;
 		font-weight: normal;
 		text-align: center;
 		width: 30px;
-		height: 18px;
+		height: 20px;
+		border-top: 2px solid transparent;
 		border-bottom: 2px solid ${Pallete303.LCDFont}55;
 	}
+	th[scope='col'] {
+		text-align: center;
+	}
 	th[scope='row']:first-of-type {
-		width: ${80}px;
+		width: ${14 * 6}px;
 		text-align: left;
 	}
 	tbody > tr > td:nth-of-type(4n + 1),
-	th[scope='col']:nth-of-type(4n + 2) {
+	th[scope='col']:nth-of-type(4n + 3) {
 		background-color: ${Pallete303.LCDFont};
 		color: ${Pallete303.LCDBackground};
 		border-bottom: 2px solid ${Pallete303.LCDBackground}55;
@@ -89,7 +90,8 @@ const PatternTable = () => {
 				<PatternTableStyle>
 					<tbody>
 						<tr>
-							<th colSpan={2}>Section '{activeSection.get}'</th>
+							<th>Section </th>
+							<th>{activeSection.get}</th>
 							{timeMode.get.map((_, i) => {
 								return <Index key={i} scope="col">{i + 1}</Index>
 							})}
@@ -147,7 +149,7 @@ const PatternTable = () => {
 							})}
 						</tr>
 						<tr>
-							<th scope="row">Sld/Ac</th>
+							<th scope="row">Sld/Acc</th>
 							<th>:</th>
 							{pairedList().map((pair) => {
 								return (

@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { PatternTable } from "./PatternTable";
 import { Pallete303 } from "./Palette";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { PatternContext } from "../../routes";
 import { useAuth } from "../../hooks/useAuth";
+import { PatternClearModal } from "./PatternClearModal";
 
 const Container = styled.div`
   width: 625px;
@@ -13,6 +14,7 @@ const Container = styled.div`
   font-family: '5x7 Pixel';
   display: flex;
   flex-direction: column;
+  text-rendering: geometricPrecision;
   color: ${Pallete303.LCDFont};
   border-top: 3px solid ${Pallete303.CaseShadow};
   border-bottom: 3px solid ${Pallete303.CaseHighlight};
@@ -20,21 +22,21 @@ const Container = styled.div`
   border-right: 3px solid ${Pallete303.ButtonLeft};
   background-color: ${Pallete303.LCDBackground};
   background-image: ${Pallete303.LCDBackgroundGradient};
-  padding: 5px;`
+  padding: 4px;`
 
 const NameInputLabel = styled.label`
-  height: 18px;
-  width: 110px;
-  padding-left: 4px;
-  font-size: 16px;
+  height: 20px;
+  width: ${9 * 15}px;
+  font-size: 14px;
   background-color: ${Pallete303.LCDFont};
-  color: ${Pallete303.LCDBackground};`
+  color: ${Pallete303.LCDBackground};
+  outline: 2px solid ${Pallete303.LCDFont};`
 
 const NameInput = styled.input`
   font-family: '5x7 Pixel';
-  width: ${8*30}px;
-  height: 18px;
-  font-size: 16px;
+  width: ${16*15}px;
+  height: 20px;
+  font-size: 14px;
   background-color: transparent;
   border: none;
   padding: 0;
@@ -46,61 +48,69 @@ const NameInput = styled.input`
   `
 
 const NameInputGroup = styled.div`
-  height: 18px;
-  display: flex;
+  height: 20px;
+  display: inline;
   margin-bottom: 2px;`
 
-const SaveAndPostButton = styled.button`
-  height: 18px;
-  margin-bottom: 2px;
+const LCDButton = styled.button<{ $width?: number }>`
+  height: 20px;
   font-family: '5x7 Pixel';
-  font-size: 16px;
-  width: ${8 * 30}px;
+  font-size: 14px;
+  width: ${props => props.$width ? props.$width :  8 * 10}px;
   cursor: pointer;
   background-color: ${Pallete303.LCDFont};
   color: ${Pallete303.LCDBackground};
   border: none;
-  &:focus, &:active, &:hover {
+  outline: 2px solid transparent;
+  transition: outline 50ms;
+  &:focus, &:active {
     outline: 2px solid ${Pallete303.LCDFont};
-    background-color: transparent;
-    color: ${Pallete303.LCDFont};
   }
-  &:disabled {
-    opacity: 0.5;
+  &:hover {
+    background-color: ${Pallete303.LCDFont}DD;
   }`
 
 const PatternInfo = () => {
   const { user } = useAuth()
-  const { pitchMode, timeMode, sections, name } = useContext(PatternContext)
-  const [disabled, setDisabled] = useState<boolean>(false)
+  const { pitchMode, timeMode, name, activeSection, postPattern, patternClearModal} = useContext(PatternContext)
+  const [ saveMessage, setSaveMessage ] = useState<string>("POST")
 
-
-
-  useEffect(() => {
-    if (pitchMode.get.length > 1 && timeMode.get.length > 1 && name.get.length > 3) {
-      setDisabled(false)
-    } else if (sections.get[0].time_mode.length > 1 && sections.get[0].pitch_mode.length > 1 && name.get.length > 3) {
-      setDisabled(false)
-    } else {
-      setDisabled(true)
-    }
-  }, [pitchMode, timeMode, sections, name])
 
   const handlePatternPost = () => {
+    if (patternClearModal.get === false) {
+      if (!(activeSection.get === 'A' && pitchMode.get.length > 1 && timeMode.get.length > 1)) {
+        setSaveMessage("Your pattern may not be empty.")
+      }
+      else if (name.get.trim().length <= 0 ) {
+        setSaveMessage("name required")
+      } else {
+        postPattern()
+        setSaveMessage("posted!")
+      }
+    }
+  }
 
+  if (patternClearModal.get) {
+    return (
+      <Container>
+        <PatternClearModal />
+      </Container>
+    )
   }
 
   return (
     <Container>
       <NameInputGroup>
-        <NameInputLabel>PATTERN NAME:</NameInputLabel>
+        <NameInputLabel>PATT NAME:</NameInputLabel>
         <NameInput 
-          placeholder={"CLICK TO ADD NAME"}/>
+          placeholder={"CLICK TO ADD NAME"}
+          value={name.get}
+          onChange={(e) => name.set(e.target.value)}/>
           {user?.user &&
-            <SaveAndPostButton onClick={handlePatternPost} disabled={disabled}>SAVE & POST THIS PATTERN</SaveAndPostButton>
+            <LCDButton $width={8*32} onClick={handlePatternPost}>{saveMessage}</LCDButton>
           }
           {!user && 
-            <SaveAndPostButton>AN ACCOUNT IS REQUIRED TO POST</SaveAndPostButton>
+            <LCDButton $width={8*32} >AN ACCOUNT IS REQUIRED TO POST</LCDButton>
           }
       </NameInputGroup>
       <PatternTable />
@@ -108,4 +118,4 @@ const PatternInfo = () => {
   )
 }
 
-export { PatternInfo } 
+export { PatternInfo, LCDButton } 

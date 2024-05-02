@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction, createContext, useRef, useState } from 'react
 import { AcidPattern303 } from '../../components/AcidPattern303';
 import { Voice303 } from '../../components/303Components/Voice303';
 import { GroupDiv } from '../../components/303Components';
+import { api } from '../../scripts/api';
+import { useAuth } from '../../hooks/useAuth';
 
 const PatternContext = createContext<PatternContext>({
 	activeIndex: { set: (number) => {number}, get: 63},
@@ -22,7 +24,9 @@ const PatternContext = createContext<PatternContext>({
 	tempo: { set: (number) => {number}, get: 63},
 	volume: { set: (number) => {number}, get: 63},
 	run: { set: (bool) => {bool}, get: false},
+	patternClearModal: { set: (bool) => {bool}, get: false},
 	synth: null,
+	postPattern: () => {},
 	advanceIndex: () => {}
 })
 
@@ -44,13 +48,16 @@ interface PatternContext {
 	tempo: { set: Dispatch<SetStateAction<number>>, get: number},
 	volume: { set: Dispatch<SetStateAction<number>>, get: number},
 	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
+	patternClearModal: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
 	sections: { set: Dispatch<SetStateAction<[Section, Section]>>, get: [Section, Section]},
 	activeSection: { set: Dispatch<SetStateAction<"A"|"B">>, get: "A" | "B"},
 	synth: React.MutableRefObject<Voice303 | null> | null,
+	postPattern: () => void;
 }
 
 const PatternCreateView = (props: PatternCreateProps) => {
-	const [name, setName] = useState(props.pattern? props.pattern.name : `New Pattern`);
+	const { user } = useAuth()
+	const [name, setName] = useState(props.pattern? props.pattern.name : "");
 	const [mode, setMode] = useState<"pitch" | "time" | "normal">("normal")
 	const [sections, setSections] = useState<[Section, Section]>(props.pattern? props.pattern.sections : [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []}])
 	const [activeSection, setActiveSection] = useState<"A" | "B">("A")
@@ -72,6 +79,8 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	// Transport
 	const [run, setRun] = useState<boolean>(false)
 
+	const [patternClearModal, setPatternClearnModal] = useState<boolean>(false)
+
 	const synth = useRef<Voice303 | null>(null)
 
 	const advanceIndex = () => {
@@ -84,6 +93,55 @@ const PatternCreateView = (props: PatternCreateProps) => {
 	const reverseIndex = () => {
 		if (activeIndex != 0) {
 			setActiveIndex(activeIndex - 1);
+		}
+	}
+
+	const getPatternObject = () => {
+		const section = (sectionName: "A" | "B") => {
+			let section: Section = {
+				name: sectionName,
+				time_mode: timeMode,
+				pitch_mode: pitchMode,
+			}
+			if (activeSection != sectionName) {
+				if (sectionName === 'A') {
+					section = sections[0]
+				} else {
+					section = sections[1]
+				}
+			}
+			return section
+		}
+
+		const settings: Settings = {
+			waveform: waveform,
+			tempo: tempo,
+			tuning: tuning,
+			resonance: resonance,
+			cut_off_freq: cutOffFreq,
+			env_mod: envMod,
+			decay: decay,
+			accent: accent,
+		}
+
+		const pattern: Pattern = {
+			name: name,
+			settings: settings,
+			sections: [section('A'), section('B')]
+		}
+		console.log(pattern)
+		return pattern
+	}
+
+	const postPattern = async () => {
+		if (user != null) {
+			const pattern = getPatternObject()
+			const header = {
+				'Content-Type': 'application/json', 
+				'Authorization': `Token ${user.token}`
+			}
+			const response = await api.postPattern(header, pattern)
+			return response
 		}
 	}
 
@@ -108,7 +166,9 @@ const PatternCreateView = (props: PatternCreateProps) => {
 				synth: synth,
 				activeSection: { set: setActiveSection, get: activeSection},
 				sections: { set: setSections, get: sections},
-				advanceIndex: advanceIndex}}>
+				patternClearModal: { get: patternClearModal, set: setPatternClearnModal },
+				advanceIndex: advanceIndex,
+				postPattern: postPattern}}>
 					<GroupDiv>
 						<div onClick={() => synth.current === null ? synth.current = new Voice303({
 							tempo: tempo,

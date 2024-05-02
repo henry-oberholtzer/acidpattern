@@ -19,3 +19,4 @@ export * from "./SettingsIndicator"
 export * from "./PatternTable"
 export * from "./ControlPanel"
 export * from "./PatternInfo"
+export * from './PatternClearModal'
