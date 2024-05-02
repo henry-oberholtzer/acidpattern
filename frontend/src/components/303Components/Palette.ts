@@ -17,7 +17,7 @@ const Pallete303 = {
   LCDFont: "#082708",
   LCDBackground: "#749e1c",
   LCDBackgroundDark: "5a730d",
-  LCDBackgroundGradient: "linear-gradient(#5a730d 1%, #749e1c 3%, #749e1c)"
+  LCDBackgroundGradient: "linear-gradient(#3a530d, #749e1c 2%, #749e1c 90%, #3a530d 100%)"
 
 }
 

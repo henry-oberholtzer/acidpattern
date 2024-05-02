@@ -35,8 +35,10 @@ const ButtonTB = (props: ButtonProps) => {
         $large={props.large}
         name={props.name}
         onClick={props.onClick}
-        onMouseDown={props.onMouseDown}
-        onMouseUp={props.onMouseUp}/>
+        
+        onPointerDown={props.onMouseDown}
+        onPointerUp={props.onMouseUp}
+        onPointerLeave={props.onMouseUp}/>
     </Div>
   )
 }

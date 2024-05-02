@@ -11,11 +11,20 @@ import { LED } from './LED';
 import { useContext, useEffect } from 'react';
 
 const ClearRunControls = () => {
-	const { mode, run, patternClearModal} = useContext(PatternContext);
+	const { mode, run, patternClearModal, timeMode} = useContext(PatternContext);
+
+	// const startPattern = useCallback(() => {
+	// 	if (synth?.current != null) {
+		
+	// 	}
+	// }, [timeMode, pitchMode, synth])
 
 	const handleRun = () => {
-		if (mode.get === 'normal') {
-			run.set(!run.get);
+		if (mode.get === 'normal' && run.get === false && timeMode.get.length) {
+			run.set(true);
+		} else {
+			run.set(false);
+
 		}
 	};
 

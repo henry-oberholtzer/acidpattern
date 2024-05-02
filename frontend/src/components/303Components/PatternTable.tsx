@@ -2,9 +2,6 @@ import { useContext} from 'react';
 import { PatternContext } from '../../routes/patterns/PatternCreateView';
 import styled from 'styled-components';
 import { Pallete303 } from './Palette';
-import chartNote from './svgs/chart_note.svg';
-import chartRest from './svgs/chart_rest.svg';
-import chartTied from './svgs/chart_tied.svg';
 
 const PatternTableStyle = styled.table`
 	height: 100px;
@@ -16,7 +13,7 @@ const PatternTableStyle = styled.table`
 		padding: 0;
 		font-weight: normal;
 		text-align: center;
-		width: 30px;
+		width: ${30}px;
 		height: 20px;
 		border-top: 2px solid transparent;
 		border-bottom: 2px solid ${Pallete303.LCDFont}55;
@@ -25,7 +22,7 @@ const PatternTableStyle = styled.table`
 		text-align: center;
 	}
 	th[scope='row']:first-of-type {
-		width: ${14 * 6}px;
+		width: ${13 * 7}px;
 		text-align: left;
 	}
 	tbody > tr > td:nth-of-type(4n + 1),
@@ -99,24 +96,15 @@ const PatternTable = () => {
 						<tr>
 							<th scope="row">Time</th>
 							<th>:</th>
-							{timeMode.get.map((t) => {
+							{timeMode.get.map((t, i) => {
 								return (
-									<td>
+									<td key={i}>
 										{t.timing === 1 ? (
-											<img
-												src={chartNote}
-												width="12"
-												height="12"></img>
+												'\u2B24'
 										) : t.timing === 2 ? (
-											<img
-												src={chartTied}
-												width="12"
-												height="12"></img>
+											'\u25EF'
 										) : (
-											<img
-												src={chartRest}
-												width="12"
-												height="12"></img>
+											'-'
 										)}
 									</td>
 								);
@@ -125,18 +113,18 @@ const PatternTable = () => {
 						<tr>
 							<th scope="row">Pitch</th>
 							<th>:</th>
-							{pairedList().map((pair) => {
+							{pairedList().map((pair, i) => {
 								return (
-									<td>{pair[1] != null ? pitchToName(pair[1].pitch) : ''}</td>
+									<td key={i}>{pair[1] != null ? pitchToName(pair[1].pitch) : ''}</td>
 								);
 							})}
 						</tr>
 						<tr>
 							<th scope="row">Octave</th>
 							<th>:</th>
-							{pairedList().map((pair) => {
+							{pairedList().map((pair, i) => {
 								return (
-									<td>
+									<td key={i}>
 										{pair[1] != null
 											? pair[1].octave === 12
 												? '+'
@@ -151,9 +139,9 @@ const PatternTable = () => {
 						<tr>
 							<th scope="row">Sld/Acc</th>
 							<th>:</th>
-							{pairedList().map((pair) => {
+							{pairedList().map((pair, i) => {
 								return (
-									<td>
+									<td key={i}>
 										{pair[1] != null
 											? pair[1].slide && pair[1].accent
 												? 'SA'

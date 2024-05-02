@@ -1,20 +1,15 @@
-import { warmSaw } from "./06_Warm_Saw";
-import { squareWave } from "./11_TB303_Square";
-
 class Voice303 {
-	
 	private context: AudioContext;
 	private osc: OscillatorNode;
 	private filterOne: BiquadFilterNode;
   private filterTwo: BiquadFilterNode;
 	private ampEnvelope: GainNode;
 	private volumeNode: GainNode;
-	private saw: PeriodicWave;
-	private square: PeriodicWave;
-	private pattern: [Time, Pitch | null][]
-	
   private filterMin = 200;
   private filterMax = 9000;
+	private oscOn = false
+
+	run: boolean;
 	
 	tempo: number;
 	cutoffFreq: number;
@@ -36,57 +31,44 @@ class Voice303 {
     return this.filterMin + value * ((this.filterMax - this.filterMin) / 127)
   }
 
+	ccToResonance(value: number) {
+		return 16 * (value/127)
+	}
 
 	constructor(settings: Settings) {
-		this.pattern = []
 		this.tempo = settings.tempo;
 		this.tuning = settings.tuning;
 		this.cutoffFreq = this.ccToCutoff(settings.cut_off_freq);
-		this.resonance = settings.resonance;
+		this.resonance = this.ccToResonance(settings.resonance)
 		this.envMod = settings.env_mod;
 		this.decay = settings.decay;
 		this.accent = settings.accent;
 		this.waveform = settings.waveform;
 		this.volume = 63
+		this.run = false
 		this.context = new AudioContext();
-		this.saw = new PeriodicWave(this.context, {
-			real: warmSaw.real,
-			imag: warmSaw.imag,
-		})
-		this.square = new PeriodicWave(this.context, {
-			real: squareWave.real,
-			imag: squareWave.imag,
-		})
 
 		this.osc = new OscillatorNode(this.context, {
 			frequency: 440,
-			type: 'custom',
-			periodicWave: this.saw,
+			type: this.waveform === "saw" ? "sawtooth" : "square",
 		});
 		this.osc.type = 'square';
 		this.filterOne = new BiquadFilterNode(this.context, {
 			type: 'lowpass',
 			frequency: 400,
-      Q: 0.0,
+      Q: 1,
 		});
     this.filterTwo = new BiquadFilterNode(this.context, {
 			type: 'lowpass',
 			frequency: 400,
-      Q: 0.0,
+      Q: 1,
 		});
 		this.ampEnvelope = new GainNode(this.context, { gain: 0 });
 		this.volumeNode = new GainNode(this.context, { gain: 1});
-		this.osc
-			.connect(this.filterOne)
-      .connect(this.filterTwo)
-			.connect(this.ampEnvelope)
-			.connect(this.volumeNode)
-			.connect(this.context.destination);
-    this.osc.start();
 	}
 
 	setTempo(value: number) {
-    this.tempo = value;
+    this.tempo = 60000/(value*4)
 	}
 
   setCutoff(value: number) {
@@ -98,7 +80,7 @@ class Voice303 {
 	}
 
 	setResonance(value: number) {
-		this.resonance = 16 * (value/127)
+		this.resonance = this.ccToResonance(value)
 	}
 
 	setEnvMod(value: number) {
@@ -119,40 +101,33 @@ class Voice303 {
 		this.volumeNode.gain.setValueAtTime((value/127), t)
 	}
 
-	
+	newOsc(pitch: Pitch) {
+		this.osc = new OscillatorNode(this.context, {
+			frequency: this.centToFrequency(
+				this.tuning,
+				this.midiToFrequency(pitch.pitch + pitch.octave)),
+			type: this.waveform === "saw" ? "sawtooth" : "square",
+		});
+		this.osc
+			.connect(this.filterOne)
+      .connect(this.filterTwo)
+			.connect(this.ampEnvelope)
+			.connect(this.volumeNode)
+			.connect(this.context.destination);
+		this.osc.start()
+	}
 
 	adjustWaveform(waveform: 'saw' | 'square') {
-		if (waveform === 'saw') {
-      this.osc.setPeriodicWave(this.saw)
-		} else {
-			this.osc.setPeriodicWave(this.square)
-		}
+		this.waveform = waveform
 	}
-
-	setPattern(time: Time[], pitches: Pitch[]) {
-		const pitchList = [...pitches];
-		const pairs: [Time, Pitch | null][] = [];
-		time.forEach((t) => {
-			if (t.timing === 1 && pitchList[0]) {
-				pairs.push([t, pitchList.shift() as Pitch]);
-			} else {
-				pairs.push([t, null]);
-			}
-		});
-		return pairs;
-	}
-
-	runPattern() {
-		if (this.pattern.length) {
-			// Run through the loop of the pattern.
-		}
-	}
-
 
 	triggerFilterEnvelope(time: number, accent: boolean) {
 		const attackTime = accent ? .2 : 0.015
-		const decayTime = accent ? .1 : .2 + (2 * (this.decay/127))
+		const decayTime = accent ? .2 : .2 + (2 * (this.decay/127))
 		const cutoff = this.filterMin + ((this.cutoffFreq - this.filterMin) * (this.envMod / 127))
+		this.filterOne.Q.linearRampToValueAtTime(this.resonance * (this.envMod/127), time)
+		this.filterTwo.Q.linearRampToValueAtTime(this.resonance  * (this.envMod/127), time)
+		console.log(this.filterOne.Q)
 		this.filterOne.frequency.cancelScheduledValues(time)
 		this.filterTwo.frequency.cancelScheduledValues(time)
 		// Attack
@@ -174,23 +149,35 @@ class Voice303 {
 		this.ampEnvelope.gain.setValueAtTime(0, time + attackTime + decayTime + 0.1)
 	}
 
-	attack(pitch: Pitch) {
-    
-    const t = this.context.currentTime
-		this.osc.frequency.setValueAtTime(
-			this.centToFrequency(
-				this.tuning,
-				this.midiToFrequency(pitch.pitch + pitch.octave)), t );
+	attack(pitch: Pitch, time: number | null = null) {
+		if (this.oscOn) {
+			this.release()
+		}
+		this.oscOn = true
+		const t = time ? time : this.context.currentTime
+		this.newOsc(pitch)
 		this.triggerVolumeEnvelope(t, pitch.accent)
 		this.triggerFilterEnvelope(t, pitch.accent)
 	}
 
-	release() {
-      const t = this.context.currentTime
+	slide(pitch: Pitch, time: number | null = null) {
+		const t = time ? time : this.context.currentTime
+		this.osc.frequency.linearRampToValueAtTime(
+			this.centToFrequency(
+				this.tuning, 
+				this.midiToFrequency(pitch.pitch + pitch.octave)), t)
+	}
+
+	release(time: number | null = null) {
+		const t = time ? time : this.context.currentTime
+		if (this.oscOn) {
 			this.filterOne.frequency.cancelScheduledValues(t)
 			this.filterTwo.frequency.cancelScheduledValues(t)
 			this.ampEnvelope.gain.cancelScheduledValues(t)
-      this.ampEnvelope.gain.setTargetAtTime(0, t, 0.02)
+			this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, t + 0.02)
+      this.ampEnvelope.gain.setTargetAtTime(0, t, 0.04)
+			this.osc.stop(t + 0.04)
+		}
   }
 }
 

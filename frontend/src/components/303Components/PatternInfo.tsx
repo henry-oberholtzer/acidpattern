@@ -21,26 +21,24 @@ const Container = styled.div`
   border-left: 3px solid ${Pallete303.ButtonRight};
   border-right: 3px solid ${Pallete303.ButtonLeft};
   background-color: ${Pallete303.LCDBackground};
-  background-image: ${Pallete303.LCDBackgroundGradient};
   padding: 4px;`
 
 const NameInputLabel = styled.label`
   height: 20px;
-  width: ${9 * 15}px;
+  width: ${121}px;
   font-size: 14px;
+  padding: 2px;
   background-color: ${Pallete303.LCDFont};
-  color: ${Pallete303.LCDBackground};
-  outline: 2px solid ${Pallete303.LCDFont};`
+  color: ${Pallete303.LCDBackground};`
 
 const NameInput = styled.input`
   font-family: '5x7 Pixel';
-  width: ${16*15}px;
+  width: ${30*8}px;
   height: 20px;
   font-size: 14px;
   background-color: transparent;
   border: none;
-  padding: 0;
-  padding-left: 4px;
+  padding-left: 6px;
   cursor: pointer;
   &:focus, &:active {
     outline: 2px solid ${Pallete303.LCDFont};
@@ -49,7 +47,7 @@ const NameInput = styled.input`
 
 const NameInputGroup = styled.div`
   height: 20px;
-  display: inline;
+  display: flex;
   margin-bottom: 2px;`
 
 const LCDButton = styled.button<{ $width?: number }>`
@@ -79,10 +77,16 @@ const PatternInfo = () => {
   const handlePatternPost = () => {
     if (patternClearModal.get === false) {
       if (!(activeSection.get === 'A' && pitchMode.get.length > 1 && timeMode.get.length > 1)) {
-        setSaveMessage("Your pattern may not be empty.")
+        setSaveMessage("pattern is empty!")
+        setTimeout(() => {
+          setSaveMessage("POST")
+        }, 3000)
       }
       else if (name.get.trim().length <= 0 ) {
-        setSaveMessage("name required")
+        setSaveMessage("name required!")
+        setTimeout(() => {
+          setSaveMessage("POST")
+        }, 3000)
       } else {
         postPattern()
         setSaveMessage("posted!")
@@ -101,16 +105,16 @@ const PatternInfo = () => {
   return (
     <Container>
       <NameInputGroup>
-        <NameInputLabel>PATT NAME:</NameInputLabel>
+        <NameInputLabel>PATTERN :</NameInputLabel>
         <NameInput 
           placeholder={"CLICK TO ADD NAME"}
           value={name.get}
           onChange={(e) => name.set(e.target.value)}/>
           {user?.user &&
-            <LCDButton $width={8*32} onClick={handlePatternPost}>{saveMessage}</LCDButton>
+            <LCDButton $width={8*30} onClick={handlePatternPost}>{saveMessage}</LCDButton>
           }
           {!user && 
-            <LCDButton $width={8*32} >AN ACCOUNT IS REQUIRED TO POST</LCDButton>
+            <LCDButton $width={8*30} >Login To Post</LCDButton>
           }
       </NameInputGroup>
       <PatternTable />
