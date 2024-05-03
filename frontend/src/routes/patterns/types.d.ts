@@ -1,4 +1,5 @@
 type Pattern = {
+  id?: number;
   name: string;
   date?: string;
   author?: string;
