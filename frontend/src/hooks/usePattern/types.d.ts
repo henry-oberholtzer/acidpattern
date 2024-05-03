@@ -4,7 +4,7 @@ interface PatternProviderProps extends React.PropsWithChildren {
 
 interface PatternContext {
   id: { get: number | null },
-  name: { set: Dispatch<SetStateAction<string>>; get: string | null };
+  name: { set: Dispatch<SetStateAction<string>>; get: string };
   date: { get: string | null },
   author: { get: string | null },
 	activeIndex: { set: Dispatch<SetStateAction<number>>; get: number };
@@ -36,4 +36,5 @@ interface PatternContext {
 	synth: React.MutableRefObject<Voice303 | null> | null;
   createSynth: () => void;
   disconnectSynth: () => void;
+  patternObject: () => Pattern;
 }

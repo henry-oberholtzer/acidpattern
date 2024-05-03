@@ -1,8 +1,8 @@
 import styled from "styled-components"
 import { ButtonTB, LED } from "."
 import { Pallete303 } from "./Palette"
-import { useContext, useState } from "react"
-import { PatternContext } from "../../routes/patterns/PatternCreateView"
+import { useState } from "react"
+import { usePattern } from "../../hooks"
 
 const SharpKeyDiv = styled.div`
   width: 32px;
@@ -98,7 +98,7 @@ const HighlightP = styled.div`
   user-select: none;`
 
 const Key = (props: KeysProp) => {
-  const { pitchMode, mode, synth, index } = useContext(PatternContext)
+  const { pitchMode, mode, synth, index } = usePattern()
   const [ active, setActive ] = useState<boolean>(false)
 
   const handlePitchInput = () => {

@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { PatternTable } from "./PatternTable";
 import { Pallete303 } from "./Palette";
 import { useContext, useState } from "react";
-import { PatternContext } from "../../routes";
-import { useAuth } from "../../hooks/useAuth";
 import { PatternClearModal } from "./PatternClearModal";
+import { usePattern, useAuth } from "../../hooks";
+import { api } from "../../scripts/api";
+import { PatternClearModalContext } from "../../routes";
 
 const LCDContainer = styled.div<{ $width?: number, $height?: number, }>`
   ${props => props.$width ? `width: ${props.$width}px;` : ""}
@@ -70,12 +71,23 @@ const LCDButton = styled.button<{ $width?: number }>`
 
 const PatternInfo = () => {
   const { user } = useAuth()
-  const { pitchMode, timeMode, name, activeSection, postPattern, patternClearModal} = useContext(PatternContext)
+  const patternClearModal = useContext(PatternClearModalContext)
+  const { pitchMode, timeMode, name, activeSection, patternObject} = usePattern()
   const [ saveMessage, setSaveMessage ] = useState<string>("POST")
 
+  const postPattern = async () => {
+		if (user != null) {
+			const pattern = patternObject()
+			const header = {
+				'Content-Type': 'application/json', 
+				'Authorization': `Token ${user.token}`
+			}
+			const response = await api.postPattern(header, pattern)
+			return response
+		}
+	}
 
   const handlePatternPost = () => {
-    if (patternClearModal.get === false) {
       if (!(activeSection.get === 'A' && pitchMode.get.length > 1 && timeMode.get.length > 1)) {
         setSaveMessage("pattern is empty!")
         setTimeout(() => {
@@ -91,10 +103,11 @@ const PatternInfo = () => {
         postPattern()
         setSaveMessage("posted!")
       }
-    }
   }
 
-  if (patternClearModal.get) {
+  
+
+  if (patternClearModal) {
     return (
       <LCDContainer $width={625} $height={136}>
         <PatternClearModal />

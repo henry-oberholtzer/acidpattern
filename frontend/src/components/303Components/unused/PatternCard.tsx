@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import { Pallete303 } from './Palette';
-import { PatternContext } from '../../routes/patterns/PatternCreateView';
-import { useContext } from 'react';
-import { useAuth } from '../../hooks/useAuth';
+import { Pallete303 } from '../Palette';
 import { format } from 'date-fns';
 import { SettingsIndicator } from './SettingsIndicator';
+import { usePattern, useAuth } from '../../../hooks';
 
 
 const Input = styled.input`
@@ -75,7 +73,7 @@ const TextLabel = styled.p<{ $width?: number }>`
 
 const PatternCard = () => {
 	const { user } = useAuth();
-	const { name, tempo, tuning, cutoff, waveform, resonance, envMod, decay, accent} = useContext(PatternContext);
+	const { name, tempo, tuning, cutoff, waveform, resonance, envMod, decay, accent} = usePattern();
 
 	return (
 		<Container>

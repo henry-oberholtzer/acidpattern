@@ -1,5 +1,3 @@
-import { useContext } from 'react';
-import { PatternContext } from '../../routes/patterns/PatternCreateView';
 import styled from 'styled-components';
 
 import saw_wave_active from "./svgs/saw_wave_active.svg"
@@ -8,6 +6,7 @@ import square_wave_active from "./svgs/square_wave_active.svg"
 import square_wave_inactive from "./svgs/square_wave_inactive.svg"
 import { Pallete303 } from './Palette';
 import { Carat, Label } from './Containers';
+import { usePattern } from '../../hooks';
 
 const SwitchContainer = styled.button`
 	margin-top: 2px;
@@ -41,7 +40,7 @@ const SwitchDiv = styled.div`
 	flex-direction: column;`
 
 const WaveformSwitch = () => {
-	const { waveform, synth } = useContext(PatternContext);
+	const { waveform, synth } = usePattern();
 
 	const handleWaveform = () => {
 		if (waveform.get === "saw") {

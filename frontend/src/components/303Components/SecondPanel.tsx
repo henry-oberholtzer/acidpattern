@@ -1,8 +1,7 @@
 import styled from "styled-components"
 import { Pallete303 } from "./Palette"
 import { Knob, PatternInfo } from "."
-import { PatternContext } from "../../routes/patterns/PatternCreateView"
-import { useContext } from "react"
+import { usePattern } from "../../hooks"
 
 const ControlsContainer = styled.div`
   height: 162px;
@@ -17,7 +16,7 @@ const ControlsContainer = styled.div`
   `
 
 const SecondPanel = () => {
-  const { volume, tempo, synth } = useContext(PatternContext)
+  const { volume, tempo, synth } = usePattern()
 
   const adjustVolume = (value: number) => synth?.current != null ? 
       synth.current.setVolume(value) : null

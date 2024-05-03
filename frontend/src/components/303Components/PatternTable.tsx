@@ -1,7 +1,6 @@
-import { useContext} from 'react';
-import { PatternContext } from '../../routes/patterns/PatternCreateView';
 import styled from 'styled-components';
 import { Pallete303 } from './Palette';
+import { usePattern } from '../../hooks';
 
 const PatternTableStyle = styled.table`
 	height: 100px;
@@ -43,7 +42,7 @@ const Index = styled.th<{ $active?: boolean }>`
 	${props => props.$active ? `border-top: 2px solid ${Pallete303.LCDBackground};` : ""}`
 
 const PatternTable = () => {
-	const { timeMode, pitchMode, activeSection,} = useContext(PatternContext);
+	const { timeMode, pitchMode, activeSection,} = usePattern()
 
 	const pairedList = () => {
 		const pitches = [...pitchMode.get];

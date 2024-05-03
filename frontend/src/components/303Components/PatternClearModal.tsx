@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { Pallete303 } from './Palette';
 import { LCDButton } from './PatternInfo';
+import { usePattern } from '../../hooks';
 import { useContext } from 'react';
-import { PatternContext } from '../../routes';
+import { PatternClearModalContext } from '../../routes';
 
 const Modal = styled.div`
 	display: flex;
@@ -36,8 +37,9 @@ const SectionLabel = styled.p<{ $width?: number; $center?: boolean }>`
 `;
 
 const PatternClearModal = () => {
-	const { patternClearModal, activeSection, timeMode, pitchMode, sections, name } =
-		useContext(PatternContext);
+	const { activeSection, timeMode, pitchMode, sections, name } =
+		usePattern();
+		const patternClearModal = useContext(PatternClearModalContext)
 
 	const closeModal = () => {
 		patternClearModal.set(false);
