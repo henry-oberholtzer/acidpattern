@@ -171,11 +171,8 @@ class Voice303 {
 	release(time: number | null = null) {
 		const t = time ? time : this.context.currentTime
 		if (this.oscOn) {
-			this.filterOne.frequency.cancelScheduledValues(t)
-			this.filterTwo.frequency.cancelScheduledValues(t)
 			this.ampEnvelope.gain.cancelScheduledValues(t)
-			this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, t + 0.02)
-      this.ampEnvelope.gain.setTargetAtTime(0, t, 0.04)
+      this.ampEnvelope.gain.linearRampToValueAtTime(0, t + 0.10)
 			this.osc.stop(t + 0.04)
 		}
   }
