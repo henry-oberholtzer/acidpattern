@@ -1,7 +1,7 @@
 type Pattern = {
   name: string;
-  date?: Date;
-  author?: User;
+  date?: string;
+  author?: string;
   settings: Settings;
   sections: [Section, Section]
 }

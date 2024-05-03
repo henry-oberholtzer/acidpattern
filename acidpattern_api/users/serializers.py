@@ -39,7 +39,6 @@ class UserViewSerializer(serializers.ModelSerializer):
     model = User
     fields = ['username', 'id', 'profile', 'patterns']
 
-
 class LoginSerializer(serializers.Serializer):
   username = serializers.CharField()
   password = serializers.CharField(

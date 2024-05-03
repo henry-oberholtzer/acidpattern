@@ -106,7 +106,8 @@ const PatternInfo = () => {
     <Container>
       <NameInputGroup>
         <NameInputLabel>PATTERN :</NameInputLabel>
-        <NameInput 
+        <NameInput
+          maxLength={30} 
           placeholder={"CLICK TO ADD NAME"}
           value={name.get}
           onChange={(e) => name.set(e.target.value)}/>

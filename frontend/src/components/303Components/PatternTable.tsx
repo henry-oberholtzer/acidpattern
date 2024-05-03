@@ -53,7 +53,9 @@ const PatternTable = () => {
 	};
 
 	const pitchToName = (pitch: number) => {
-		switch (pitch % 12) {
+		switch (pitch - 36) {
+			case 0:
+				return 'C';
 			case 1:
 				return 'C#';
 			case 2:

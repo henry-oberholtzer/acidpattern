@@ -9,8 +9,16 @@ class Voice303 {
   private filterMax = 9000;
 	private oscOn = false
 
-	run: boolean;
-	
+	// These are for the sequencer
+	private lookAhead = 0.1 // 100ms
+	private nextStepTime = 0;
+	private pattern: [Time, Pitch | null][] = []
+	private step = 0;
+	private running = false;
+	private sequencerWorker = new Worker('./sequencer-worker.js')
+	private workerLookahead = 25
+	private stepLength = .125;
+
 	tempo: number;
 	cutoffFreq: number;
 	resonance: number;
@@ -45,7 +53,6 @@ class Voice303 {
 		this.accent = settings.accent;
 		this.waveform = settings.waveform;
 		this.volume = 63
-		this.run = false
 		this.context = new AudioContext();
 
 		this.osc = new OscillatorNode(this.context, {
@@ -65,10 +72,18 @@ class Voice303 {
 		});
 		this.ampEnvelope = new GainNode(this.context, { gain: 0 });
 		this.volumeNode = new GainNode(this.context, { gain: 1});
+		this.setTempo(this.tempo)
+		this.sequencerWorker.onmessage = (e) => {
+			if (e.data == 'tick') {
+				this.sequenceScheduler()
+			}
+		}
+		this.sequencerWorker.postMessage({"interval":this.workerLookahead})
 	}
 
 	setTempo(value: number) {
-    this.tempo = 60000/(value*4)
+    this.tempo = value
+		this.stepLength = (60 / value) * .25
 	}
 
   setCutoff(value: number) {
@@ -122,12 +137,11 @@ class Voice303 {
 	}
 
 	triggerFilterEnvelope(time: number, accent: boolean) {
-		const attackTime = accent ? .2 : 0.015
-		const decayTime = accent ? .2 : .2 + (2 * (this.decay/127))
+		const attackTime = 0.015
+		const decayTime = accent ? .1 : .1 + (2 * (this.decay/127))
 		const cutoff = this.filterMin + ((this.cutoffFreq - this.filterMin) * (this.envMod / 127))
 		this.filterOne.Q.linearRampToValueAtTime(this.resonance * (this.envMod/127), time)
 		this.filterTwo.Q.linearRampToValueAtTime(this.resonance  * (this.envMod/127), time)
-		console.log(this.filterOne.Q)
 		this.filterOne.frequency.cancelScheduledValues(time)
 		this.filterTwo.frequency.cancelScheduledValues(time)
 		// Attack
@@ -142,19 +156,19 @@ class Voice303 {
 	triggerVolumeEnvelope(time: number, accent: boolean) {
 		const attackTime = 0.015
 		const decayTime = 4
-		const gainAmount = accent ? 0.5 + 0.5 * (this.accent/127) : 0.5
+		const gainAmount = accent ? 0.2 + 0.8 * (this.accent/127) : 0.2
 		this.ampEnvelope.gain.cancelScheduledValues(time)
-		this.ampEnvelope.gain.setTargetAtTime(gainAmount, time, attackTime)
+		this.ampEnvelope.gain.linearRampToValueAtTime(gainAmount, time + attackTime)
 		this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, time + attackTime + decayTime)
 		this.ampEnvelope.gain.setValueAtTime(0, time + attackTime + decayTime + 0.1)
 	}
 
 	attack(pitch: Pitch, time: number | null = null) {
+		const t = time ? time : this.context.currentTime
 		if (this.oscOn) {
-			this.release()
+			this.release(t)
 		}
 		this.oscOn = true
-		const t = time ? time : this.context.currentTime
 		this.newOsc(pitch)
 		this.triggerVolumeEnvelope(t, pitch.accent)
 		this.triggerFilterEnvelope(t, pitch.accent)
@@ -170,12 +184,69 @@ class Voice303 {
 
 	release(time: number | null = null) {
 		const t = time ? time : this.context.currentTime
-		if (this.oscOn) {
-			this.ampEnvelope.gain.cancelScheduledValues(t)
-      this.ampEnvelope.gain.linearRampToValueAtTime(0, t + 0.10)
-			this.osc.stop(t + 0.04)
-		}
+		this.ampEnvelope.gain.cancelScheduledValues(t)
+    this.ampEnvelope.gain.exponentialRampToValueAtTime(0.0001, t + 0.01)
+		this.ampEnvelope.gain.linearRampToValueAtTime(0, t + 0.02)
+		this.osc.stop(t + 0.02)
   }
+
+	pairedPatternlist(pitch: Pitch[], time: Time[]) {
+			const pitches = [...pitch];
+			const pairs: [Time, Pitch | null][] = [];
+			time.forEach((t) => {
+				if (t.timing === 1 && pitches[0]) {
+					pairs.push([t, pitches.shift() as Pitch]);
+				} else {
+					pairs.push([t, null]);
+				}
+			});
+			this.pattern = pairs;
+	}
+
+	playPattern(pitch: Pitch[], time: Time[]) {
+		this.pairedPatternlist(pitch, time);
+		this.running = true
+		if (this.running) {
+			this.step = 0;
+			this.nextStepTime = this.context.currentTime;
+			this.sequencerWorker.postMessage("start");
+		} else {
+			this.stopPattern()
+		}
+	}
+
+	stopPattern() {
+		this.running = false
+		this.sequencerWorker.postMessage("stop")
+		this.release()
+	}
+
+	sequenceScheduler() {
+		while (this.nextStepTime < this.context.currentTime + this.lookAhead) {
+			this.sequencerScheduleStep();
+			this.sequencerAdvance();
+		}
+	}
+
+	sequencerScheduleStep() {
+		const [, pitch] = this.pattern[this.step]
+		if(pitch) {
+			this.attack(pitch, this.nextStepTime)
+			this.release(this.nextStepTime + this.stepLength- 0.02)
+		}
+	}
+
+	sequencerAdvance() {
+		this.nextStepTime += this.stepLength
+		this.step++
+		if (this.step === this.pattern.length) {
+			this.step = 0
+		}
+	}
+
+	
 }
+
+
 
 export { Voice303 };
