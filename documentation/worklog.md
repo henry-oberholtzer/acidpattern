@@ -89,17 +89,37 @@
 
 To Do:
   - BUG: Sequencer continues playing when navigating to a new page.
-  - BUG: Sequencer sounds doubled up.
+  
+Critical Features To Add:
 
-  - ? Active index indicator on pattern info
+  - Pattern List
+    - Tiles
+    - Pagination
+  - Pattern Details
+    - Jammable version
+  - Users
+    - Public Profile
+    - Profile Photos
+  - User Profile List
+  - My Patterns
+  - Active index indicator on pattern info
+
+- Voice303
+  - Adjust sound to be more inline with the 303
+  - Slide functionality
+  - Transpose functionality
+  - Fix 303 sound with Web Audio Modules (?)
+
   - Fix range thumb on chrome.
+  - Pattern to MIDI
 
+Later Features:
+  - Customizable color for your 303, saved to user profile using styled components theme.
+  - Add user date joined if needed.
+  - Add color option to patterns.
 
   - Test user profile
   - Test user login & user creating a pattern
   - Assign that method to an API endpoint (/midi)
-  - 
-    - Add admin permissions
-  - Add user date joined if needed.
+    - Add admin permissions to users for frontend.
   - Write method to generate MIDI from a pattern.
-  - Add color option to patterns.

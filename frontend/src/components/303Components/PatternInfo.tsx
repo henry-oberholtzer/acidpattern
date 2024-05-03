@@ -6,9 +6,9 @@ import { PatternContext } from "../../routes";
 import { useAuth } from "../../hooks/useAuth";
 import { PatternClearModal } from "./PatternClearModal";
 
-const Container = styled.div`
-  width: 625px;
-  height: 136px;
+const LCDContainer = styled.div<{ $width?: number, $height?: number, }>`
+  ${props => props.$width ? `width: ${props.$width}px;` : ""}
+  ${props => props.$height ? `height: ${props.$height}px;` : ""}
   margin-top: 10px;
   margin-bottom: 10px;
   font-family: '5x7 Pixel';
@@ -96,14 +96,14 @@ const PatternInfo = () => {
 
   if (patternClearModal.get) {
     return (
-      <Container>
+      <LCDContainer $width={625} $height={136}>
         <PatternClearModal />
-      </Container>
+      </LCDContainer>
     )
   }
 
   return (
-    <Container>
+    <LCDContainer $width={625} $height={136}>
       <NameInputGroup>
         <NameInputLabel>PATTERN :</NameInputLabel>
         <NameInput
@@ -119,7 +119,7 @@ const PatternInfo = () => {
           }
       </NameInputGroup>
       <PatternTable />
-    </Container>
+    </LCDContainer>
   )
 }
 

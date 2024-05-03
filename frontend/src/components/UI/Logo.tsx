@@ -8,6 +8,7 @@ font-family: 'Aggie Solid';
 margin: 0;
 height: 40px;
 text-decoration: none;
+transition: text-shadow 200ms ease;
 a {
   color: ${Pallete303.Black};
   position: relative;

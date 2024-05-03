@@ -89,7 +89,7 @@ const PatternTable = () => {
 				<PatternTableStyle>
 					<tbody>
 						<tr>
-							<th>Section </th>
+							<th scope="row">Section</th>
 							<th>{activeSection.get}</th>
 							{timeMode.get.map((_, i) => {
 								return <Index key={i} scope="col">{i + 1}</Index>

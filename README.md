@@ -30,6 +30,13 @@ DJANGO_SERVER = 'http://localhost:8000'
 FRONTEND_SERVER = 'http://localhost:5173'
 DJANGO_SECRET_KEY = ''
 ```
+
+In the /frontend folder, create .env containing the following:
+
+```
+VITE_BACKEND='http://localhost:8000'
+```
+
 If you're planning to run on different ports or a server, adjust accordingly.
 
 You will also need to create a secret key for django.
@@ -65,3 +72,11 @@ Run `python manage.py createsuperuser` to establish a superuser for the database
 Tests can be run for the backend by navigating to `acidpattern_api` and running `coverage run manage.py test` within the venv shell.
 
 # License
+
+Copyright 2024 Henry Oberholtzer
+
+Original code licensed under a GNU GPLv3
+
+# References
+
+I have been relying on these resources for developing my 303 clone.
