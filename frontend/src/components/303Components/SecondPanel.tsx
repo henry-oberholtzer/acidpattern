@@ -34,8 +34,8 @@ const SecondPanel = () => {
             onChange={adjustTempo}
             state={tempo}
             min={40}
-            max={300}
-            steps={260}
+            max={240}
+            steps={200}
             minDeg={30}
             maxDeg={330}
             />

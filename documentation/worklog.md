@@ -88,7 +88,8 @@
   - ? Pattern play mode
 
 To Do:
-
+  - BUG: Sequencer continues playing when navigating to a new page.
+  - BUG: Sequencer sounds doubled up.
 
   - ? Active index indicator on pattern info
   - Fix range thumb on chrome.

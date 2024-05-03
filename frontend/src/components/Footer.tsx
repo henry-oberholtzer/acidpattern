@@ -25,7 +25,7 @@ const Attribution = styled.a`
 const Footer = () => {
   return (
     <FooterFrame>
-      {/* <Attribution href="https://bdsmovement.net/" target="blank">Free Palestine 🇵🇸</Attribution> */}
+      <Attribution href="https://bdsmovement.net/" target="blank">Free Palestine 🇵🇸</Attribution>
       <p><Attribution href="https://henryoberholtzer.com/" target="blank">Henry Oberholtzer {getYear(Date.now())}</Attribution></p>
       <Attribution href="https://github.com/henry-oberholtzer/acidpattern/issues" target="blank">Contribute 🛠️</Attribution>
     </FooterFrame>

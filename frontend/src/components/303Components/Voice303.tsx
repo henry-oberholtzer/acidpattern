@@ -7,7 +7,6 @@ class Voice303 {
 	private volumeNode: GainNode;
   private filterMin = 200;
   private filterMax = 9000;
-	private oscOn = false
 
 	// These are for the sequencer
 	private lookAhead = 0.1 // 100ms
@@ -117,6 +116,7 @@ class Voice303 {
 	}
 
 	newOsc(pitch: Pitch) {
+		this.osc.disconnect()
 		this.osc = new OscillatorNode(this.context, {
 			frequency: this.centToFrequency(
 				this.tuning,
@@ -155,7 +155,7 @@ class Voice303 {
 
 	triggerVolumeEnvelope(time: number, accent: boolean) {
 		const attackTime = 0.015
-		const decayTime = 4
+		const decayTime = accent ? 2 : 4 
 		const gainAmount = accent ? 0.2 + 0.8 * (this.accent/127) : 0.2
 		this.ampEnvelope.gain.cancelScheduledValues(time)
 		this.ampEnvelope.gain.linearRampToValueAtTime(gainAmount, time + attackTime)
@@ -165,10 +165,6 @@ class Voice303 {
 
 	attack(pitch: Pitch, time: number | null = null) {
 		const t = time ? time : this.context.currentTime
-		if (this.oscOn) {
-			this.release(t)
-		}
-		this.oscOn = true
 		this.newOsc(pitch)
 		this.triggerVolumeEnvelope(t, pitch.accent)
 		this.triggerFilterEnvelope(t, pitch.accent)
@@ -229,10 +225,14 @@ class Voice303 {
 	}
 
 	sequencerScheduleStep() {
-		const [, pitch] = this.pattern[this.step]
+		const [time, pitch] = this.pattern[this.step]
+		
 		if(pitch) {
+			if (time.timing != 2) {
+				this.release(this.nextStepTime)
+			}
 			this.attack(pitch, this.nextStepTime)
-			this.release(this.nextStepTime + this.stepLength- 0.02)
+			console.log(this.stepLength)
 		}
 	}
 
