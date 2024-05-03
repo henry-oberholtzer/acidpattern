@@ -15,8 +15,9 @@ const PatternTableStyle = styled.table`
 		text-align: center;
 		width: ${30}px;
 		height: 20px;
+		padding-top: 2px;
+		border: 2px solid ${Pallete303.LCDFont}55;
 		border-top: 2px solid transparent;
-		border-bottom: 2px solid ${Pallete303.LCDFont}55;
 	}
 	th[scope='col'] {
 		text-align: center;
@@ -24,20 +25,25 @@ const PatternTableStyle = styled.table`
 	th[scope='row']:first-of-type {
 		width: ${13 * 7}px;
 		text-align: left;
+		border-left: 2px solid transparent;
+		border-right: 2px solid transparent;
+	}
+	td > th:nth-of-type(2), td > t {
+		border-left: 2px solid transparent;
 	}
 	tbody > tr > td:nth-of-type(4n + 1),
 	th[scope='col']:nth-of-type(4n + 3) {
 		background-color: ${Pallete303.LCDFont};
 		color: ${Pallete303.LCDBackground};
-		border-bottom: 2px solid ${Pallete303.LCDBackground}55;
+		border: 2px solid ${Pallete303.LCDBackground}55;
 	}
 `;
 
 const Index = styled.th<{ $active?: boolean }>`
-	${props => props.$active ? "border: 2px solid ${Pallete303.LCDFont};" : ""}`
+	${props => props.$active ? `border-top: 2px solid ${Pallete303.LCDBackground};` : ""}`
 
 const PatternTable = () => {
-	const { timeMode, pitchMode, activeSection, } = useContext(PatternContext);
+	const { timeMode, pitchMode, activeSection,} = useContext(PatternContext);
 
 	const pairedList = () => {
 		const pitches = [...pitchMode.get];
@@ -91,7 +97,7 @@ const PatternTable = () => {
 						<tr>
 							<th scope="row">Section</th>
 							<th>{activeSection.get}</th>
-							{timeMode.get.map((_, i) => {
+							{new Array(16).fill(0).map((_, i) => {
 								return <Index key={i} scope="col">{i + 1}</Index>
 							})}
 						</tr>

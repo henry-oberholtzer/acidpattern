@@ -95,12 +95,18 @@ Critical Features To Add:
   - Pattern List
     - Tiles
     - Pagination
+    - Queryable
+    - Playable on page
+    - List of patterns next to 303?
+  - Pattern Write
+    - Programming Tutorial
   - Pattern Details
     - Jammable version
   - Users
     - Public Profile
     - Profile Photos
   - User Profile List
+    - User
   - My Patterns
   - Active index indicator on pattern info
 
@@ -114,6 +120,8 @@ Critical Features To Add:
   - Pattern to MIDI
 
 Later Features:
+  - Key estimation for pattern / key select
+  - Suggest similar patterns based on keys / accents / pitches
   - Customizable color for your 303, saved to user profile using styled components theme.
   - Add user date joined if needed.
   - Add color option to patterns.
