@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import { Pallete303 } from "./Palette"
+import { Pallete303 } from "../Palette"
 
 const InfoDiv = styled.div`
   font-family: 'Androcles';

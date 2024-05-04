@@ -1,4 +1,3 @@
-import { PatternContext } from '../../routes/patterns/PatternCreateView';
 import {
 	BorderContainer,
 	Label,
@@ -9,9 +8,12 @@ import {
 import { ButtonTB } from './ButtonTB';
 import { LED } from './LED';
 import { useContext, useEffect } from 'react';
+import { usePattern } from '../../hooks';
+import { PatternClearModalContext } from '../../routes';
 
 const ClearRunControls = () => {
-	const { mode, run, patternClearModal, timeMode, pitchMode, synth} = useContext(PatternContext);
+	const { mode, run, timeMode, pitchMode, synth} = usePattern()
+	const patternClearModal = useContext(PatternClearModalContext)
 
 	const handleRun = () => {
 		if (mode.get === 'normal' && run.get === false && timeMode.get.length) {

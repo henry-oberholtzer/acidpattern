@@ -5,6 +5,7 @@ import {
 	SecondPanel,
 } from './303Components';
 import { Pallete303 } from './303Components/Palette';
+import { usePattern } from '../hooks';
 
 const MainCase = styled.div`
   font-family: 'Inter';
@@ -16,8 +17,10 @@ const MainCase = styled.div`
   border-radius: 3px;`
 
 const AcidPattern303 = () => {
+	const { createSynth } = usePattern()
+
 	return (
-		<MainCase>
+		<MainCase onClick={createSynth}>
 			<FirstPanel />
 			<SecondPanel />
 			<ControlPanel />

@@ -1,11 +1,10 @@
 import { BorderContainer, ButtonTB, LED, Label, TimeModeKeys } from '.';
 import styled from 'styled-components';
 import { Pallete303 } from './Palette';
-import { PatternContext } from '../../routes/patterns/PatternCreateView';
-import { useContext } from 'react';
 import tiedNote from "./svgs/tied_note.svg"
 import sixteenthNote from "./svgs/sixteenth_note.svg"
 import restNote from "./svgs/rest_note.svg"
+import { usePattern } from '../../hooks';
 
 const TitleDiv = styled.div`
 	height: 30px;
@@ -38,7 +37,7 @@ const LegendDividingDiv = styled.div<{ $background?: string }>`
 `;
 
 const TimeModeControls = () => {
-	const { mode, activeIndex, timeMode } = useContext(PatternContext)
+	const { mode, activeIndex, timeMode } = usePattern()
 
 	const handleTimeMode = () => {
 		mode.set("time")

@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import { Label, VerticalContainer, LED, ButtonTB, BorderContainer, Text } from "."
-import { PatternContext } from "../../routes/patterns/PatternCreateView";
 import { Pallete303 } from "./Palette";
 import styled from "styled-components";
+import { usePattern } from "../../hooks";
 
 
 const FunctionButtonArea = styled.div<{ $height: number, $alignTop?: boolean, $justifyTop?: boolean, $column?: boolean}>`
@@ -48,7 +47,7 @@ const Pattern = styled.p`
   color: ${Pallete303.LEDRedActive};`
 
 const PitchNormalControls = () => {
-  const { mode, pitchMode, activeIndex } = useContext(PatternContext)
+  const { mode, pitchMode, activeIndex } = usePattern();
 
   const handlePitchMode = () => {
     mode.set("pitch")

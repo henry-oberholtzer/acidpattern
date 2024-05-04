@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { ButtonTB, LED } from '.';
 import { Pallete303 } from './Palette';
-import { PatternContext } from '../../routes/patterns/PatternCreateView';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
+import { usePattern } from '../../hooks';
 
 const Group = styled.div`
 	width: 240px;
@@ -77,7 +77,7 @@ const HighlightP = styled.div`
 
 const TimeModeKeys = () => {
 	const { timeMode, pitchMode, mode, activeSection, index, sections, synth } =
-		useContext(PatternContext);
+		usePattern()
 	const [downActive, setDownActive] = useState<boolean>(false);
 	const [upActive, setUpActive] = useState<boolean>(false);
 	const [accentActive, setAccentActive] = useState<boolean>(false);

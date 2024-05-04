@@ -3,8 +3,8 @@ import { Knob } from "./Knob"
 import { Pallete303 } from "./Palette"
 import { BassLine } from "./BassLine"
 import { AcidPattern } from "./AcidPattern"
-import { PatternContext } from "../../routes/patterns/PatternCreateView"
-import { useContext } from "react"
+import { usePattern } from "../../hooks"
+
 
 const FirstPanelContainer = styled.div`
   height: 96px;
@@ -23,7 +23,7 @@ const LineDivider = styled.div`
 
 
 const FirstPanel = () => {
-  const { tuning, cutoff, resonance, envMod, decay, accent, synth } = useContext(PatternContext)
+  const { tuning, cutoff, resonance, envMod, decay, accent, synth } = usePattern()
 
   const adjustCutoff = (value: number) => synth?.current != null ? 
       synth.current.setCutoff(value) : null

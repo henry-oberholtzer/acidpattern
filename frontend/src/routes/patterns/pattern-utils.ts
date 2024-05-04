@@ -1,6 +1,6 @@
 const newPattern = () => {
   const pattern: Pattern = {
-    name: "New Pattern",
+    name: "",
     settings: {
       waveform: "saw",
       tempo: 130,
@@ -19,8 +19,8 @@ const newPattern = () => {
       },
       {
         name: "B",
-        time_mode: new Array(16),
-        pitch_mode: new Array(16)
+        time_mode: [],
+        pitch_mode: [],
       },
     ]
   }

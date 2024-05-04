@@ -1,194 +1,34 @@
-import { Dispatch, SetStateAction, createContext, useRef, useState } from 'react';
+import { createContext, useState, } from 'react';
 import { AcidPattern303 } from '../../components/AcidPattern303';
-import { Voice303 } from '../../components/303Components/Voice303';
 import { GroupDiv } from '../../components/303Components';
-import { api } from '../../scripts/api';
-import { useAuth } from '../../hooks/useAuth';
+import { PatternProvider, } from '../../hooks';
 
-const PatternContext = createContext<PatternContext>({
-	activeIndex: { set: (number) => {number}, get: 63},
-	pitchMode: { set: (pitch) => {pitch}, get: []},
-	timeMode: { set: (pitch) => {pitch}, get: []},
-	sections: { set: (section) => {section}, get: [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []},]},
-	activeSection: { set: (string) => {string}, get: "A" },
-	mode: { set: (string) => {string}, get: "normal"},
-	name: { set: (string) => {string}, get: "normal"},
-	index: { next: () => {}, back: () => {}, current: 0},
-	waveform: { set: (string) => {string}, get: "saw"},
-	tuning: { set: (number) => {number}, get: 63},
-	cutoff: { set: (number) => {number}, get: 63},
-	decay: { set: (number) => {number}, get: 63},
-	resonance: { set: (number) => {number}, get: 63},
-	envMod: { set: (number) => {number}, get: 63},
-	accent: { set: (number) => {number}, get: 63},
-	tempo: { set: (number) => {number}, get: 63},
-	volume: { set: (number) => {number}, get: 63},
-	run: { set: (bool) => {bool}, get: false},
-	patternClearModal: { set: (bool) => {bool}, get: false},
-	synth: null,
-	postPattern: () => {},
-	advanceIndex: () => {}
+const PatternClearModalContext = createContext({
+	set: (bool: boolean) => {
+		bool;
+	},
+	get: false,
 })
 
-interface PatternContext {
-	activeIndex: { set: Dispatch<SetStateAction<number>>, get: number},
-	pitchMode: { set: Dispatch<SetStateAction<Pitch[]>>, get: Pitch[]},
-	timeMode: { set: Dispatch<SetStateAction<Time[]>>, get: Time[]},
-	advanceIndex: () => void;
-	index: { next: () => void, back: () => void, current: number},
-	mode: { set: Dispatch<SetStateAction<"pitch" | "time" | "normal">>, get: "pitch" | "time" | "normal"},
-	name: { set: Dispatch<SetStateAction<string>>, get: string},
-	waveform: { set: Dispatch<SetStateAction<"saw" | "square">>, get: "saw" | "square" },
-	tuning: { set: Dispatch<SetStateAction<number>>, get: number},
-	cutoff: { set: Dispatch<SetStateAction<number>>, get: number},
-	resonance: { set: Dispatch<SetStateAction<number>>, get: number},
-	decay: { set: Dispatch<SetStateAction<number>>, get: number},
-	envMod: { set: Dispatch<SetStateAction<number>>, get: number},
-	accent: { set: Dispatch<SetStateAction<number>>, get: number},
-	tempo: { set: Dispatch<SetStateAction<number>>, get: number},
-	volume: { set: Dispatch<SetStateAction<number>>, get: number},
-	run: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
-	patternClearModal: { set: Dispatch<SetStateAction<boolean>>, get: boolean},
-	sections: { set: Dispatch<SetStateAction<[Section, Section]>>, get: [Section, Section]},
-	activeSection: { set: Dispatch<SetStateAction<"A"|"B">>, get: "A" | "B"},
-	synth: React.MutableRefObject<Voice303 | null> | null,
-	postPattern: () => void;
-}
-
 const PatternCreateView = (props: PatternCreateProps) => {
-	const { user } = useAuth()
-	const [name, setName] = useState(props.pattern? props.pattern.name : "");
-	const [mode, setMode] = useState<"pitch" | "time" | "normal">("normal")
-	const [sections, setSections] = useState<[Section, Section]>(props.pattern? props.pattern.sections : [{ name: "A", time_mode: [], pitch_mode: []}, { name: "B", time_mode: [], pitch_mode: []}])
-	const [activeSection, setActiveSection] = useState<"A" | "B">("A")
-	const [pitchMode, setPitchMode] = useState<Pitch[]>([])
-	const [timeMode, setTimeMode] = useState<Time[]>([])
-	const [activeIndex, setActiveIndex] = useState<number>(0)
-	// Settings state
-	const [waveform, setWaveform] = useState<"saw" | "square">("saw")
-
-	const [tuning, setTuning] = useState<number>(0)
-	const [cutOffFreq, setCutoffFreq] = useState<number>(63)
-	const [resonance, setResonance] = useState<number>(63)
-	const [envMod, setEnvMod] = useState<number>(63)
-	const [decay, setDecay] = useState<number>(63)
-	const [accent, setAccent] = useState<number>(63)
-	// Second panel settings
-	const [tempo, setTempo] = useState<number>(130)
-	const [volume, setVolume] = useState<number>(127)
-	// Transport
-	const [run, setRun] = useState<boolean>(false)
-
-	const [patternClearModal, setPatternClearnModal] = useState<boolean>(false)
-
-	const synth = useRef<Voice303 | null>(null)
-
-	const advanceIndex = () => {
-			setActiveIndex(activeIndex + 1);
-			if ((mode === "pitch" && pitchMode.length === 16 && activeIndex >= 15) || (mode === "time" && timeMode.length === 16 && activeIndex >= 15)) {
-				setMode("normal");
-			}
-	}
-
-	const reverseIndex = () => {
-		if (activeIndex != 0) {
-			setActiveIndex(activeIndex - 1);
-		}
-	}
-
-	const getPatternObject = () => {
-		const section = (sectionName: "A" | "B") => {
-			let section: Section = {
-				name: sectionName,
-				time_mode: timeMode,
-				pitch_mode: pitchMode,
-			}
-			if (activeSection != sectionName) {
-				if (sectionName === 'A') {
-					section = sections[0]
-				} else {
-					section = sections[1]
-				}
-			}
-			return section
-		}
-
-		const settings: Settings = {
-			waveform: waveform,
-			tempo: tempo,
-			tuning: tuning,
-			resonance: resonance,
-			cut_off_freq: cutOffFreq,
-			env_mod: envMod,
-			decay: decay,
-			accent: accent,
-		}
-
-		const pattern: Pattern = {
-			name: name,
-			settings: settings,
-			sections: [section('A'), section('B')]
-		}
-		console.log(pattern)
-		return pattern
-	}
-
-	const postPattern = async () => {
-		if (user != null) {
-			const pattern = getPatternObject()
-			const header = {
-				'Content-Type': 'application/json', 
-				'Authorization': `Token ${user.token}`
-			}
-			const response = await api.postPattern(header, pattern)
-			return response
-		}
-	}
+	const [getModal, setModal ] = useState<boolean>(false)
 
 	return (
-			<PatternContext.Provider value={{ 
-				activeIndex: { set: setActiveIndex, get: activeIndex },
-				pitchMode: { set: setPitchMode, get: pitchMode },
-				timeMode: { set: setTimeMode, get: timeMode},
-				index: { next: advanceIndex, back: reverseIndex, current: activeIndex},
-				mode: { set: setMode, get: mode},
-				name: { set: setName, get: name},
-				run: {set: setRun, get: run},
-				waveform: { set: setWaveform, get: waveform},
-				tuning: { set: setTuning, get: tuning},
-				cutoff: { set: setCutoffFreq, get: cutOffFreq},
-				decay: { set: setDecay, get: decay},
-				resonance: { set: setResonance, get: resonance},
-				envMod: { set: setEnvMod, get: envMod},
-				accent: { set: setAccent, get: accent},
-				tempo: { set: setTempo, get: tempo},
-				volume: { set: setVolume, get: volume},
-				synth: synth,
-				activeSection: { set: setActiveSection, get: activeSection},
-				sections: { set: setSections, get: sections},
-				patternClearModal: { get: patternClearModal, set: setPatternClearnModal },
-				advanceIndex: advanceIndex,
-				postPattern: postPattern}}>
+			<PatternProvider pattern={props.pattern}>
+				<PatternClearModalContext.Provider value={{
+					get: getModal,
+					set: setModal,
+				}}>
 					<GroupDiv>
-						<div onClick={() => synth.current === null ? synth.current = new Voice303({
-							tempo: tempo,
-							tuning: tuning,
-							cut_off_freq: cutOffFreq,
-							resonance: resonance,
-							env_mod: envMod,
-							decay: decay,
-							accent: accent,
-							waveform: waveform
-						}) : ""}>
 							<AcidPattern303/>
-						</div>
 					</GroupDiv>
-			</PatternContext.Provider>
+				</PatternClearModalContext.Provider>
+			</PatternProvider>
 	);
 };
 
 interface PatternCreateProps {
-	pattern?: Pattern;
+	pattern: Pattern;
 }
 
-export { PatternCreateView, PatternContext };
+export { PatternCreateView, PatternClearModalContext};

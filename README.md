@@ -1,6 +1,6 @@
 # AcidPattern
 
-A site dedicated to sharing and composing patterns for the Roland TB-303 and its various clones and emulations.
+A site dedicated to sharing and composing patterns for the Roland TB-303 and its various clones and emulations. Still under development, but soon be live at acidpattern.com
 
 Graphically inspired by early rave music forums, chunky VST design and old LCD panels.
 

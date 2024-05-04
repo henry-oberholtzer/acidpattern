@@ -1,10 +1,9 @@
 import { BorderContainer, TextContainer, VerticalContainer, Text, Label } from "./Containers"
 import { ButtonTB } from "."
-import { PatternContext } from "../../routes/patterns/PatternCreateView"
-import { useContext } from "react"
+import { usePattern } from "../../hooks"
 
 const BackNextControls = () => {
-  const { index, synth, pitchMode, mode } = useContext(PatternContext);
+  const { index, synth, pitchMode, mode } = usePattern();
 
   const onMouseDownNext = () => {
       if (synth?.current != null && mode.get === "pitch" && pitchMode.get[index.current + 1]) {
