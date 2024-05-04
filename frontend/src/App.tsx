@@ -13,6 +13,7 @@ import {
 	PatternCreateView,
 	LogOutView,
 } from './routes';
+import { newPattern } from './routes/patterns/pattern-utils';
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -24,7 +25,7 @@ const App = () => {
 			children: [
 				{
 					path: '',
-					element: <PatternCreateView />,
+					element: <PatternCreateView pattern={newPattern()} />,
 				},
 				{
 					path: 'patterns/',

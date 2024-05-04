@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import settingsDial from './svgs/settings_dial.svg';
+import settingsDial from './settings_dial.svg';
 
 const SettingsMarker = styled.div`
 	width: 60px;

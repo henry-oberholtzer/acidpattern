@@ -93,6 +93,7 @@ To Do:
 Critical Features To Add:
 
   - Pattern List
+    - Move to main page?
     - Tiles
     - Pagination
     - Queryable
@@ -100,8 +101,11 @@ Critical Features To Add:
     - List of patterns next to 303?
   - Pattern Write
     - Programming Tutorial
+    - Transpose
+    - Sequencer can switch sections smoothly
+    - 
   - Pattern Details
-    - Jammable version
+    - Pull it into synthesizer for playing.
   - Users
     - Public Profile
     - Profile Photos

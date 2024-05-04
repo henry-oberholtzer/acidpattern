@@ -232,7 +232,6 @@ class Voice303 {
 				this.release(this.nextStepTime)
 			}
 			this.attack(pitch, this.nextStepTime)
-			console.log(this.stepLength)
 		}
 	}
 

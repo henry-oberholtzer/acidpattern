@@ -107,7 +107,7 @@ const PatternInfo = () => {
 
   
 
-  if (patternClearModal) {
+  if (patternClearModal.get) {
     return (
       <LCDContainer $width={625} $height={136}>
         <PatternClearModal />
