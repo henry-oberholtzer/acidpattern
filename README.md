@@ -1,5 +1,7 @@
 # AcidPattern
 
+!(A screenshot of the development version of the acidpattern website, showing a grey navigation header, and a silver, box shaped synthesizer in the center, with a green LCD inside showing details about the synthesizer.)[https://github.com/henry-oberholtzer/acidpattern/blob/main/documentation/screenshot_01.jpg?raw=true]
+
 A site dedicated to sharing and composing patterns for the Roland TB-303 and its various clones and emulations. Still under development, but soon be live at acidpattern.com
 
 Graphically inspired by early rave music forums, chunky VST design and old LCD panels.
