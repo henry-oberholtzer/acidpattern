@@ -84,8 +84,8 @@
 5-2-24
   - Pattern clear button functionality
   - Pattern browse view
-  - ? Resonance connected
-  - ? Pattern play mode
+  - Resonance connected
+  - Pattern play mode
 
 To Do:
   - BUG: Sequencer continues playing when navigating to a new page.

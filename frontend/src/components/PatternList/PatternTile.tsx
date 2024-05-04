@@ -1,70 +1,57 @@
 import styled from "styled-components";
 import { Pallete303 } from "../303Components/Palette";
-import { formatDistance } from "date-fns";
+import { formatDate } from "date-fns";
+import { LCDButton } from "../303Components";
 
 const PatternFrame = styled.div`
-  width: 360px;
-  height: 155px;
-  padding: 5px;
-  background-color: ${Pallete303.CaseSilver};
-  border-radius: 3px;`
+  width: ${12*30 + 40}px;
+  height: ${20*8}px;
+  font-family: '5x7 Pixel';
+  font-size: 14px;
+  padding: 20px 20px 0px 20px;
+  background-color: ${Pallete303.LCDBackground};
+  color: ${Pallete303.LCDFont};`
 
 const PatternTitle = styled.h3`
-  width: 350px;
-  font-family: 'Inter';
-  font-size: 16px;
-  
-  margin: 2px 0px;
+  width: !00%;
+  font-size: 14px;
+  font-weight: normal;
+  background-color: ${Pallete303.LCDFont};
+  color: ${Pallete303.LCDBackground};
+  border-bottom: 2px solid ${Pallete303.LCDFont};
+  padding: 2px;
+  margin: 0px 0px 2px 0px;
   `
 
-const PatternInfo = styled.div`
-  width: 350px;
-  font-size: 12px;
+const PatternInfo = styled.p`
+  width: 100%;
+  font-size: 14px;
   height: 20px;
-  align-items: center;
-  display: flex;`
+  padding: 2px;
+  margin: 0px 0px 4px 0px;`
 
 const PatternFooter = styled.div`
-  width: 350px;
-  font-size: 12px;
-  display: flex;`
-
-const SectionTile = styled.div<{ $filled: boolean }>`
-  width: 16px;
-  height: 16px;
-  margin: 2px;
-  border: 2px solid black;
-  ${props => props.$filled ? `color: ${Pallete303.CaseSilver};` : ""}
-  ${props => props.$filled ? `background-color: ${Pallete303.Black};` : ""}`
+width: 100%;
+font-size: 14px;
+height: 20px;
+padding: 2px;
+margin: 0px 0px 4px 0px;`
 
 const PatternTile = (props: PatternTileProps) => {
   const { pattern } = props
-
-  const getSections = (sections: Section[]) => {
-    const presentSections: [string, boolean][] = []
-    sections.forEach((s) => {
-      if (s.pitch_mode.length > 0 && s.time_mode.length > 0) {
-        presentSections.push([s.name, true])
-      } else {
-        presentSections.push([s.name, false])
-      }
-    })
-    return presentSections
-  }
 
   return (
     <PatternFrame>
       <PatternTitle>
         {pattern.name}
       </PatternTitle>
-      <PatternInfo>{pattern.settings.tempo}bpm | {getSections(pattern.sections).map((s) => {
-        return (
-          <SectionTile $filled={s[1]}>{s[0]}</SectionTile>
-        )
-      })} {pattern.author} | </PatternInfo>
+      <PatternInfo>{pattern.settings.tempo > 99 ? pattern.settings.tempo : '0' + pattern.settings.tempo }bpm,</PatternInfo>
       <PatternFooter>
-      {pattern.date ? formatDistance(new Date(pattern.date), Date.now(), { addSuffix: true }) : ""} 
+      {pattern.author ? `by ${pattern.author}, ` : ""}{pattern.date ? formatDate(new Date(pattern.date), "MM-dd-yyyy") : ""}
       </PatternFooter>
+      <PatternFooter>{'-'.repeat(30)}</PatternFooter>
+      <LCDButton $width={5*12}>PLAY</LCDButton> <LCDButton $width={9*12}>DOWNLOAD</LCDButton> <LCDButton $width={5*12}>LIKE</LCDButton>
+      <PatternFooter>{'-'.repeat(30)}</PatternFooter>
     </PatternFrame>
   )
 }
