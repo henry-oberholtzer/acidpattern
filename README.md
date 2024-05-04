@@ -78,7 +78,3 @@ Tests can be run for the backend by navigating to `acidpattern_api` and running 
 Copyright 2024 Henry Oberholtzer
 
 Original code licensed under a GNU GPLv3
-
-# References
-
-I have been relying on these resources for developing my 303 clone.
