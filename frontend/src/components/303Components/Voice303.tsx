@@ -2,10 +2,10 @@ import * as Tone from "tone";
 
 class Voice303 {
 	private synth: Tone.MonoSynth;
-
   private filterMin = 0;
   private filterMax = 4500;
-
+	private envModMin = .01
+	private envModMax = 1
 	tuning: number;
 	tempo: number;
 
@@ -18,6 +18,10 @@ class Voice303 {
   ccToCutoff(value: number) {
     return this.filterMin + value * ((this.filterMax - this.filterMin) / 127)
   }
+
+	ccToEnvMod(value: number) {
+		return this.envModMin + value * ((this.envModMax - this.envModMin) / 127)
+	}
 
 	ccToResonance(value: number) {
 		return 16 * (value/127)
@@ -66,12 +70,11 @@ class Voice303 {
 	}
 
 	setResonance(value: number) {
-		// this.resonance = 
 		this.synth.filter.Q.setValueAtTime(this.ccToResonance(value), Tone.now())
 	}
 
 	setEnvMod(value: number) {
-		this.envMod = value
+		this.synth.filterEnvelope.octaves = this.ccToEnvMod(value)
 	}
 
 	setDecay(value: number) {
@@ -96,7 +99,6 @@ class Voice303 {
 		const frequency = this.centToFrequency(this.tuning, this.midiToFrequency(pitch.pitch + pitch.octave))
 		console.log("Trigger")
 
-		console.log(Tone.getContext().state)
 		this.synth.triggerAttack(frequency)
 	}
 

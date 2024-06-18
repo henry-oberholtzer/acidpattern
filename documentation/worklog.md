@@ -90,6 +90,7 @@
 6-18-24
   - Tuning can be adjusted.
   - Resonance can be adjusted.
+  - EnvMod can be adjusted.
   
   - Ensure cutoff range is accurate when EnvMod is at 100%
   - Ensure resonance range is accurate when EnvMod is at 100%
