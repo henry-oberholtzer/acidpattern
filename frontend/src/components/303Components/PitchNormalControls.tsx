@@ -3,7 +3,6 @@ import { Pallete303 } from "./Palette";
 import styled from "styled-components";
 import { usePattern } from "../../hooks";
 
-
 const FunctionButtonArea = styled.div<{ $height: number, $alignTop?: boolean, $justifyTop?: boolean, $column?: boolean}>`
   width: 100%;
   height: ${props => props.$height}px;

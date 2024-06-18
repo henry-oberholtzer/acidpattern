@@ -87,9 +87,22 @@
   - ? Resonance connected
   - ? Pattern play mode
 
-To Do:
-  - BUG: Sequencer continues playing when navigating to a new page.
+6-18-24
+  - Tuning can be adjusted.
+  - Resonance can be adjusted.
   
+  - Ensure cutoff range is accurate when EnvMod is at 100%
+  - Ensure resonance range is accurate when EnvMod is at 100%
+  - Ensure cutoff range is accurate when EnvMod is at 0%
+  - Ensure resonance range is accurate when EnvMod is at 0%
+  - Ensure decay range is accurate
+  - 
+
+To Do:
+  - BUG: Sequencer continues playing when navigating to a new page.\
+  - BUG: Class not initialized on mouse wheel down
+  - BUG: Fix the waveform switch not loading properly
+
 Critical Features To Add:
 
   - Pattern List
